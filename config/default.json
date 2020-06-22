@@ -1,0 +1,6 @@
+{
+  "mongoURI": "mongodb+srv://root:root42@cluster0-axv6m.gcp.mongodb.net/hypertube?retryWrites=true&w=majority",
+  "jwtSecret": "mysecrettoken",
+  "mailerUser": "no-reply.tindurr@outlook.com",
+  "mailerPass": "D6wLtS0vhwZrn"
+}
