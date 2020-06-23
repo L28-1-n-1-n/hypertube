@@ -36,34 +36,13 @@ const Profile = ({
         <Spinner />
       ) : (
         <Fragment>
-          <div className='profile-grid my-1'>
-            <ProfileTop profile={profile} photo={photos} />
-            <ProfileAbout profile={profile} />
-            <div className='profile-photo-collection'>
-              {SquarePics &&
-                SquarePics.map((photo) => (
-                  <ProfilePhotoItem key={photo._id} photo={photo} />
-                ))}
+          <div className="container row d-flex justify-content-center my-4 mx-auto">
+            <div className="user-profile col-10 col-sm-12 col-md-9 col-lg-7 d-flex flex-column align-items-center bg-dark py-4 rounded">
+                <h2>Username</h2>
+                <div className="user-photo p-2 bg-darker__light rounded d-flex justify-content-center align-items-center">
+                    <img className="img-fluid" src="" alt="Profile picture" />
+                </div>
             </div>
-            <Link to='/photos' className='btn btn-light'>
-              Back to Matches
-            </Link>
-            {auth.isAuthenticated &&
-              auth.loading === false &&
-              auth.user._id === profile.user._id && (
-                <Link to='/edit-profile' className='btn btn-dark'>
-                  Edit Profile
-                </Link>
-              )}{' '}
-            <button
-              onClick={() => {
-                reportFake(profile.user._id);
-              }}
-              type='button'
-              className='btn btn-danger'
-            >
-              <i className='fas fa-ban' /> {'Report Fake Profile'}
-            </button>
           </div>
         </Fragment>
       )}

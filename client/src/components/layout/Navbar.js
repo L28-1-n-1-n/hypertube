@@ -89,7 +89,7 @@ export const Navbar = ({
   const guestLinks = (
     <div className="header__sign">
       <Link to='/login'>Log in</Link>
-      <Link to='/signup'>Sign up</Link>
+      <Link to='/register'>Sign up</Link>
     </div>
   );
 

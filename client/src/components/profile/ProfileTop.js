@@ -8,7 +8,7 @@ const ProfileTop = ({
     bday,
     gender,
     location: { city },
-    user: { _id, firstname, lastname },
+    user: { _id, username, lastname },
   },
   getProfilePicById,
   photo: { photos },
@@ -45,7 +45,7 @@ const ProfileTop = ({
         )}
       </div>
       <h1 className='large'>
-        {firstname}
+        {username}
         {'  '}
         {lastname}
         {',  '}

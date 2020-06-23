@@ -2,6 +2,7 @@ import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import Register from '../auth/Register';
 import Login from '../auth/Login';
+import Homepage from '../home/Homepage';
 import Alert from '../layout/Alert';
 import Dashboard from '../dashboard/Dashboard';
 import CreateProfile from '../profile-forms/CreateProfile';
@@ -22,11 +23,12 @@ import ConnectedUsers from '../photos/ConnectedUsers';
 
 const Routes = () => {
   return (
-    <section className='container'>
+    <div>
       <Alert />
       <Switch>
         <Route exact path='/register' component={Register} />
         <Route exact path='/login' component={Login} />
+        <Route exact path='/homepage' component={Homepage} />
 
         <PrivateRoute exact path='/profile/:id' component={Profile} />
         <PrivateRoute exact path='/dashboard' component={Dashboard} />
@@ -56,7 +58,7 @@ const Routes = () => {
         <Route exact path='/reset/:token' component={Reset} />
         <Route component={NotFound} />
       </Switch>
-    </section>
+    </div>
   );
 };
 
