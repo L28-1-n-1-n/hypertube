@@ -23,7 +23,6 @@ const Homepage = ({ fetchYTS, movie: { movies } }) => {
         id='homepage'
         className='container-fluid justify-content-center my-4 main-content-home'
       >
-        <div>{movies && movies.map((item) => <h2>{item.title}</h2>)}</div>
         <div className='row justify-content-center'>
           <div className='col-12 movies-filters'>
             <form method='get' action='/homepage' acceptCharset='UTF-8'>
@@ -124,9 +123,10 @@ const Homepage = ({ fetchYTS, movie: { movies } }) => {
           </div>
           <div className='col-12'>
             <div className='row justify-content-center'>
+            {movies && movies.map((item) =>
               <div className='filmCard m-1 col-7 col-sm-4 col-md-3 col-lg-2 bg-dark rounded text-center'>
                 <div className='filmCard__top p-1 rounded-top'>
-                  <h3>The lord of the rings</h3>
+                  <h3>{item.title}</h3>
                 </div>
                 <div className='video_player rounded'>
                   <Link to='/player/'>
@@ -138,15 +138,16 @@ const Homepage = ({ fetchYTS, movie: { movies } }) => {
                   </Link>
                 </div>
                 <div className='filmCard__img'>
-                  <img className='img-fluid' src='' alt='illustration' />
+                  <img className='img-fluid' src={item.medium_cover_image} alt='illustration' />
                 </div>
                 <div className='filmCard__bottom p-1 rounded-bottom'>
                   <div className='px-2 d-flex justify-content-between'>
-                    <span>2003</span>
-                    <span>8</span>
+                    <span>{item.year}</span>
+                    <span>{item.rating}</span>
                   </div>
                 </div>
               </div>
+              )}
             </div>
           </div>
         </div>
