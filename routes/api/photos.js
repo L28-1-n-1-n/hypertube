@@ -275,15 +275,6 @@ router.get('/filteredMatches', auth, async (req, res) => {
       });
     }
 
-    // Remove blocked profiles
-    if (photos && myProfile.blocked) {
-      ProfilePics = photos.filter(function (e) {
-        return !myProfile.blocked.some(function (s) {
-          return s.user.toString() === e.user._id.toString();
-        });
-      });
-    }
-
     // match Tags and return new array if tags match
     if (myProfile.preferredTags.length !== 0) {
       var filtered_array = [];
@@ -385,12 +376,12 @@ router.get('/recentPhotos', auth, async (req, res) => {
       ]
     );
 
-    if (myProfile.checkedOut.length !== 0) {
+    if (profile_list.length !== 0) {
       var filtered_array = [];
       photos.forEach(function (photo) {
         if (
           myProfile.checkedOut.filter(
-            (item) => item.user.toString() === photo.user._id.toString()
+            (item) => item.user.toString() === photo.user.toString()
           ).length !== 0
         ) {
           filtered_array.push(photo);
