@@ -1,32 +1,17 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { home } from '../../actions/home';
-const Home = ({ home, isAuthenticated }) => {
-  const [formData, setFormData] = useState({
-    username: '',
-    password: '',
-  });
+import { fetchYTS } from '../../actions/home';
 
-  const { username, password } = formData;
+const Home = ({
+  fetchYTS,
+}) => {
+  useEffect(() => {
+    fetchYTS();
+  }, [fetchYTS]);
 
-  const onChange = (e) =>
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-
-  const onSubmit = async (e) => {
-    e.preventDefault();
-    home(username, password);
-    var begin_timestamp = new Date();
-    window.localStorage.getItem('refresh');
-    window.localStorage.setItem('refresh', begin_timestamp.getTime().valueOf());
-  };
-
-  // Redirect if logged in
-
-  if (isAuthenticated) {
-    return <Redirect to='/dashboard' />;
-  }
+  // Runs immediately when profile mounts
   return (
     <Fragment>
         <div id="homepage" className="container-fluid justify-content-center my-4 main-content-home">
@@ -123,7 +108,7 @@ const Home = ({ home, isAuthenticated }) => {
                     <Link to="/player/"><img className="img-fluid" src="/img/play_white.png" alt="illustration"/></Link>
                   </div>
                   <div className="filmCard__img">
-                    <img className="img-fluid" src="<%= result[i].medium_cover_image %>" alt="illustration" />
+                    <img className="img-fluid" src="" alt="illustration" />
                   </div>
                   <div className="filmCard__bottom p-1 rounded-bottom">
                     <div className="px-2 d-flex justify-content-between">
@@ -140,8 +125,15 @@ const Home = ({ home, isAuthenticated }) => {
   );
 };
 
+Home.propTypes = {
+  fetchYTS: PropTypes.func.isRequired,
+  movie: PropTypes.object.isRequired
+};
+
 const mapStateToProps = (state) => ({
-  isAuthenticated: state.auth.isAuthenticated,
+  movie: state.movie,
 });
 
-export default Home;
+export default connect(mapStateToProps, {
+  fetchYTS
+})(Home); 
