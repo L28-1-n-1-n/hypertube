@@ -1,0 +1,306 @@
+@import "variables/variables.scss";
+@import "hypertube.scss";
+
+/* GLOBAL */
+  
+#page-wrap {
+  height: 100%;
+  /* lesshint-disable */height: auto !important;/* lesshint-enable */
+  // ^^The above is to disable "importantRule" and "duplicateProperty" rules.
+  min-height: 100%;
+  position: relative;
+  padding-bottom: $footer-height;
+
+  header {
+    .logo {
+      height: 20px;
+    }
+    a {
+      cursor: pointer;
+    }
+    .dropdown-menu.account-menu {
+      left: auto;
+      right: 0px;
+    }
+  }
+}
+
+
+html,
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    color: $whiter;
+}
+
+body {
+    width: 100%;
+    background-color: $dark-light;
+    font-family: "Open Sans", Arial, Sans-Serif;
+}
+
+h1, h2, h3, h4 {
+    font-family: "Raleway";
+}
+
+h3 {
+    margin: 0;
+    font-size: $title3;
+}
+
+input {
+    color: $whiter;
+}
+
+/* FONTS */
+
+@font-face {
+    font-family: 'Open Sans';
+    src: url('../fonts/OpenSans-Regular.ttf');
+}
+
+@font-face {
+    font-family: 'Raleway';
+    src: url('../fonts/Raleway-Regular.ttf');
+}
+
+/* HEADER */
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    height: 70px;
+    box-shadow: 0px -10px 10px 4px $white;
+    position: relative;
+    background-color: $main-dark;
+    align-items: center;
+    &__logo {
+        transform: translate(-50%, -50%);
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        a {
+            display: flex;
+        }
+        img {
+            width: 45px;
+        }
+    }
+
+    &__sign {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        justify-content: space-around;
+        cursor: pointer;
+        a:hover {
+            text-shadow: 0px 0px 2px #FFFFFF;
+            transition: 0.3s;
+        }
+    }
+}
+
+a {
+    color: inherit !important;
+    text-decoration: inherit !important;
+}
+
+/* FOOTER */
+
+footer {
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    height: $footer-height;
+    width: 100%;
+    position: absolute;
+    left: 0px;
+    bottom: 0px;
+    background-color: $main-dark;
+    .xs-only {
+      display: none;
+    }
+    .footer {
+        box-shadow: 0px 10px 10px 4px $white;
+        height: 100%;
+        &__logo {
+            margin: auto;
+            padding: 10px;
+            img {
+                width: 45px;
+            }
+        }
+    }
+}
+
+/* FORM DYNAMIC STYLE */
+
+.formContent {
+    width: 100%;
+    position: relative;
+    height: 60px;
+    overflow: hidden;
+
+    &__input {
+        width: 100%;
+        height: 100%;
+        padding-top: 20px;
+        border: none;
+        outline: none;
+        background: none;
+        font-size: $size-bg;
+    }
+
+    &__label {
+        position: absolute;
+        bottom: 0px;
+        left: 0%;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        border-bottom: 1px solid black;
+
+        &::after {
+            content: "";
+            position: absolute;
+            left: 0px;
+            bottom: -1px;
+            height: 100%;
+            width: 100%;
+            border-bottom: 2px solid $hypertube;
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+        }
+        &__name {
+            position: absolute;
+            bottom: 5px;
+            left: 0px;
+            transition: all 0.3s ease;
+        }
+    }
+    &__input:focus + &__label &__label__name,
+    &__input:valid + &__label &__label__name {
+        transform: translateY(-100%);
+        font-size: $size-md;
+    }
+    &__input:focus + &__label::after, &__input:valid + &__label::after {
+        transform: translateX(0%);
+    }
+}
+
+/* HOMEPAGE */
+
+.filmCard {
+    height: 15em;
+    padding: 0;
+    &__img {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        img {
+            max-height: 100%;
+            opacity: 1;
+            transition: 0.5s;
+        }
+    }
+    &__top, &__bottom {
+        visibility: hidden;
+        opacity: 0;
+        transition: 0.5s;
+        position: absolute;
+        background: rgba($dark, 0.6);
+        width: 100%;
+        z-index: 9;
+    }
+    &__bottom {
+        bottom: 0;
+    }
+    &:hover &__img img {
+        opacity: 0.4;
+        transition: 0.5s;
+    }
+    &:hover &__top, &:hover &__bottom {
+        visibility: visible;
+        opacity: 1;
+        transition: 0.5s;
+    }
+    .video_player {
+        position: absolute;
+        opacity: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: 0.5s;
+        img {
+            width: 55px;
+            cursor: pointer;
+            &:hover {
+                width: 60px;
+                transition: 0.2s;
+            }
+        }
+    }
+    &:hover .video_player {
+        opacity: 1;
+        z-index: 8;
+        background: rgba($white, 0.1);
+        transition: 0.5s;
+    }
+}
+
+/* VIDEO DETAILS */
+
+.videoContent {
+    .video-desc {
+        background-color: $main-dark;
+        border-top: 2px solid $white;
+        border-bottom: 2px solid $white;
+        &__details p {
+            font-size: $size-md;
+            margin-bottom: 0.3rem;
+        }
+    }
+    .video-comment {
+        background: rgb(53,56,65);
+        background: linear-gradient(180deg, rgba($main-dark,1) 0%, rgba($dark-light,0) 100%);
+        &__display {
+            .comment-avatar {
+                &__bg {
+                    height: 30px;
+                    width: 30px;
+                    background-repeat: no-repeat;
+                    background-size: cover;
+                    background-position: 50% 50%;
+                    border-radius: 100%;
+                    border: 2px solid $hypertube;
+                }
+            }
+            .comment-text {
+                &__text {
+                    font-size: $size-md;
+                }
+            }
+        }
+    }
+}
+
+/* OVERRIDE BOOTSTRAP CLASSES */
+
+/* USER PROFILE */
+
+.user-profile {
+    .user-photo {
+        max-height: 15rem;
+        max-width: 15rem;
+        min-height: 8rem;
+        min-width: 8rem;
+        img {
+            max-height: 100%;
+        }
+    }
+    .user-comments {
+        font-size: $size-md;
+    }
+}

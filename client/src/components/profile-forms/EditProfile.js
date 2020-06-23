@@ -47,6 +47,7 @@ const EditProfile = ({
     bio,
     tags,
     bday,
+    username,
     firstname,
     lastname,
     email,
@@ -64,93 +65,159 @@ const EditProfile = ({
   };
   return (
     <Fragment>
-      <h1 className='large text-primary-T'>Edit Your Profile</h1>
-      <p className='lead'>
-        <i className='fas fa-user-cog'></i> Modify your information
-      </p>
-      <small>* = required field</small>
-      <form className='form' onSubmit={(e) => onSubmit(e)}>
-        <div className='form-group'>
-          <input
-            type='text'
-            placeholder='* First Name'
-            name='firstname'
-            value={firstname}
-            onChange={(e) => onChange(e)}
-          />
-          <small className='form-text'>* First Name</small>
+<div id="edit-profile" className="container row mx-auto d-flex justify-content-center my-4">
+  <div className="col-md-7 col-sm-10 col-10 col-lg-5 shadow__light px-5 py-3 my-4 mx-2 rounded">
+      <div className="col-12 text-center my-3">
+          <h3>Informations</h3>
+      </div>
+      <form action="updateProfile" onSubmit={(e) => onSubmit(e)}>
+        <div className="col-12">
+          <div className="formContent">
+            <input 
+              className="formContent__input" 
+              type="text" 
+              name="username" 
+              value={username}
+              onChange={(e) => onChange(e)}
+              autoComplete="off" 
+              required 
+            />
+            <label className="formContent__label" htmlFor="username"><span className="formContent__label__name">Username</span></label>
+          </div>
+          <div className="formContent">
+            <input 
+              className="formContent__input" 
+              type="text" 
+              name="firstname" 
+              value={firstname}
+              onChange={(e) => onChange(e)}
+              autoComplete="off" 
+              required 
+            />
+            <label className="formContent__label" htmlFor="firstname"><span className="formContent__label__name">Firstname</span></label>
+          </div>
+          <div className="formContent">
+            <input 
+              className="formContent__input" 
+              type="text" 
+              name="lastname" 
+              value={lastname}
+              onChange={(e) => onChange(e)}
+              autoComplete="off" 
+              required 
+            />
+            <label className="formContent__label" htmlFor="lastname"><span className="formContent__label__name">Lastname</span></label>
+          </div>
+          <div className="formContent">
+            <input 
+              className="formContent__input" 
+              type="email" 
+              name="email-address" 
+              value={email}
+              onChange={(e) => onChange(e)}
+              autoComplete="off" 
+              required 
+            />
+            <label className="formContent__label" htmlFor="email-address"><span className="formContent__label__name">Email address</span></label>
+          </div>
+          <div>
+            <p>Language</p>
+            <div>
+              <input 
+                type="radio" 
+                id="english" 
+                name="lang" 
+                value="en" 
+              />
+              <label htmlFor="english">English</label>
+            </div>
+            <div>
+              <input 
+                type="radio" 
+                id="french" 
+                name="lang" 
+                value="fr" 
+              />
+              <label htmlFor="french">French</label>
+            </div>
+            <div>
+              <input 
+                type="radio" 
+                id="spanish" 
+                name="lang" 
+                value="es" 
+              />
+              <label htmlFor="spanish">Spanish</label>
+            </div>
+          </div>
+          <div className="text-center my-3">
+            <p className="text-danger" v-if="cloudError==='doublon'"><small>It looks like there's already an account with your email address or username. Try with another credentials.</small></p>
+            <p className="text-danger" v-else-if="cloudError"><small>An error occured while processing your request. Please check your informations and try again.</small></p>
+          </div>
+          <div className="col-xs-6 text-center my-3">
+            <button type="submit" className="btn btn-primary">Update</button>
+          </div>
         </div>
-        <div className='form-group'>
-          <input
-            type='text'
-            placeholder='* Last Name'
-            name='lastname'
-            value={lastname}
-            onChange={(e) => onChange(e)}
-          />
-          <small className='form-text'>* Last Name</small>
-        </div>
-        <div className='form-group'>
-          <input
-            type='text'
-            placeholder='* Email'
-            name='email'
-            value={email}
-            onChange={(e) => onChange(e)}
-          />
-          <small className='form-text'>* Email</small>
-        </div>
-        <div className='form-group'>
-          <select name='gender' value={gender} onChange={(e) => onChange(e)}>
-            <option value=''>* I identify as ...</option>
-            <option value='Male'>Male</option>
-            <option value='Female'>Female</option>
-            <option value='Non-Binary'>Non-Binary</option>
-          </select>
-        </div>
-        <div className='form-group'>
-          <select
-            name='interestedGender'
-            value={interestedGender}
-            onChange={(e) => onChange(e)}
-          >
-            <option value=''>* I am interested in ...</option>
-            <option value='Male'>Men</option>
-            <option value='Female'>Women</option>
-            <option value='Both'>Both</option>
-          </select>
-        </div>
-        <div className='form-group'>
-          <textarea
-            placeholder='* A few sentences about yourself [Max 200 characters] '
-            name='bio'
-            value={bio}
-            onChange={(e) => onChange(e)}
-          ></textarea>
-          <small className='form-text'>
-            Please write a short bio of yourself
-          </small>
-        </div>
-
-        <div className='form-group'>
-          <input
-            type='text'
-            placeholder='* My Interests'
-            name='tags'
-            value={tags}
-            onChange={(e) => onChange(e)}
-          />
-          <small className='form-text'>
-            Please enter a list of your interests separated by commas (eg.
-            Hiking,Maths,Pokemon)
-          </small>
-        </div>
-
-        <input type='submit' className='btn btn-primary my-1' />
-        <Link className='btn btn-light my-1' to='/dashboard'>
-          Go Back
-        </Link>
       </form>
+  </div>
+  <div className="col-md-7 col-sm-10 col-10 col-lg-5 shadow__light px-5 py-3 my-4 mx-2 rounded">
+    <div className="col-12 text-center my-3">
+        <h3>Password</h3>
+    </div>
+    <form action="updatePassword" onSubmit={(e) => onSubmit(e)}>
+      <div className="col-12">
+        <div className="formContent">
+          <input 
+            className="formContent__input" 
+            type="password" 
+            name="password" 
+            onChange={(e) => onChange(e)}
+            maxLength="25" 
+            required 
+          />
+          <label className="formContent__label" htmlFor="password"><span className="formContent__label__name">Password</span></label>
+        </div>
+        <div className="formContent">
+          <input 
+            className="formContent__input" 
+            type="password" 
+            name="confirm-password" 
+            onChange={(e) => onChange(e)}
+            maxLength="25" 
+            required 
+          />
+          <label className="formContent__label" htmlFor="confirm-password"><span className="formContent__label__name">Confirm password</span></label>
+        </div>
+        <div className="col-xs-6 text-center my-3">    
+          <button type="submit" className="btn btn-primary">Update password</button>
+        </div>
+      </div>
+    </form>
+    <hr/>
+    <div className="col-12 text-center my-3">
+      <h3>Picture</h3>
+    </div>
+    <form encType="multipart/form-data" action="updateAvatar">
+      <div className="col-12">
+          <div className="form-group btn btn-rounded">
+            <label htmlFor="">Image :</label>
+            <input 
+              className="form-control-file" 
+              type="file" 
+            />
+          </div>
+          <div className="col-xs-6 text-center my-3">
+              <button type="submit" className="btn btn-primary">Add</button>
+          </div>
+      </div>
+    </form>
+  </div>
+  <div className="col-md-12 my-2">
+      <div className="col-xs-6 text-center">
+          <a tag="button" href="/settings" className="btn btn-primary" type="submit">Back</a>
+      </div>
+  </div>
+</div>
     </Fragment>
   );
 };

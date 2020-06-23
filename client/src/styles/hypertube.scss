@@ -1,0 +1,112 @@
+@import "mixins/mixins.scss";
+
+.shadow {
+    box-shadow: 0px 0px 10px 0px rgba($dark, $obg) !important;
+    &-top {
+        box-shadow: 0px 0px 10px 0px rgba($dark, $obg) !important;
+        &__light {
+            box-shadow: 0px -3px 10px 0px rgba($white, $osm) !important;
+        }
+    }
+    &__light {
+        box-shadow: 0px 0px 10px 0px rgba($white, $osm) !important;
+    }
+}
+
+.bg-darker {
+    background-color: $darker;
+    &__light {
+        background-color: rgba($darker, $osm);
+    }
+}
+
+hr {
+    border-top: 1px solid rgba($white, 0.1);
+}
+
+.border-dark {
+    border: 1px solid #343741 !important;
+}
+
+.bg-dropdown {
+    background-color: $main-dark;
+    color: $white;
+}
+
+.dropdown-item {
+    &:hover {
+        background-color: $dark-light;
+    }
+}
+
+.icon-custom {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-around;
+    &__fortytwo::before {
+        @include icon-after("/images/42.svg");
+    }
+    &__github::before {
+        @include icon-after("/images/github.svg");
+    }
+}
+
+.movies-filters {
+    p {
+        margin-bottom: 0.5rem !important;
+    }
+    select {
+        background: $main-dark !important;
+        color: $whiter !important;
+        border: none !important;
+    }
+}
+
+.text {
+    &-danger {
+        color: $hypertube !important;
+    }
+}
+.btn {
+    &-info {
+        @include button($info, $info-border, $dark);
+    }
+    
+    &-success {
+        @include button($success, $success-border, $white);
+        &:hover {
+            background-color: #28a745 !important;
+            border-color: #28a745 !important;
+        }
+    }
+    &-danger {
+        @include button($danger, $danger-border, $white);
+        &:hover {
+            background-color: #dc3545 !important;
+            border-color: #dc3545 !important;
+        }
+    }
+    
+    &-primary {
+        @include button($primary, $primary-border, $white);
+        &:hover {
+            background-color: #007bff !important;
+            border-color: #007bff !important;
+        }
+    }
+
+    &-outline {
+        &-secondary {
+            &:hover, &:active {
+                background-color: $dark-light !important;
+                border-color: #6c757d !important;
+            }
+        }
+        &-light {
+            &:hover {
+                background-color: $whiter !important;
+                color: $dark !important;
+            }
+        }
+    }
+}

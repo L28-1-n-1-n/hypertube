@@ -1,0 +1,12 @@
+@mixin button($color, $border, $text) {
+    background-color: $color !important;
+    border-color: $border !important;
+    color: $text !important;
+}
+
+@mixin icon-after($url) {
+    content: url($url);
+    width: 25px;
+    line-height: 0;
+    margin-right: 0.5em;
+}

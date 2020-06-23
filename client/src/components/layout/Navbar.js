@@ -76,82 +76,35 @@ export const Navbar = ({
   }, [user, socid]);
 
   const authLinks = (
-    <ul>
-      <li onClick={notify}>
-        <i className='fas fa-bell'></i>
-        <span>
-          {user && user.notifications && user.notifications.length > 0 && (
-            <span>{user.notifications.length}</span>
-          )}
-        </span>
-      </li>
-      <ToastContainer
-        position='top-right'
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-      />
-
-      <li>
-        <Link to='/photos'>
-          <i className='fas fa-user-plus'></i> Matches
-        </Link>
-      </li>
-
-      <li>
-        <Link to='/chat'>
-          <i className='far fa-comments'></i> Chat
-        </Link>
-      </li>
-      <li>
-        <Link to='/dashboard'>
-          <i className='fas fa-tools'></i>{' '}
-          <span className='hide-sm'>Dashboard</span>
-        </Link>
-      </li>
-      <li>
-        <a
-          onClick={() => {
-            logout(user._id);
-            forceRefresh(user._id);
-          }}
-          href='#!'
-        >
-          <i className='fas fa-door-open'></i>{' '}
-          <span className='hide-sm'>Logout</span>
-        </a>
-      </li>
-    </ul>
+    <div className="nav-item dropdown">
+      <a className="nav-link dropdown-toggle btn btn-outline-secondary" id="header-account-menu-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Menu</a>
+      <div className="dropdown-menu account-menu bg-dropdown" aria-labelledby="header-account-menu-link">
+        <Link className="dropdown-item" to="/homepage">Home</Link>
+        <Link className="dropdown-item" to="/account">Settings</Link>
+        <Link className="dropdown-item" to="/logout">Sign out</Link>
+      </div>
+    </div>
   );
   // 'hide-sm' hides small items when we are on mobile devices, to make things responsive
   const guestLinks = (
-    <ul>
-      <li>
-        <Link to='/register'>Register</Link>
-      </li>
-      <li>
-        <Link to='/login'>Login</Link>
-      </li>
-    </ul>
+    <div className="header__sign">
+      <Link to='/login'>Log in</Link>
+      <Link to='/signup'>Sign up</Link>
+    </div>
   );
 
   return (
-    <nav className='navbar bg-dark-T'>
-      <h1>
-        <Link to='/'>
-          <i className='fas fa-fire-alt'></i> Tindurr
+    <header id="page-header" className="header px-3">
+      <div className="header__logo">
+        <Link to="/homepage">
+          <img alt="Logo Hypertube" src="" />
         </Link>
-      </h1>
+      </div>
 
       {!loading && (
         <Fragment>{isAuthenticated ? authLinks : guestLinks}</Fragment>
       )}
-    </nav>
+    </header>
   );
 };
 // loading is true by default

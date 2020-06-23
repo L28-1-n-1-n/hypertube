@@ -29,40 +29,62 @@ const Login = ({ login, isAuthenticated }) => {
   }
   return (
     <Fragment>
-      <h1 className='large text-primary-T'>Sign In</h1>
-      <p className='lead'>
-        <i className='fas fa-user-shield'></i> Sign Into Your Account
-      </p>
-      <form className='form' onSubmit={(e) => onSubmit(e)}>
-        <div className='form-group'>
-          <input
-            type='text'
-            placeholder='Username'
-            name='username'
-            value={username}
-            onChange={(e) => onChange(e)}
-            required
-          />
+      <div className="container row mx-auto d-flex flex-column align-items-center my-4">
+        <div id="login" className="col-9 col-md-8 col-lg-5 shadow__light px-5 py-3 my-4 mx-1 rounded">
+          <div className="row justify-content-center my-3">
+              <h3>Log in</h3>
+          </div>
+          <div className="col-12">
+            <form action="login" onSubmit={(e) => onSubmit(e)}>
+              <div className="formContent">
+                <input 
+                  className="formContent__input" 
+                  type="text" 
+                  autoComplete="off" 
+                  name="username" 
+                  maxLength="15" 
+                  focus-first="true"
+                  value={username}
+                  onChange={(e) => onChange(e)}
+                  required 
+                />
+                <label className="formContent__label" htmlFor="username"><span className="formContent__label__name">Username</span></label>
+              </div>
+              <div className="formContent">
+                <input 
+                  className="formContent__input" 
+                  type="password" 
+                  name="password" 
+                  maxLength="25"
+                  value={password}
+                  onChange={(e) => onChange(e)}
+                  required 
+                />
+                <label className="formContent__label" htmlFor="password"><span className="formContent__label__name">Password</span></label>
+              </div>
+              <div className="text-center my-3">
+                <a href="/password/forgot" className="forgot_passwd">Forgot your password?</a>
+              </div>
+              <div className="text-center mb-3">
+                <button className="btn btn-primary">Sign in</button>
+              </div>
+            </form>
+          </div>
         </div>
-        <div className='form-group'>
-          <input
-            type='password'
-            placeholder='Password'
-            name='password'
-            value={password}
-            onChange={(e) => onChange(e)}
-            minLength='6'
-          />
+        <div className="col-9 col-md-8 col-lg-5 shadow__light px-5 py-3 my-4 mx-1 rounded">
+          <div className="row justify-content-center my-3">
+              <h3>Log in with:</h3>
+          </div>
+          <div className="col-12">
+            <div className="text-center mb-3">
+              <Link to="/api/v1/auth/42" className="btn btn-outline-light icon-custom icon-custom__fortytwo">Log in</Link>
+            </div>
+            <div className="text-center mb-3">
+              <Link to="/api/v1/auth/github" className="btn btn-outline-light icon-custom icon-custom__github">Log in</Link>
+            </div>
+          </div>
         </div>
-
-        <input type='submit' className='btn btn-primary' value='Login' />
-      </form>
-      <p className='my-1'>
-        Don't have an account? <Link to='/register'>Sign Up</Link>
-      </p>
-      <p className='my-1'>
-        <Link to='/recuperation'>Forgotten Password?</Link>
-      </p>
+      </div>
     </Fragment>
   );
 };

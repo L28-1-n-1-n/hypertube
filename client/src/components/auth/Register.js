@@ -44,76 +44,113 @@ const Register = ({ setAlert, register, isAuthenticated, justRegistered }) => {
     return <Redirect to='/dashboard' />;
   }
   return (
-    <Fragment>
-      <h1 className='large text-primary-T'>Sign Up</h1>
-      <p className='lead'>
-        <i className='fas fa-user'></i> Create Your Account
-      </p>
-      <form className='form' onSubmit={(e) => onSubmit(e)}>
-        <div className='form-group'>
-          <input
-            type='text'
-            placeholder='First Name'
-            name='firstname'
-            value={firstname}
-            onChange={(e) => onChange(e)}
-            required
-          />
+  <Fragment>
+    <div className="container row mx-auto d-flex flex-column align-items-center my-4">
+      <div id="signup" className="col-9 col-md-8 col-lg-5 shadow__light px-5 py-3 my-4 mx-1 rounded">
+        <div className="row justify-content-center text-center my-3"> 
+            <h3>Create an account</h3>
         </div>
-        <div className='form-group'>
-          <input
-            type='text'
-            placeholder='Last Name'
-            name='lastname'
-            value={lastname}
-            onChange={(e) => onChange(e)}
-            required
-          />
+        <form encType="multipart/form-data" action="signup" onSubmit={(e) => onSubmit(e)}>
+          <div className="col-12">
+            <div className="formContent">
+              <input className="formContent__input" id="username" type="text" focus-first="true" required />
+              <label className="formContent__label" htmlFor="username"><span className="formContent__label__name">Username</span></label>
+            </div>
+            <div className="formContent">
+              <label htmlFor="">Upload File</label>
+              <input 
+                type="file" 
+              />
+            </div>
+            <div className="formContent">
+              <input 
+                className="formContent__input" 
+                id="lastname" 
+                name="lastname" 
+                type="text" 
+                value={lastname}
+                onChange={(e) => onChange(e)}
+                required 
+              />
+              <label className="formContent__label" htmlFor="lastname"><span className="formContent__label__name">Lastname</span></label>
+            </div>
+            <div className="formContent">
+              <input 
+                className="formContent__input" 
+                id="firstname" 
+                name="firstname" 
+                type="text" 
+                value={firstname}
+                onChange={(e) => onChange(e)}
+                required 
+              />
+              <label className="formContent__label" htmlFor="firstname"><span className="formContent__label__name">Firstname</span></label>
+            </div>
+            <div className="formContent">
+              <input 
+                className="formContent__input" 
+                type="email" 
+                autoComplete="off" 
+                id="email-address" 
+                name="email" 
+                type="email" 
+                value={email}
+                onChange={(e) => onChange(e)}
+                required 
+              />
+              <label className="formContent__label" htmlFor="email-address"><span className="formContent__label__name">E-mail</span></label>
+            </div>
+            <div className="formContent">
+              <input 
+                className="formContent__input" 
+                autoComplete="off" 
+                id="password" 
+                name="password" 
+                type="password"
+                value={password} 
+                onChange={(e) => onChange(e)}
+                required 
+              />
+              <label className="formContent__label" htmlFor="password"><span className="formContent__label__name">Password</span></label>                
+            </div>
+            <div className="formContent">
+              <input 
+                className="formContent__input" 
+                autoComplete="off" 
+                id="confirm-password" 
+                name="password2"
+                type="password" 
+                value={password2}
+                onChange={(e) => onChange(e)}
+                required 
+              />
+              <label htmlFor="confirm-password" className="formContent__label"><span className="formContent__label__name">Confirm password</span></label>
+            </div>
+            <div className="text-center my-3">
+              <p className="text-danger" v-if="cloudError==='doublon'"><small>It looks like there's already an account with your email address or username. Try with another credentials.</small></p>
+              <p className="text-danger" v-else-if="cloudError"><small>An error occured while processing your request. Please check your informations and try again.</small></p>
+            </div>
+            <div className="text-center my-3">    
+              <button type="submit" className="btn btn-primary">Create account</button>
+            </div>    
+          </div>
+        </form>
+      </div>
+      <div className="col-9 col-md-8 col-lg-5 shadow__light px-5 py-3 my-4 mx-1 rounded">
+        <div className="row justify-content-center my-3">
+            <h3>Sign up with:</h3>
         </div>
-        <div className='form-group'>
-          <input
-            type='text'
-            placeholder='Username'
-            name='username'
-            value={username}
-            onChange={(e) => onChange(e)}
-            required
-          />
+        <div className="col-12">
+          <div className="text-center mb-3">
+            <Link to="/api/v1/auth/42" className="btn btn-outline-light icon-custom icon-custom__fortytwo">Sign up</Link>
+          </div>
+          <div className="text-center mb-3">
+            <Link to="/api/v1/auth/github" className="btn btn-outline-light icon-custom icon-custom__github">Sign up</Link>
+          </div>
         </div>
-        <div className='form-group'>
-          <input
-            type='email'
-            placeholder='Email Address'
-            name='email'
-            value={email}
-            onChange={(e) => onChange(e)}
-            required
-          />
-        </div>
-        <div className='form-group'>
-          <input
-            type='password'
-            placeholder='Password'
-            name='password'
-            value={password}
-            onChange={(e) => onChange(e)}
-          />
-        </div>
-        <div className='form-group'>
-          <input
-            type='password'
-            placeholder='Confirm Password'
-            name='password2'
-            value={password2}
-            onChange={(e) => onChange(e)}
-          />
-        </div>
-        <input type='submit' className='btn btn-primary' value='Register' />
-      </form>
-      <p className='my-1'>
-        Already have an account? <Link to='/login'>Sign In</Link>
-      </p>
-    </Fragment>
+      </div>
+    </div>
+  </Fragment>
   );
 };
 
