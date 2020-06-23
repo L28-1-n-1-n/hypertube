@@ -5,7 +5,7 @@ import profile from './profile';
 import photo from './photo';
 import confirmation from './confirmation';
 import conversation from './conversation';
-import home from './home';
+import movie from './movie';
 
 export default combineReducers({
   alert,
@@ -14,5 +14,5 @@ export default combineReducers({
   photo,
   confirmation,
   conversation,
-  home,
+  movie,
 });
