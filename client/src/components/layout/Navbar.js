@@ -96,17 +96,13 @@ export const Navbar = ({
         draggable
         pauseOnHover
       />
-      <li>
-        <Link to='/profiles'>All Profiles</Link>
-      </li>
+
       <li>
         <Link to='/photos'>
           <i className='fas fa-user-plus'></i> Matches
         </Link>
       </li>
-      <li>
-        <Link to='/posts'>Posts</Link>
-      </li>
+
       <li>
         <Link to='/chat'>
           <i className='far fa-comments'></i> Chat
