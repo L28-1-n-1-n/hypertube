@@ -53,14 +53,17 @@ const Register = ({ setAlert, register, isAuthenticated, justRegistered }) => {
         <form encType="multipart/form-data" action="signup" onSubmit={(e) => onSubmit(e)}>
           <div className="col-12">
             <div className="formContent">
-              <input className="formContent__input" id="username" type="text" focus-first="true" required />
-              <label className="formContent__label" htmlFor="username"><span className="formContent__label__name">Username</span></label>
-            </div>
-            <div className="formContent">
-              <label htmlFor="">Upload File</label>
               <input 
-                type="file" 
+              className="formContent__input" 
+              id="username" 
+              name="username"
+              type="text" 
+              value={username}
+              onChange={(e) => onChange(e)}
+              focus-first="true" 
+              required 
               />
+              <label className="formContent__label" htmlFor="username"><span className="formContent__label__name">Username</span></label>
             </div>
             <div className="formContent">
               <input 

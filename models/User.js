@@ -8,10 +8,13 @@ const UserSchema = new mongoose.Schema({
   lastname: {
     type: String,
     required: true,
+    maxLength: 120,
   },
   username: {
     type: String,
     required: true,
+    unique: true,
+    maxLength: 120,
   },
   email: {
     type: String,
@@ -21,29 +24,24 @@ const UserSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true,
+    protect: true,
   },
-  date: {
-    type: Date,
-    default: Date.now,
+  avatar: {
+    type: 'string',
+    required: true,
+    description: 'User avatar.',
+    maxLength: 10000000,
+    example: 'file.png'
+  },
+  lang: {
+    type: 'string',
+    isIn: ['en', 'fr', 'es'],
+    defaultsTo: 'en',
+    description: 'The language of the site.',
   },
   token: {
     type: String,
   },
-  confirmed: {
-    type: Boolean,
-    default: false,
-  },
-  notifications: [
-    {
-      msg: {
-        type: String,
-      },
-      user: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'user',
-      },
-    },
-  ],
 });
 
 module.exports = User = mongoose.model('user', UserSchema);
