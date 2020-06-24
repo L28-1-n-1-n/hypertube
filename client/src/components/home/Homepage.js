@@ -1,20 +1,37 @@
 import React, { Fragment, useState, useEffect } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { fetchYTS } from '../../actions/home';
 
 const Homepage = ({ fetchYTS, movie: { movies } }) => {
   useEffect(() => {
-    fetchYTS();
+    let params = new URLSearchParams(window.location.search);
+    let search = params.get('search');
+    let genre = params.get('genre');
+    let rating = params.get('rating');
+    let year = params.get('year');
+    let order = params.get('order');
+    let inputs = {};
+    if (
+      !(
+        search == null &&
+        genre == null &&
+        rating == null &&
+        year == null &&
+        order == null
+      )
+    ) {
+      inputs = {
+        search: search,
+        genre: genre,
+        rating: rating,
+        year: year,
+        order: order,
+      };
+    }
+    fetchYTS(inputs);
   }, [fetchYTS]);
-  console.log(movies);
-  console.log(typeof movies);
-  if (movies) {
-    movies.forEach(function (item) {
-      console.log(item.title);
-    });
-  }
 
   // Runs immediately when profile mounts
   return (
@@ -123,31 +140,36 @@ const Homepage = ({ fetchYTS, movie: { movies } }) => {
           </div>
           <div className='col-12'>
             <div className='row justify-content-center'>
-            {movies && movies.map((item) =>
-              <div className='filmCard m-1 col-7 col-sm-4 col-md-3 col-lg-2 bg-dark rounded text-center'>
-                <div className='filmCard__top p-1 rounded-top'>
-                  <h3>{item.title}</h3>
-                </div>
-                <div className='video_player rounded'>
-                  <Link to='/player/'>
-                    <img
-                      className='img-fluid'
-                      src='/img/play_white.png'
-                      alt='illustration'
-                    />
-                  </Link>
-                </div>
-                <div className='filmCard__img'>
-                  <img className='img-fluid' src={item.medium_cover_image} alt='illustration' />
-                </div>
-                <div className='filmCard__bottom p-1 rounded-bottom'>
-                  <div className='px-2 d-flex justify-content-between'>
-                    <span>{item.year}</span>
-                    <span>{item.rating}</span>
+              {movies &&
+                movies.map((item) => (
+                  <div className='filmCard m-1 col-7 col-sm-4 col-md-3 col-lg-2 bg-dark rounded text-center'>
+                    <div className='filmCard__top p-1 rounded-top'>
+                      <h3>{item.title}</h3>
+                    </div>
+                    <div className='video_player rounded'>
+                      <Link to='/player/'>
+                        <img
+                          className='img-fluid'
+                          src='/img/play_white.png'
+                          alt='illustration'
+                        />
+                      </Link>
+                    </div>
+                    <div className='filmCard__img'>
+                      <img
+                        className='img-fluid'
+                        src={item.medium_cover_image}
+                        alt='illustration'
+                      />
+                    </div>
+                    <div className='filmCard__bottom p-1 rounded-bottom'>
+                      <div className='px-2 d-flex justify-content-between'>
+                        <span>{item.year}</span>
+                        <span>{item.rating}</span>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-              )}
+                ))}
             </div>
           </div>
         </div>
