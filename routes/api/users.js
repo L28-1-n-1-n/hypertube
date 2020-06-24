@@ -125,30 +125,17 @@ router.post(
   [
     auth,
     [
-      check('firstname', 'Firstname is required').not().isEmpty(),
-      check('lastname', 'Lastname is required').not().isEmpty(),
-      check('email', 'Please include a valid email').isEmail(),
-      check('firstname', 'Firstname too long').isLength({ max: 15 }),
-      check('lastname', 'Lastname too long').isLength({ max: 15 }),
-      check('gender', 'Please select a gender').isIn([
-        'Male',
-        'Female',
-        'Non-Binary',
+      check('lang', 'Lang is required').isIn([
+        'fr',
+        'en',
+        'es',
       ]),
-      check('bday', 'Please enter your birthdate').not().isEmpty(),
-      check('bday.day', 'Please enter valid birthday')
-        .not()
-        .isIn(['Invalid date', 'undefined', NaN]),
-
-      check(
-        'interestedGender',
-        'Select the gender/s/ you are interested in'
-      ).isIn(['Male', 'Female', 'Both']),
-      check('bio', 'Please fill in Short Bio').not().isEmpty(),
-      check('tags', 'Please enter a list of interests separated by commas')
-        .not()
-        .isEmpty(),
-      check('bio', 'Bio too long').isLength({ max: 200 }),
+      check('username', 'Please fill in first name').not().isEmpty(),
+      check('firstname', 'Please fill in first name').not().isEmpty(),
+      check('lastname', 'Please fill in last name').not().isEmpty(),
+      check('email', 'Please ensure email is in correct format').isEmail(),
+      check('firstname', 'First name is too long').isLength({ max: 15 }),
+      check('lastname', 'Last name is too long').isLength({ max: 15 }),
     ],
   ],
   async (req, res) => {

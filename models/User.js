@@ -26,17 +26,10 @@ const UserSchema = new mongoose.Schema({
     required: true,
     protect: true,
   },
-  avatar: {
-    type: 'string',
-    required: true,
-    description: 'User avatar.',
-    maxLength: 10000000,
-    example: 'file.png'
-  },
   lang: {
-    type: 'string',
+    type: String,
     isIn: ['en', 'fr', 'es'],
-    defaultsTo: 'en',
+    default: 'en',
     description: 'The language of the site.',
   },
   token: {

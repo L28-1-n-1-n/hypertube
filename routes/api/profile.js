@@ -44,25 +44,12 @@ router.post(
   [
     auth,
     [
-      check('gender', 'Gender is required').isIn([
-        'Male',
-        'Female',
-        'Non-Binary',
+      check('lang', 'Lang is required').isIn([
+        'fr',
+        'en',
+        'es',
       ]),
-      check('bday', 'Date of birth is required').not().isEmpty(),
-      check('bday.day', 'Date of birth is required')
-        .not()
-        .isIn(['Invalid date', 'undefined', NaN]),
-      check(
-        'interestedGender',
-        'Please specify the gender/s/ you are interested in.'
-      ).isIn(['Male', 'Female', 'Both']),
-      check('bio', 'Please fill in Short Bio').not().isEmpty(),
-      check('tags', 'Enter a list of interests').not().isEmpty(),
-      check(
-        'bio',
-        'Please make sure your bio is less than 100 characters.'
-      ).isLength({ max: 200 }),
+      check('username', 'Please fill in first name').not().isEmpty(),
       check('firstname', 'Please fill in first name').not().isEmpty(),
       check('lastname', 'Please fill in last name').not().isEmpty(),
       check('email', 'Please ensure email is in correct format').isEmail(),
@@ -77,51 +64,11 @@ router.post(
     }
 
     const {
-      bday,
-      pre_latitude,
-      pre_longitude,
-      gender,
-      interestedGender,
-      tags,
-      bio,
     } = req.body;
-
-    let latitude;
-    let longitude;
-    let city;
-    let country;
 
     const profileFields = {
       user: req.user.id,
-      bday,
-      gender,
-      interestedGender,
-      bio,
-      tags: Array.isArray(tags)
-        ? tags
-        : tags.split(',').map((tag) => ' ' + tag.trim()),
     };
-
-    try {
-      // This only works if user has ipv4, not ipv6, as ipLocation only works with ipv4
-      const ipresult = await publicIp.v4();
-      const georesult = await ipLocation(ipresult);
-      city = georesult.city;
-      country = georesult.country.name;
-
-      latitude = pre_latitude == 200 ? georesult.latitude : pre_latitude;
-      longitude = pre_longitude == 200 ? georesult.longitude : pre_longitude;
-    } catch (error) {
-      console.log('location determination by IP rejected');
-    }
-
-    profileFields.location = {};
-
-    if (latitude) profileFields.location.latitude = latitude;
-    if (longitude) profileFields.location.longitude = longitude;
-    if (city) profileFields.location.city = city;
-
-    if (country) profileFields.location.country = country;
 
     try {
       let profile = await Profile.findOne({ user: req.user.id });

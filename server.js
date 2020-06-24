@@ -122,7 +122,7 @@ passport.use(new GitHubStrategy({
 console.log(User);
   User.findOne({username: newUser.username}), function (err, user){
     if(err) throw err;
-    console.log(chalk.blue(user))
+    console.log(chalk.blue(err))
   };
 }))
 

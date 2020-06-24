@@ -6,11 +6,8 @@ import { createProfile, getCurrentProfile } from '../../actions/profile';
 import { updateUser } from '../../actions/auth';
 
 const initialState = {
-  gender: '',
-  interestedGender: '',
-  bio: '',
-  tags: '',
-  bday: '',
+  lang: '',
+  username: '',
   firstname: '',
   lastname: '',
   email: '',
@@ -42,11 +39,7 @@ const EditProfile = ({
 
   // The prop to depend on is loading, setFormData will run when it is loaded
   const {
-    gender,
-    interestedGender,
-    bio,
-    tags,
-    bday,
+    lang,
     username,
     firstname,
     lastname,
@@ -128,6 +121,7 @@ const EditProfile = ({
                 id="english" 
                 name="lang" 
                 value="en" 
+                onChange={(e) => onChange(e)}
               />
               <label htmlFor="english">English</label>
             </div>
@@ -137,6 +131,7 @@ const EditProfile = ({
                 id="french" 
                 name="lang" 
                 value="fr" 
+                onChange={(e) => onChange(e)}
               />
               <label htmlFor="french">French</label>
             </div>
@@ -146,6 +141,7 @@ const EditProfile = ({
                 id="spanish" 
                 name="lang" 
                 value="es" 
+                onChange={(e) => onChange(e)}
               />
               <label htmlFor="spanish">Spanish</label>
             </div>
