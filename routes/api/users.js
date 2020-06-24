@@ -143,12 +143,14 @@ router.post(
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-    const { firstname, lastname, email } = req.body;
+    const { username, firstname, lastname, email, lang } = req.body;
     const userFields = {
       _id: req.user.id,
+      username: username,
       firstname: firstname,
       lastname: lastname,
       email: email,
+      lang: lang,
     };
 
     try {
@@ -171,27 +173,4 @@ router.post(
   }
 );
 
-// @route DELETE api/users/notifications/:id
-// @desc Delete notifications after they are read
-// @access Private
-
-router.delete('/notifications/:id', auth, async (req, res) => {
-  try {
-    let user = await User.findById(req.params.id).select('-username -password');
-
-    if (user) {
-      user = await User.findOneAndUpdate(
-        { _id: req.params.id },
-        { $set: { notifications: [] } }
-      );
-      return res.json(user);
-    }
-  } catch (err) {
-    console.error(err.message);
-    if (err.kind === 'ObjectId') {
-      return res.status(404).json({ msg: 'Notifications not found ' });
-    }
-    res.status(500).send('Server Error');
-  }
-});
 module.exports = router;

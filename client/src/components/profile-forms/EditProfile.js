@@ -121,6 +121,7 @@ const EditProfile = ({
                 id="english" 
                 name="lang" 
                 value="en" 
+                checked={lang == 'en' ? true : false}
                 onChange={(e) => onChange(e)}
               />
               <label htmlFor="english">English</label>
@@ -130,7 +131,8 @@ const EditProfile = ({
                 type="radio" 
                 id="french" 
                 name="lang" 
-                value="fr" 
+                value="fr"
+                checked={lang == 'fr' ? true : false}
                 onChange={(e) => onChange(e)}
               />
               <label htmlFor="french">French</label>
@@ -140,7 +142,8 @@ const EditProfile = ({
                 type="radio" 
                 id="spanish" 
                 name="lang" 
-                value="es" 
+                value="es"
+                checked={lang == 'es' ? true : false}
                 onChange={(e) => onChange(e)}
               />
               <label htmlFor="spanish">Spanish</label>
@@ -177,12 +180,12 @@ const EditProfile = ({
           <input 
             className="formContent__input" 
             type="password" 
-            name="confirm-password" 
+            name="password2" 
             onChange={(e) => onChange(e)}
             maxLength="25" 
             required 
           />
-          <label className="formContent__label" htmlFor="confirm-password"><span className="formContent__label__name">Confirm password</span></label>
+          <label className="formContent__label" htmlFor="password2"><span className="formContent__label__name">Confirm password</span></label>
         </div>
         <div className="col-xs-6 text-center my-3">    
           <button type="submit" className="btn btn-primary">Update password</button>
