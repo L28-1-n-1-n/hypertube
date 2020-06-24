@@ -77,10 +77,10 @@ const Login = ({ login, isAuthenticated }) => {
           </div>
           <div className="col-12">
             <div className="text-center mb-3">
-              <Link to="/api/v1/auth/42" className="btn btn-outline-light icon-custom icon-custom__fortytwo">Log in</Link>
+              <Link to="/auth/42" className="btn btn-outline-light icon-custom icon-custom__fortytwo">Log in</Link>
             </div>
             <div className="text-center mb-3">
-              <Link to="/api/v1/auth/github" className="btn btn-outline-light icon-custom icon-custom__github">Log in</Link>
+              <Link to="api/auth/github" className="btn btn-outline-light icon-custom icon-custom__github">Log in</Link>
             </div>
           </div>
         </div>
