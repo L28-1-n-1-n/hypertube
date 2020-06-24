@@ -69,17 +69,7 @@ router.post(
           .json({ errors: [{ msg: 'Invalid credentials' }] }); // array of errors
       }
 
-      if (!user.confirmed) {
-        return res.status(400).json({
-          errors: [
-            {
-              msg: 'Please confirm your account via link sent to your email.',
-            },
-          ],
-        });
-      }
       // Get payload
-
       const payload = {
         user: {
           id: user.id,
