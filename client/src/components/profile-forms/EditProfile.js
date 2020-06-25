@@ -2,8 +2,8 @@ import React, { Fragment, useState, useEffect } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { createProfile, getCurrentProfile } from '../../actions/profile';
-import { updateUser } from '../../actions/auth';
+import { getCurrentProfile } from '../../actions/profile';
+import { updateUser, updatePwd } from '../../actions/auth';
 
 const initialState = {
   lang: '',
@@ -12,21 +12,29 @@ const initialState = {
   lastname: '',
   email: '',
 };
+
+const initialStateTwo = {
+  password: '',
+  password2: '',
+};
+
 const EditProfile = ({
   profile: { profile, loading },
   auth: { user },
-  createProfile,
   updateUser,
+  updatePwd,
   getCurrentProfile,
   history,
 }) => {
   const [formData, setFormData] = useState(initialState);
+  const [formDataTwo, setFormDataTwo] = useState(initialStateTwo);
 
   useEffect(() => {
     if (!profile) getCurrentProfile();
     console.log(profile);
     if (!loading) {
       const profileData = { ...initialState };
+      const profileDataTwo = { ...initialStateTwo };
       for (const key in profile) {
         if (key in profileData) profileData[key] = profile[key];
       }
@@ -34,6 +42,7 @@ const EditProfile = ({
         if (key in profileData) profileData[key] = user[key];
       }
       setFormData(profileData);
+      setFormDataTwo(profileDataTwo);
     }
   }, [loading, getCurrentProfile, profile, user]);
 
@@ -46,16 +55,20 @@ const EditProfile = ({
     email,
   } = formData;
 
+  const {
+    password,
+    password2,
+  } = formDataTwo;
+
   const onChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const onSubmit = (e) => {
     e.preventDefault();
-
-    createProfile(formData, history, true);
     updateUser(formData, history, user._id);
   };
+
   return (
     <Fragment>
 <div id="edit-profile" className="container row mx-auto d-flex justify-content-center my-4">
@@ -159,14 +172,18 @@ const EditProfile = ({
     <div className="col-12 text-center my-3">
         <h3>Password</h3>
     </div>
-    <form onSubmit={(e) => onSubmit(e)}>
+    <form onSubmit={(e) => {
+      e.preventDefault();
+      updatePwd(formDataTwo, history, user._id);
+    }} >
       <div className="col-12">
         <div className="formContent">
           <input 
             className="formContent__input" 
             type="password" 
-            name="password" 
-            onChange={(e) => onChange(e)}
+            name="password"
+            value={password}
+            onChange={(e) => setFormDataTwo({ ...formDataTwo, [e.target.name]: e.target.value })}
             maxLength="25" 
             required 
           />
@@ -177,7 +194,8 @@ const EditProfile = ({
             className="formContent__input" 
             type="password" 
             name="password2" 
-            onChange={(e) => onChange(e)}
+            value={password2}
+            onChange={(e) => setFormDataTwo({ ...formDataTwo, [e.target.name]: e.target.value })}
             maxLength="25" 
             required 
           />
@@ -213,8 +231,8 @@ const EditProfile = ({
 };
 
 EditProfile.propTypes = {
-  createProfile: PropTypes.func.isRequired,
   updateUser: PropTypes.func.isRequired,
+  updatePwd: PropTypes.func.isRequired,
   getCurrentProfile: PropTypes.func.isRequired,
   profile: PropTypes.object.isRequired,
   auth: PropTypes.object.isRequired,
@@ -227,7 +245,7 @@ const mapStateToProps = (state) => ({
 
 export default connect(mapStateToProps, {
   updateUser,
-  createProfile,
+  updatePwd,
   getCurrentProfile,
 })(withRouter(EditProfile));
 

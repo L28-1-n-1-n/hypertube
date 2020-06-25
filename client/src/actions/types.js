@@ -53,3 +53,5 @@ export const REPORT_FAKE = 'REPORT_FAKE';
 export const GET_MOVIES = 'GET_MOVIES';
 export const GET_ONE_MOVIE = 'GET_ONE_MOVIE';
 export const MOVIE_DETAILS = 'MOVIE_DETAILS';
+export const UPDATE_PWD = 'UPDATE_PWD';
+export const PWD_ERROR = 'PWD_ERROR';

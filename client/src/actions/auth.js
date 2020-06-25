@@ -13,6 +13,8 @@ import {
   PROFILE_ERROR,
   NOTIFICATION_REMOVAL_ERROR,
   DELETE_NOTIFICATIONS,
+  UPDATE_PWD,
+  PWD_ERROR,
 } from './types';
 import setAuthToken from '../utils/setAuthToken';
 import { socket } from './socClient';
@@ -171,6 +173,41 @@ export const updateUser = (formData, history, id) => async (dispatch) => {
 
     dispatch({
       type: PROFILE_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status },
+    });
+  }
+};
+
+
+// Update users's password
+export const updatePwd = ({ formDataTwo, history, id }) => async (dispatch) => {
+  try {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+
+    const res = await axios.post(`/api/users/resetPWD/${id}`, formDataTwo, config);
+
+    console.log("formdata from updatepwd method below")
+    console.log(formDataTwo)
+    dispatch({
+      type: UPDATE_PWD,
+      payload: res.data,
+    });
+
+    dispatch(setAlert('Password updated', 'success'));
+
+  } catch (err) {
+    const errors = err.response.data.errors;
+
+    if (errors) {
+      errors.forEach((error) => dispatch(setAlert(error.msg, 'danger')));
+    }
+    console.log(formDataTwo)
+    dispatch({
+      type: PWD_ERROR,
       payload: { msg: err.response.statusText, status: err.response.status },
     });
   }

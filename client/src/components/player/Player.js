@@ -4,13 +4,15 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { getMovieById } from '../../actions/player';
 
-const Movie = ({ getMovieById, movie: { oneMovie }, match }) => {
+const Movie = ({ getMovieById, movie: { oneMovie, oneMovie: { cast }, oneMovie: { torrents } }, match }) => {
   useEffect(() => {
     console.log(match.params.id);
     getMovieById(match.params.id);
   }, [getMovieById, match.params.id]);
   console.log(oneMovie);
   console.log(match.params.id);
+  console.log(cast);
+  console.log(torrents);
   // Runs immediately when profile mounts
   return (
     <Fragment>
@@ -22,28 +24,35 @@ const Movie = ({ getMovieById, movie: { oneMovie }, match }) => {
           <div className='video-player shadow-top__light p-2 rounded-top'>
             <img
               className='img-fluid'
-              src='/images/waven.png'
+              src={oneMovie && oneMovie.background_image}
               alt='Background'
             />
           </div>
           <div className='video-desc d-flex flex-column p-2'>
-            <div>{oneMovie && oneMovie.title}</div>
             <div className='video-desc__details'>
               <p>
                 <b>Title: {oneMovie && oneMovie.title}</b>
               </p>
               <p>
-                <b>Casting: </b>
+                <b>Casting: {cast && cast.map((item) => <span>{item.name}</span>)}</b>
               </p>
               <p>
                 <b>Year: {oneMovie && oneMovie.year}</b>
               </p>
               <p>
-                <b>Duration: </b>runtime min
+                <b>Duration: {oneMovie && oneMovie.runtime}min</b> 
               </p>
               <p>
-                <b>Rate: </b>rating
+                <b>Rate: {oneMovie && oneMovie.rating}</b>
               </p>
+            </div>
+            <div className='video-desc__details'>
+              {torrents && torrents.map((item) => 
+              <p>
+                <span>{item.quality} </span>
+                <a href={item.url}>{oneMovie && oneMovie.title_long}</a>
+                <span> {item.size}</span>
+              </p>)}
             </div>
           </div>
           <div className='video-comment p-2 rounded-bottom'>

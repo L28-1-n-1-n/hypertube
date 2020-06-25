@@ -130,7 +130,7 @@ router.post(
         'en',
         'es',
       ]),
-      check('username', 'Please fill in first name').not().isEmpty(),
+      check('username', 'Please fill in username 1').not().isEmpty(),
       check('firstname', 'Please fill in first name').not().isEmpty(),
       check('lastname', 'Please fill in last name').not().isEmpty(),
       check('email', 'Please ensure email is in correct format').isEmail(),
@@ -172,5 +172,49 @@ router.post(
     }
   }
 );
+
+
+router.post(
+  '/resetPWD/:id',
+  [
+    auth,
+    [
+      check('password', 'Please fill in password').not().isEmpty(),
+      check('password2', 'Please fill confirm password').not().isEmpty(),
+      check('password', 'Password must at least contain 6 characters').isLength({ min: 6 }),
+    ],
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    const { password } = req.body;
+    const userFields = {
+      _id: req.user.id,
+      password: password,
+    };
+
+    try {
+      let user = await User.findOne({ _id: req.user.id }).select(
+        '-username -password'
+      );
+
+      if (user) {
+        user = await User.findOneAndUpdate(
+          { _id: req.user.id },
+          { $set: userFields },
+          { new: true }
+        );
+        return res.json(user);
+      }
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send('Server Error');
+    }
+  }
+);
+
+
 
 module.exports = router;
