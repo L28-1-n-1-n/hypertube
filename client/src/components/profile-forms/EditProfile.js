@@ -63,7 +63,7 @@ const EditProfile = ({
       <div className="col-12 text-center my-3">
           <h3>Informations</h3>
       </div>
-      <form action="updateProfile" onSubmit={(e) => onSubmit(e)}>
+      <form onSubmit={(e) => onSubmit(e)}>
         <div className="col-12">
           <div className="formContent">
             <input 
@@ -149,10 +149,6 @@ const EditProfile = ({
               <label htmlFor="spanish">Spanish</label>
             </div>
           </div>
-          <div className="text-center my-3">
-            <p className="text-danger" v-if="cloudError==='doublon'"><small>It looks like there's already an account with your email address or username. Try with another credentials.</small></p>
-            <p className="text-danger" v-else-if="cloudError"><small>An error occured while processing your request. Please check your informations and try again.</small></p>
-          </div>
           <div className="col-xs-6 text-center my-3">
             <button type="submit" className="btn btn-primary">Update</button>
           </div>
@@ -163,7 +159,7 @@ const EditProfile = ({
     <div className="col-12 text-center my-3">
         <h3>Password</h3>
     </div>
-    <form action="updatePassword" onSubmit={(e) => onSubmit(e)}>
+    <form onSubmit={(e) => onSubmit(e)}>
       <div className="col-12">
         <div className="formContent">
           <input 
@@ -210,11 +206,6 @@ const EditProfile = ({
           </div>
       </div>
     </form>
-  </div>
-  <div className="col-md-12 my-2">
-      <div className="col-xs-6 text-center">
-          <a tag="button" href="/settings" className="btn btn-primary" type="submit">Back</a>
-      </div>
   </div>
 </div>
     </Fragment>

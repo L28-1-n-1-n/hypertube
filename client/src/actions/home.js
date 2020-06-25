@@ -92,7 +92,7 @@ export const fetchYTS = (inputs) => async (dispatch) => {
         three.data.data.movies
       );
 
-      // console.log(fetchYTS_Results.length);
+      console.log(fetchYTS_Results.length);
 
       if (fetchYTS_Results.length >= 1) {
         result = fetchYTS_Results.map(function (el) {

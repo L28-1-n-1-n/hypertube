@@ -51,3 +51,5 @@ export const GET_CONNECTED_PHOTOS = 'GET_CONNECTED_PHOTOS';
 export const DISCONNECT = 'DISCONNECT';
 export const BLOCK_USER = 'BLOCK_USER';
 export const REPORT_FAKE = 'REPORT_FAKE';
+export const GET_MOVIE = 'GET_MOVIE';
+export const MOVIE_DETAILS = 'MOVIE_DETAILS';

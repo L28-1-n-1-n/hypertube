@@ -162,7 +162,6 @@ export const updateUser = (formData, history, id) => async (dispatch) => {
 
     dispatch(setAlert('User Details Updated', 'success'));
 
-    history.push('/dashboard');
   } catch (err) {
     const errors = err.response.data.errors;
 

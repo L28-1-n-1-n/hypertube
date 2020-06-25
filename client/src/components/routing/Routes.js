@@ -21,6 +21,8 @@ import Chat from '../chat/Chat';
 import RecentProfiles from '../photos/RecentProfiles';
 import ConnectedUsers from '../photos/ConnectedUsers';
 
+import Player from '../player/Player';
+
 const Routes = () => {
   return (
     <div>
@@ -29,6 +31,8 @@ const Routes = () => {
         <Route exact path='/register' component={Register} />
         <Route exact path='/login' component={Login} />
         <Route exact path='/homepage' component={Homepage} />
+
+        <Route exact path='/player/:id' component={Player} />
 
         <PrivateRoute exact path='/profile/:id' component={Profile} />
         <PrivateRoute exact path='/dashboard' component={Dashboard} />

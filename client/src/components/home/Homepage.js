@@ -147,7 +147,7 @@ const Homepage = ({ fetchYTS, movie: { movies } }) => {
                       <h3>{item.title}</h3>
                     </div>
                     <div className='video_player rounded'>
-                      <Link to='/player/'>
+                      <Link to={"/player/"+ item.id}>
                         <img
                           className='img-fluid'
                           src='/img/play_white.png'
