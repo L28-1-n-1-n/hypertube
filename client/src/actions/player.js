@@ -4,7 +4,6 @@ import { GET_ONE_MOVIE, MOVIE_DETAILS } from './types';
 
 // Get movie by ID
 export const getMovieById = (movieId) => async (dispatch) => {
-  console.log('front reached');
   try {
     // make request to YTS
 
