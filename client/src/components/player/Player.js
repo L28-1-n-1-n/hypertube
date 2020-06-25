@@ -1,19 +1,48 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
+import { Link, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { getMovieById } from '../../actions/player';
+import { getMovieById, addComment } from '../../actions/player';
 
-const Movie = ({ getMovieById, movie: { oneMovie, oneMovie: { cast }, oneMovie: { torrents } }, match }) => {
+
+const initialState = {
+  comment: '',
+};
+
+
+const Movie = ({ 
+  getMovieById, 
+  movie: { oneMovie, oneMovie: { cast }, oneMovie: { torrents } }, 
+  match,
+  addComment,
+  auth: { user },
+ }) => {
+  const [formData, setFormData] = useState(initialState);
   useEffect(() => {
+    const profileData = { ...initialState };
     console.log(match.params.id);
     getMovieById(match.params.id);
-  }, [getMovieById, match.params.id]);
+    setFormData(profileData);
+  }, [getMovieById, match.params.id, user]);
   console.log(oneMovie);
   console.log(match.params.id);
   console.log(cast);
   console.log(torrents);
-  // Runs immediately when profile mounts
+
+  const {
+    comment,
+  } = formData;
+
+  const onChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    addComment(formData, match.params.id, user.username);
+  };
+
+
   return (
     <Fragment>
       <div
@@ -57,7 +86,7 @@ const Movie = ({ getMovieById, movie: { oneMovie, oneMovie: { cast }, oneMovie: 
           </div>
           <div className='video-comment p-2 rounded-bottom'>
             <div className='video-comment__new'>
-              <form action='addComment'>
+              <form onSubmit={(e) => onSubmit(e)}>
                 <div className='formContent'>
                   <input
                     className='formContent__input'
@@ -66,6 +95,8 @@ const Movie = ({ getMovieById, movie: { oneMovie, oneMovie: { cast }, oneMovie: 
                     maxLength='500'
                     spellCheck='false'
                     autoComplete='off'
+                    value={comment}
+                    onChange={(e) => onChange(e)}
                     required
                   />
                   <label className='formContent__label' htmlFor='comment'>
@@ -111,13 +142,17 @@ const Movie = ({ getMovieById, movie: { oneMovie, oneMovie: { cast }, oneMovie: 
 
 Movie.propTypes = {
   getMovieById: PropTypes.func.isRequired,
+  addComment: PropTypes.func.isRequired,
   movie: PropTypes.object.isRequired,
+  auth: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   movie: state.movie,
+  auth: state.auth,
 });
 
 export default connect(mapStateToProps, {
   getMovieById,
+  addComment,
 })(Movie);

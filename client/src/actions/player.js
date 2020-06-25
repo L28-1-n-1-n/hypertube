@@ -1,6 +1,12 @@
 import axios from 'axios';
+import { setAlert } from './alert';
 
-import { GET_ONE_MOVIE, MOVIE_DETAILS } from './types';
+import { 
+  GET_ONE_MOVIE, 
+  MOVIE_DETAILS,
+  COMMENT_ERROR,
+  NEW_COMMENT,
+} from './types';
 
 // Get movie by ID
 export const getMovieById = (movieId) => async (dispatch) => {
@@ -25,5 +31,30 @@ export const getMovieById = (movieId) => async (dispatch) => {
     //   type: MOVIE_DETAILS,
     //   payload: { msg: err.response.statusText, status: err.response.status },
     // });
+  }
+};
+
+// Add comment
+export const addComment = (formData, movieId, id) => async (dispatch) => {
+  try {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+
+    const res = await axios.post(`/api/addcomment`, { formData, movieId, id }, config);
+    console.log(res)
+    dispatch({
+      type: NEW_COMMENT,
+      payload: res,
+    });
+
+    dispatch(setAlert('User Details Updated', 'success'));
+
+  } catch (err) {
+    console.log(err)
+    console.log(movieId)
+    console.log(id)
   }
 };
