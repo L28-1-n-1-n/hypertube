@@ -2,14 +2,16 @@ import React, { Fragment, useState, useEffect } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { getMovieById, addComment } from '../../actions/player';
+import { getMovieById, addComment, getMovieComments } from '../../actions/player';
 
 const Movie = ({
   getMovieById,
+  getMovieComments,
   movie: {
     oneMovie,
     oneMovie: { cast },
     oneMovie: { torrents },
+    movieComments,
   },
   match,
   addComment,
@@ -21,12 +23,14 @@ const Movie = ({
   });
   useEffect(() => {
     getMovieById(match.params.id);
+    getMovieComments(match.params.id);
     setFormData({ ...{ movieId: match.params.id } });
-  }, [getMovieById, match.params.id]);
+  }, [getMovieById, getMovieComments, match.params.id]);
   console.log(oneMovie);
   console.log(match.params.id);
   console.log(cast);
   console.log(torrents);
+  console.log(movieComments);
 
   const { comment } = formData;
 
@@ -126,13 +130,12 @@ const Movie = ({
             <hr />
             <div className='video-comment__display my-3'>
               <div className='d-flex'>
+              {movieComments && movieComments.movieId}
                 <div className='comment-text d-flex flex-column'>
-                  <span>Thyrse</span>
-                  <span className='comment-text__text'>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Facilis quis voluptas, molestiae placeat eligendi totam?
-                    Dolor at cum nisi accusamus.
-                  </span>
+                <span>{movieComments && movieComments.movieId}</span>
+                <span className='comment-text__text'>
+                {movieComments && movieComments.movieId}
+                </span>
                 </div>
               </div>
             </div>
@@ -145,6 +148,7 @@ const Movie = ({
 
 Movie.propTypes = {
   getMovieById: PropTypes.func.isRequired,
+  getMovieComments: PropTypes.func.isRequired,
   addComment: PropTypes.func.isRequired,
   movie: PropTypes.object.isRequired,
   auth: PropTypes.object.isRequired,
@@ -157,5 +161,6 @@ const mapStateToProps = (state) => ({
 
 export default connect(mapStateToProps, {
   getMovieById,
+  getMovieComments,
   addComment,
 })(Movie);

@@ -22,7 +22,7 @@ router.post(
 
       const commentFields = {
         user: req.user.id,
-        username: user.firstname,
+        username: user.username,
         text: comment,
         time: Date.now(),
       };
@@ -50,5 +50,28 @@ router.post(
     }
   }
 );
+
+// @route   GET api/profile/user/:user_id // get user by userid, not profileid
+// @desc    Get profile by user ID
+// @access  Private
+
+router.get('/:movieId', auth, async (req, res) => {
+  try {
+    const commentary = await Comments.findOne({
+      movieId: req.params.movieId,
+    })
+    if (!commentary)
+      return res.status(400).json({ msg: 'There is no commentary for this movie' });
+    res.json(commentary);
+  } catch (err) {
+    console.error(err.message);
+    console.error("Non ca fonctionne pas du tout la");
+    if (err.kind == 'ObjectId') {
+      return res.status(400).json({ msg: 'Profile not found' }); // display message for non-valid userid
+    }
+    res.status(500).send('Server Error');
+  }
+});
+
 
 module.exports = router;

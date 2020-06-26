@@ -57,3 +57,5 @@ export const UPDATE_PWD = 'UPDATE_PWD';
 export const PWD_ERROR = 'PWD_ERROR';
 export const COMMENT_ERROR = 'COMMENT_ERROR';
 export const NEW_COMMENT = 'NEW_COMMENT';
+export const GET_COMMENTS = 'GET_COMMENTS';
+export const COMMENTSLIST_ERROR = 'COMMENTSLIST_ERROR';

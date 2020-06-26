@@ -6,6 +6,8 @@ import {
   MOVIE_DETAILS,
   COMMENT_ERROR,
   NEW_COMMENT,
+  GET_COMMENTS,
+  COMMENTSLIST_ERROR
 } from './types';
 
 // Get movie by ID
@@ -46,6 +48,24 @@ export const addComment = (formData) => async (dispatch) => {
     });
 
     dispatch(setAlert('Comment added', 'success'));
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+
+// Get profile by ID
+export const getMovieComments = (movieId) => async (dispatch) => {
+  try {
+    // make request to backend api/profile/user/${movieId}
+
+    const res = await axios.get(`/api/comments/${movieId}`);
+    console.log("res getMovieComments below")
+    console.log(res)
+    dispatch({
+      type: GET_COMMENTS,
+      payload: res,
+    });
   } catch (err) {
     console.log(err);
   }
