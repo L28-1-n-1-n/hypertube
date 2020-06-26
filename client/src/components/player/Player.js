@@ -4,44 +4,42 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { getMovieById, addComment } from '../../actions/player';
 
-
-const initialState = {
-  comment: '',
-};
-
-
-const Movie = ({ 
-  getMovieById, 
-  movie: { oneMovie, oneMovie: { cast }, oneMovie: { torrents } }, 
+const Movie = ({
+  getMovieById,
+  movie: {
+    oneMovie,
+    oneMovie: { cast },
+    oneMovie: { torrents },
+  },
   match,
   addComment,
   auth: { user },
- }) => {
-  const [formData, setFormData] = useState(initialState);
+}) => {
+  const [formData, setFormData] = useState({
+    comment: '',
+    movieId: '',
+  });
   useEffect(() => {
-    const profileData = { ...initialState };
-    console.log(match.params.id);
     getMovieById(match.params.id);
-    setFormData(profileData);
-  }, [getMovieById, match.params.id, user]);
+    setFormData({ ...{ movieId: match.params.id } });
+  }, [getMovieById, match.params.id]);
   console.log(oneMovie);
   console.log(match.params.id);
   console.log(cast);
   console.log(torrents);
 
-  const {
-    comment,
-  } = formData;
+  const { comment } = formData;
 
   const onChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  console.log(formData);
+
   const onSubmit = (e) => {
     e.preventDefault();
-    addComment(formData, match.params.id, user.username);
+    addComment(formData);
   };
-
 
   return (
     <Fragment>
@@ -63,25 +61,30 @@ const Movie = ({
                 <b>Title: {oneMovie && oneMovie.title}</b>
               </p>
               <p>
-                <b>Casting: {cast && cast.map((item) => <span>{item.name}</span>)}</b>
+                <b>
+                  Casting:{' '}
+                  {cast && cast.map((item) => <span>{item.name}</span>)}
+                </b>
               </p>
               <p>
                 <b>Year: {oneMovie && oneMovie.year}</b>
               </p>
               <p>
-                <b>Duration: {oneMovie && oneMovie.runtime}min</b> 
+                <b>Duration: {oneMovie && oneMovie.runtime}min</b>
               </p>
               <p>
                 <b>Rate: {oneMovie && oneMovie.rating}</b>
               </p>
             </div>
             <div className='video-desc__details'>
-              {torrents && torrents.map((item) => 
-              <p>
-                <span>{item.quality} </span>
-                <a href={item.url}>{oneMovie && oneMovie.title_long}</a>
-                <span> {item.size}</span>
-              </p>)}
+              {torrents &&
+                torrents.map((item) => (
+                  <p>
+                    <span>{item.quality} </span>
+                    <a href={item.url}>{oneMovie && oneMovie.title_long}</a>
+                    <span> {item.size}</span>
+                  </p>
+                ))}
             </div>
           </div>
           <div className='video-comment p-2 rounded-bottom'>

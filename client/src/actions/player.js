@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { setAlert } from './alert';
 
-import { 
-  GET_ONE_MOVIE, 
+import {
+  GET_ONE_MOVIE,
   MOVIE_DETAILS,
   COMMENT_ERROR,
   NEW_COMMENT,
@@ -24,18 +24,13 @@ export const getMovieById = (movieId) => async (dispatch) => {
       type: GET_ONE_MOVIE,
       payload: res.data.data.movie,
     });
-    console.log(res);
   } catch (err) {
     console.log(err);
-    // dispatch({
-    //   type: MOVIE_DETAILS,
-    //   payload: { msg: err.response.statusText, status: err.response.status },
-    // });
   }
 };
 
 // Add comment
-export const addComment = (formData, movieId, id) => async (dispatch) => {
+export const addComment = (formData) => async (dispatch) => {
   try {
     const config = {
       headers: {
@@ -44,17 +39,14 @@ export const addComment = (formData, movieId, id) => async (dispatch) => {
     };
 
     const res = await axios.post(`/api/comments/addcomment`, formData, config);
-    console.log(res)
+
     dispatch({
       type: NEW_COMMENT,
       payload: res,
     });
 
     dispatch(setAlert('Comment added', 'success'));
-
   } catch (err) {
-    console.log(err)
-    console.log(movieId)
-    console.log(id)
+    console.log(err);
   }
 };

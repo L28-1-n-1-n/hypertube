@@ -1,22 +1,29 @@
 const mongoose = require('mongoose');
 
-const CommentsSchema = new mongoose.Schema({
-  username: {
-    type: String,
-    required: true,
-    maxLength: 120,
+const CommentSchema = new mongoose.Schema({
+  movieId: {
+    type: Number, //movie id
   },
-
-  comment: {
-    type: String,
-    required: true,
-    maxLength: 500,
-  },
-
-  movie: {
-    type: Number,
-    required: true,
-  }
+  comments: [
+    {
+      user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'user',
+      },
+      username: {
+        type: String,
+        required: true,
+      },
+      text: {
+        type: String,
+        required: true,
+      },
+      time: {
+        type: Date,
+        required: true,
+      },
+    },
+  ],
 });
 
-module.exports = Comments = mongoose.model('comments', CommentsSchema);
+module.exports = Comment = mongoose.model('comment', CommentSchema);
