@@ -190,11 +190,11 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
     const { password } = req.body;
+    const salt = await bcrypt.genSalt(10);
     const userFields = {
       _id: req.user.id,
-      password: password,
+      password: await bcrypt.hash(password, salt),
     };
-
     try {
       let user = await User.findOne({ _id: req.user.id }).select(
         '-username -password'

@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const auth = require('../../middleware/auth');
+const { check, validationResult } = require('express-validator');
 const Comments = require('../../models/Comments');
 
 // @route   POST api/comments
@@ -27,10 +28,11 @@ router.post(
       };
   
       try {
-        commentary = await Comments.create(
+        commentary = await Comments(
           { $set: userFields },
           { new: true }
         );
+        await commentary.save()
         return res.json(commentary);
       } catch (err) {
         console.error(err.message);

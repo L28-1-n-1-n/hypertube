@@ -43,14 +43,14 @@ export const addComment = (formData, movieId, id) => async (dispatch) => {
       },
     };
 
-    const res = await axios.post(`/api/addcomment`, { formData, movieId, id }, config);
+    const res = await axios.post(`/api/comments/addcomment`, formData, config);
     console.log(res)
     dispatch({
       type: NEW_COMMENT,
       payload: res,
     });
 
-    dispatch(setAlert('User Details Updated', 'success'));
+    dispatch(setAlert('Comment added', 'success'));
 
   } catch (err) {
     console.log(err)

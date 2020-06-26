@@ -180,7 +180,7 @@ export const updateUser = (formData, history, id) => async (dispatch) => {
 
 
 // Update users's password
-export const updatePwd = ({ formDataTwo, history, id }) => async (dispatch) => {
+export const updatePwd = (formDataTwo, history, id) => async (dispatch) => {
   try {
     const config = {
       headers: {
