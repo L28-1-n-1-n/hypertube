@@ -1,4 +1,9 @@
-import { GET_MOVIES, GET_ONE_MOVIE, GET_COMMENTS } from '../actions/types';
+import {
+  GET_MOVIES,
+  GET_ONE_MOVIE,
+  GET_COMMENTS,
+  NEW_COMMENT,
+} from '../actions/types';
 
 const initialState = {
   movies: [],
@@ -30,7 +35,13 @@ export default function (state = initialState, action) {
         movieComments: payload,
         loading: false,
       };
-
+    case NEW_COMMENT:
+      return {
+        ...state,
+        // copy existing movieComments array, add new comment to the top of the array
+        movieComments: [payload, ...state.movieComments],
+        loading: false,
+      };
     default:
       return state;
   }

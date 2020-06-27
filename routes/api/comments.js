@@ -43,7 +43,10 @@ router.post(
         await listOfComments.save();
       }
 
-      return res.json(listOfComments);
+      let newListOfComments = await Comments.findOne({ movieId: movieId });
+      newListOfComments.comments.reverse(); // show the latest comment first
+
+      return res.json(newListOfComments);
     } catch (err) {
       console.error(err.message);
       res.status(500).send('Server Error');
@@ -59,19 +62,22 @@ router.get('/:movieId', auth, async (req, res) => {
   try {
     const commentary = await Comments.findOne({
       movieId: req.params.movieId,
-    })
+    });
     if (!commentary)
-      return res.status(400).json({ msg: 'There is no commentary for this movie' });
+      return res
+        .status(400)
+        .json({ msg: 'There is no commentary for this movie' });
+
+    commentary.comments.reverse(); // show the latest comment first
     res.json(commentary);
   } catch (err) {
     console.error(err.message);
-    console.error("Non ca fonctionne pas du tout la");
+    console.error('Non ca fonctionne pas du tout la');
     if (err.kind == 'ObjectId') {
       return res.status(400).json({ msg: 'Profile not found' }); // display message for non-valid userid
     }
     res.status(500).send('Server Error');
   }
 });
-
 
 module.exports = router;

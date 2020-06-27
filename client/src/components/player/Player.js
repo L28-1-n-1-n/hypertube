@@ -71,7 +71,8 @@ const Movie = ({
               <p>
                 <b>
                   Casting:{' '}
-                  {cast && cast.map((item) => <span>{item.name}</span>)}
+                  {cast &&
+                    cast.map((item, i) => <span key={i}>{item.name}</span>)}
                 </b>
               </p>
               <p>
@@ -86,8 +87,8 @@ const Movie = ({
             </div>
             <div className='video-desc__details'>
               {torrents &&
-                torrents.map((item) => (
-                  <p>
+                torrents.map((item, i) => (
+                  <p key={i}>
                     <span>{item.quality} </span>
                     <a href={item.url}>{oneMovie && oneMovie.title_long}</a>
                     <span> {item.size}</span>
@@ -106,7 +107,6 @@ const Movie = ({
                     maxLength='500'
                     spellCheck='false'
                     autoComplete='off'
-                    value={comment}
                     onChange={(e) => onChange(e)}
                     required
                   />
@@ -117,14 +117,6 @@ const Movie = ({
                   </label>
                 </div>
                 <div className='text-center mb-3'>
-                  <p className='text-danger' v-if='cloudError'>
-                    <small>
-                      An error occured while processing your request. Please
-                      check your informations and try again.
-                    </small>
-                  </p>
-                </div>
-                <div className='text-center mb-3'>
                   <button type='submit' className='btn btn-primary btn-sm'>
                     Send
                   </button>
@@ -133,15 +125,15 @@ const Movie = ({
             </div>
             <hr />
             <div className='video-comment__display my-3'>
-              <div className='d-flex'>
-                {movieComments &&
-                  movieComments.map((item) => (
+              {movieComments &&
+                movieComments.map((item, i) => (
+                  <div key={i} className='d-flex'>
                     <div className='comment-text d-flex flex-column'>
                       <span>{item.username}</span>
                       <span className='comment-text__text'>{item.text}</span>
                     </div>
-                  ))}
-              </div>
+                  </div>
+                ))}
             </div>
           </div>
         </div>

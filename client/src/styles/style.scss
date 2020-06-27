@@ -266,6 +266,9 @@ footer {
         background: rgb(53,56,65);
         background: linear-gradient(180deg, rgba($main-dark,1) 0%, rgba($dark-light,0) 100%);
         &__display {
+            > div  {
+                padding: 5px;
+            }
             .comment-avatar {
                 &__bg {
                     height: 30px;
