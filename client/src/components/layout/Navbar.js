@@ -8,6 +8,7 @@ import PropTypes from 'prop-types';
 import { logout, removeNotifications } from '../../actions/auth';
 import { forceRefresh } from '../../actions/socClient';
 import { socket } from '../../actions/socClient';
+import logo from '../../img/logo.png';
 export const Navbar = ({
   auth: { isAuthenticated, loading, user },
   removeNotifications,
@@ -97,7 +98,7 @@ export const Navbar = ({
     <header id="page-header" className="header px-3">
       <div className="header__logo">
         <Link to="/homepage">
-          <img alt="Logo Hypertube" src="" />
+          <img alt="Logo Hypertube" src={logo} />
         </Link>
       </div>
 

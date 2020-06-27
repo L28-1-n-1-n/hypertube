@@ -64,7 +64,7 @@ export const getMovieComments = (movieId) => async (dispatch) => {
     console.log(res)
     dispatch({
       type: GET_COMMENTS,
-      payload: res.data,
+      payload: res.data.comments,
     });
   } catch (err) {
     console.log(err);

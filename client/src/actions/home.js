@@ -12,7 +12,7 @@ export const fetchYTS = (inputs) => async (dispatch) => {
     const tmp = [];
 
     if (dateinterval[0] && dateinterval[1]) {
-      for (var i = 0, j = 0; i < filtered.length; i++) {
+      for (var i = 0; i < filtered.length; i++) {
         if (
           filtered[i].year >= dateinterval[0] &&
           filtered[i].year <= dateinterval[1]

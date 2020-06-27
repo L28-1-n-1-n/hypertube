@@ -1,8 +1,9 @@
-import React, { Fragment, useState, useEffect } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { fetchYTS } from '../../actions/home';
+import playWhite from '../../img/play_white.png';
 
 const Homepage = ({ fetchYTS, movie: { movies } }) => {
   useEffect(() => {
@@ -66,7 +67,7 @@ const Homepage = ({ fetchYTS, movie: { movies } }) => {
                     <div>
                       <p>Genre:</p>
                       <select name='genre'>
-                        <option value='all' selected>
+                        <option value='all' defaultValue>
                           All
                         </option>
                         <option value='action'>Action</option>
@@ -105,7 +106,7 @@ const Homepage = ({ fetchYTS, movie: { movies } }) => {
                         <option value='3'>3</option>
                         <option value='2'>2</option>
                         <option value='1'>1</option>
-                        <option value='0' selected>
+                        <option value='0' defaultValue>
                           0
                         </option>
                       </select>
@@ -142,7 +143,7 @@ const Homepage = ({ fetchYTS, movie: { movies } }) => {
             <div className='row justify-content-center'>
               {movies &&
                 movies.map((item) => (
-                  <div className='filmCard m-1 col-7 col-sm-4 col-md-3 col-lg-2 bg-dark rounded text-center'>
+                  <div key={item.id} className='filmCard m-1 col-7 col-sm-4 col-md-3 col-lg-2 bg-dark rounded text-center'>
                     <div className='filmCard__top p-1 rounded-top'>
                       <h3>{item.title}</h3>
                     </div>
@@ -150,7 +151,7 @@ const Homepage = ({ fetchYTS, movie: { movies } }) => {
                       <Link to={"/player/"+ item.id}>
                         <img
                           className='img-fluid'
-                          src='/img/play_white.png'
+                          src={playWhite}
                           alt='illustration'
                         />
                       </Link>

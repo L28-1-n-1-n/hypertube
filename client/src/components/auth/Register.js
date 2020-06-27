@@ -129,10 +129,6 @@ const Register = ({ setAlert, register, isAuthenticated, justRegistered }) => {
               />
               <label htmlFor="confirm-password" className="formContent__label"><span className="formContent__label__name">Confirm password</span></label>
             </div>
-            <div className="text-center my-3">
-              <p className="text-danger" v-if="cloudError==='doublon'"><small>It looks like there's already an account with your email address or username. Try with another credentials.</small></p>
-              <p className="text-danger" v-else-if="cloudError"><small>An error occured while processing your request. Please check your informations and try again.</small></p>
-            </div>
             <div className="text-center my-3">    
               <button type="submit" className="btn btn-primary">Create account</button>
             </div>    

@@ -44,10 +44,10 @@ hr {
     align-items: center;
     justify-content: space-around;
     &__fortytwo::before {
-        @include icon-after("/images/42.svg");
+        @include icon-after("../../img/42.svg");
     }
     &__github::before {
-        @include icon-after("/images/github.svg");
+        @include icon-after("../../img/github.svg");
     }
 }
 
