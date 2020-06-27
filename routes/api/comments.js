@@ -4,8 +4,9 @@ const auth = require('../../middleware/auth');
 const { check, validationResult } = require('express-validator');
 const Comments = require('../../models/Comments');
 const User = require('../../models/User');
-// @route   POST api/comments
-// @desc    Find relevant conversation
+
+// @route   POST api/comments/addcomment
+// @desc    Post new comment
 // @access  Private
 router.post(
   '/addcomment',
@@ -54,8 +55,8 @@ router.post(
   }
 );
 
-// @route   GET api/profile/user/:user_id // get user by userid, not profileid
-// @desc    Get profile by user ID
+// @route   GET api/comments/:movidId
+// @desc    Get comments by movieId
 // @access  Private
 
 router.get('/:movieId', auth, async (req, res) => {
