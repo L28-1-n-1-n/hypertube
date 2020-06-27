@@ -2,7 +2,11 @@ import React, { Fragment, useState, useEffect } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { getMovieById, addComment, getMovieComments } from '../../actions/player';
+import {
+  getMovieById,
+  addComment,
+  getMovieComments,
+} from '../../actions/player';
 
 const Movie = ({
   getMovieById,
@@ -12,7 +16,6 @@ const Movie = ({
     oneMovie: { cast },
     oneMovie: { torrents },
     movieComments,
-    movieComments: { comments },
   },
   match,
   addComment,
@@ -32,7 +35,6 @@ const Movie = ({
   console.log(cast);
   console.log(torrents);
   console.log(movieComments);
-  console.log(comments);
 
   const { comment } = formData;
 
@@ -132,15 +134,13 @@ const Movie = ({
             <hr />
             <div className='video-comment__display my-3'>
               <div className='d-flex'>
-              {comments &&
-                comments.map((item) => (
-                <div className='comment-text d-flex flex-column'>
-                <span>{item.username}</span>
-                <span className='comment-text__text'>
-                {item.text}
-                </span>
-                </div>
-                ))}
+                {movieComments &&
+                  movieComments.map((item) => (
+                    <div className='comment-text d-flex flex-column'>
+                      <span>{item.username}</span>
+                      <span className='comment-text__text'>{item.text}</span>
+                    </div>
+                  ))}
               </div>
             </div>
           </div>
