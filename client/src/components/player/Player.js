@@ -12,6 +12,7 @@ const Movie = ({
     oneMovie: { cast },
     oneMovie: { torrents },
     movieComments,
+    movieComments: { comments },
   },
   match,
   addComment,
@@ -31,6 +32,7 @@ const Movie = ({
   console.log(cast);
   console.log(torrents);
   console.log(movieComments);
+  console.log(comments);
 
   const { comment } = formData;
 
@@ -130,13 +132,15 @@ const Movie = ({
             <hr />
             <div className='video-comment__display my-3'>
               <div className='d-flex'>
-              {movieComments && movieComments.movieId}
+              {comments &&
+                comments.map((item) => (
                 <div className='comment-text d-flex flex-column'>
-                <span>{movieComments && movieComments.movieId}</span>
+                <span>{item.username}</span>
                 <span className='comment-text__text'>
-                {movieComments && movieComments.movieId}
+                {item.text}
                 </span>
                 </div>
+                ))}
               </div>
             </div>
           </div>

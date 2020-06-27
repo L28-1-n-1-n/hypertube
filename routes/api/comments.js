@@ -29,7 +29,7 @@ router.post(
 
       let listOfComments = await Comments.findOne({ movieId: movieId });
       if (listOfComments) {
-        const oneNewComment = await Comments.updateOne({
+        const oneNewComment = await listOfComments.updateOne({
           $push: {
             comments: commentFields,
           },

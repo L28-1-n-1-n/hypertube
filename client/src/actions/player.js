@@ -16,7 +16,7 @@ export const getMovieById = (movieId) => async (dispatch) => {
     // make request to YTS
 
     const res = await axios.get(
-      `https://yts.mx/api/v2/movie_details.json?movie_id=${movieId}&with_cast=true`
+      `https://cors-anywhere.herokuapp.com/https://yts.mx/api/v2/movie_details.json?movie_id=${movieId}&with_cast=true`
     );
 
     console.log('res below from player.js');
@@ -64,7 +64,7 @@ export const getMovieComments = (movieId) => async (dispatch) => {
     console.log(res)
     dispatch({
       type: GET_COMMENTS,
-      payload: res,
+      payload: res.data,
     });
   } catch (err) {
     console.log(err);
