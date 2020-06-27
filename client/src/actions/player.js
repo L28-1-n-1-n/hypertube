@@ -7,7 +7,7 @@ import {
   COMMENT_ERROR,
   NEW_COMMENT,
   GET_COMMENTS,
-  COMMENTSLIST_ERROR
+  COMMENTSLIST_ERROR,
 } from './types';
 
 // Get movie by ID
@@ -44,7 +44,7 @@ export const addComment = (formData) => async (dispatch) => {
 
     dispatch({
       type: NEW_COMMENT,
-      payload: res,
+      payload: res.data.comments[0], // add latest comment, which is the first element of the array comments reversed in the backend within the object newListOfComments
     });
 
     dispatch(setAlert('Comment added', 'success'));
@@ -53,18 +53,17 @@ export const addComment = (formData) => async (dispatch) => {
   }
 };
 
-
 // Get profile by ID
 export const getMovieComments = (movieId) => async (dispatch) => {
   try {
     // make request to backend api/profile/user/${movieId}
 
     const res = await axios.get(`/api/comments/${movieId}`);
-    console.log("res getMovieComments below")
-    console.log(res)
+    console.log('res getMovieComments below');
+    console.log(res.data.comments);
     dispatch({
       type: GET_COMMENTS,
-      payload: res.data,
+      payload: res.data.comments,
     });
   } catch (err) {
     console.log(err);
