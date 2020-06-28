@@ -72,7 +72,7 @@ const Movie = ({
                 <b>
                   Casting:{' '}
                   {cast &&
-                    cast.map((item, i) => <span key={i}>{item.name}</span>)}
+                    cast.map((item, i) => <span key={i}>{' ' + item.name + ','}</span>)}
                 </b>
               </p>
               <p>
