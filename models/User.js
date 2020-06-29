@@ -35,6 +35,12 @@ const UserSchema = new mongoose.Schema({
   token: {
     type: String,
   },
+  githubId: {
+    type: String,
+  },
+  fortyTwoId: {
+    type: String,
+  },
 });
 
 module.exports = User = mongoose.model('user', UserSchema);

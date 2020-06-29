@@ -5,7 +5,8 @@ import PropTypes from 'prop-types';
 
 export const Landing = ({ isAuthenticated }) => {
   if (isAuthenticated) {
-    return <Redirect to='/dashboard' />;
+    // console.log(window.history.previous.href);
+    return <Redirect to='/homepage' />;
   }
 
   return (
