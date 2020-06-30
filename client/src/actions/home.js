@@ -37,13 +37,10 @@ export const fetchYTS = (inputs) => async (dispatch) => {
     return result;
   };
 
-  const filteredPop = async (title, yearmin, yearmax, genre, rate) => {
-    const searchPop = await axios.all([
-      await axios.get('https://cors-anywhere.herokuapp.com/https://tv-v2.api-fetch.sh/movies/1'),
-      await axios.get('https://cors-anywhere.herokuapp.com/https://tv-v2.api-fetch.sh/movies/2'),
-      await axios.get('https://cors-anywhere.herokuapp.com/https://tv-v2.api-fetch.sh/movies/3')
-    ])
+  const filteredPop = (searchPop, title, yearmin, yearmax, genre, rate) => {
+    console.log(searchPop)
     let results = searchPop.map(function (el) {
+      console.log(el.data)
       var o = el.data.filter((item) => (item.title === title) &&
       (item.year >= yearmin && item.year <= yearmax) &&
       (item.genres.includes(genre)) &&
@@ -54,13 +51,10 @@ export const fetchYTS = (inputs) => async (dispatch) => {
     return results;
   }
 
-  const filteredPopTitle = async (yearmin, yearmax, genre, rate) => {
-    const searchPop = await axios.all([
-      await axios.get('https://cors-anywhere.herokuapp.com/https://tv-v2.api-fetch.sh/movies/1'),
-      await axios.get('https://cors-anywhere.herokuapp.com/https://tv-v2.api-fetch.sh/movies/2'),
-      await axios.get('https://cors-anywhere.herokuapp.com/https://tv-v2.api-fetch.sh/movies/3')
-    ])
+  const filteredPopTitle = async (searchPop, yearmin, yearmax, genre, rate) => {
+    console.log(searchPop)
     let results = searchPop.map(function (el) {
+      console.log(el)
       var o = el.data.filter((item) => (item.year >= yearmin && item.year <= yearmax) &&
       (item.genres.includes(genre)) &&
       (item.rating.percentage >= (rate * 10)))
@@ -89,8 +83,19 @@ export const fetchYTS = (inputs) => async (dispatch) => {
             inputs.order +
             '&limit=50'
         );
+        const searchPop = await axios.all([
+          await axios.get('https://cors-anywhere.herokuapp.com/https://tv-v2.api-fetch.sh/movies/1'),
+          await axios.get('https://cors-anywhere.herokuapp.com/https://tv-v2.api-fetch.sh/movies/2'),
+          await axios.get('https://cors-anywhere.herokuapp.com/https://tv-v2.api-fetch.sh/movies/3')
+        ])
         if (dateinterval[0] && dateinterval[1]) {
-          result2 = filteredPop(inputs.search, dateinterval[0], dateinterval[1], inputs.genre, inputs.rating)
+          console.log(searchPop)
+          var fetchPOP_Results = searchPop[0].data.concat(
+            searchPop[1].data,
+            searchPop[2].data,
+          );
+          console.log(fetchPOP_Results)
+          result2 = filteredPop(fetchPOP_Results, inputs.search, dateinterval[0], dateinterval[1], inputs.genre, inputs.rating)
         }
         else {
           result2 = filteredPop(inputs.search, 1800, 2020, inputs.genre, inputs.rating)
@@ -121,6 +126,16 @@ export const fetchYTS = (inputs) => async (dispatch) => {
         searchYTS.data.status === 'ok' &&
         searchYTS.data.data.movie_count >= 1
       ) {
+        console.log(result2)
+        if (result2.length >= 1) {
+          result2 = result2.map(function (el) {
+            var p = Object.assign({}, el);
+            p.rating = 93;
+            p.medium_cover_image = 89;
+            p.imdb_code = 60;
+            return p;
+          });
+        }
         console.log(result2)
         result = filteredResults(searchYTS).concat(result2);
       }
@@ -164,14 +179,7 @@ export const fetchYTS = (inputs) => async (dispatch) => {
       }
       console.log(result2);
 
-      if (fetchYTS_Results.length >= 1) {
-        result = fetchYTS_Results.map(function (el) {
-          var o = Object.assign({}, el);
-          o.sitesrc = 'yts';
-          return o;
-        });
-      }
-      result = result.concat(result2);
+      result = fetchYTS_Results.concat(result2);
     }
     // result = result.concat(result2);
     console.log(result);
