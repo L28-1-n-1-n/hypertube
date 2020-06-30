@@ -41,6 +41,9 @@ const UserSchema = new mongoose.Schema({
   fortyTwoId: {
     type: String,
   },
+  facebookId: {
+    type: String,
+  },
 });
 
 module.exports = User = mongoose.model('user', UserSchema);

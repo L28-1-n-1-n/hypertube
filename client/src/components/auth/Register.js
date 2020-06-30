@@ -2,7 +2,12 @@ import React, { Fragment, useState } from 'react';
 import { connect } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
 import { setAlert } from '../../actions/alert';
-import { register, registerGithub, registerFortyTwo } from '../../actions/auth';
+import {
+  register,
+  registerGithub,
+  registerFortyTwo,
+  registerFacebook,
+} from '../../actions/auth';
 // import { register } from '../../actions/auth';
 
 import PropTypes from 'prop-types';
@@ -13,6 +18,7 @@ const Register = ({
   register,
   registerGithub,
   registerFortyTwo,
+  registerFacebook,
   isAuthenticated,
   justRegistered,
 }) => {
@@ -190,13 +196,17 @@ const Register = ({
           </div>
           <div className='col-12'>
             <div className='text-center mb-3'>
-              <button
-                className='btn btn-outline-light icon-custom icon-custom__fortytwo'
-                type='button'
-                onClick={() => registerFortyTwo()}
-              >
-                Sign up
-              </button>
+              <a href='http://localhost:5000/api/auth/fortytwo'>
+                <button
+                  variant='link'
+                  className='btn btn-outline-light icon-custom icon-custom__fortytwo'
+                  type='button'
+                  // onClick={() => registerFortyTwo()}
+                  // href='http://localhost:5000/api/auth/fortytwo'
+                >
+                  Sign up 42
+                </button>
+              </a>
             </div>
             <div className='text-center mb-3'>
               <button
@@ -220,6 +230,15 @@ const Register = ({
                 Sign up
               </button>
             </div>
+            <div className='text-center mb-3'>
+              <button
+                className='btn btn-outline-light icon-custom icon-custom__fortytwo'
+                type='button'
+                onClick={() => registerFacebook()}
+              >
+                FB signup
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -232,6 +251,7 @@ Register.propTypes = {
   register: PropTypes.func.isRequired,
   registerGithub: PropTypes.func.isRequired,
   registerFortyTwo: PropTypes.func.isRequired,
+  registerFacebook: PropTypes.func.isRequired,
   isAuthenticated: PropTypes.bool,
   justRegistered: PropTypes.bool,
 };
@@ -246,5 +266,6 @@ export default connect(mapStateToProps, {
   register,
   registerGithub,
   registerFortyTwo,
+  registerFacebook,
 })(Register);
 // export default connect(mapStateToProps, { setAlert, register })(Register); // export connect with setAlert action, so it is available within props

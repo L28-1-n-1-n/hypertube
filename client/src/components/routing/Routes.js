@@ -2,6 +2,7 @@ import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import Register from '../auth/Register';
 import Login from '../auth/Login';
+import LoginByToken from '../auth/LoginByToken';
 import Homepage from '../home/Homepage';
 import Alert from '../layout/Alert';
 import Dashboard from '../dashboard/Dashboard';
@@ -30,6 +31,8 @@ const Routes = () => {
       <Switch>
         <Route exact path='/register' component={Register} />
         <Route exact path='/login' component={Login} />
+        <Route exact path='/login/:accessToken' component={LoginByToken} />
+
         <PrivateRoute exact path='/homepage' component={Homepage} />
 
         <PrivateRoute exact path='/player/:id' component={Player} />

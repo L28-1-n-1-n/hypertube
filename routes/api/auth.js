@@ -26,6 +26,7 @@ const transporter = nodemailer.createTransport({
 // @desc    Find user by userID
 // @access  Public
 router.get('/', auth, async (req, res) => {
+  console.log('/api/auth route is hit');
   try {
     const user = await User.findById(req.user.id).select('-password');
     const profile = await Profile.findOne({ user: req.user.id });
@@ -107,15 +108,16 @@ router.post(
 // router.get('/auth/github', passport.authenticate('github'));
 
 router.get(
-  '/auth/github',
+  '/github',
   // auth,
-  passport.authenticate('github', {
-    successRedirect: 'http://localhost:3000',
-    failureRedirect: 'http://localhost:3000/login',
-  }),
-  function (req, res) {
-    res.redirect('/');
-  }
+  passport.authenticate(
+    'github'
+    // {successRedirect: 'http://localhost:3000',
+    // failureRedirect: 'http://localhost:3000/login',}
+  )
+  // function (req, res) {
+  //   res.redirect('/');
+  // }
 );
 
 // router.get(
@@ -233,8 +235,8 @@ router.get(
 // );
 router.get(
   '/auth/github/callback',
-  // passport.authenticate('github', { failureRedirect: '/login' }),
-  passport.authenticate('github', { scope: ['user:email'] }),
+  passport.authenticate('github', { failureRedirect: '/login' }),
+  // passport.authenticate('github', { scope: ['user:email'] }),
   function (req, res) {
     // Successful authentication, redirect home.
     console.log('yaay');
@@ -246,13 +248,78 @@ router.get('/fortytwo', passport.authenticate('fortyTwo'));
 router.get(
   '/fortytwo/callback',
   passport.authenticate('fortyTwo', {
-    successRedirect: 'http://localhost:3000/',
+    // successRedirect: 'http://localhost:3000/',
     failureRedirect: 'http://localhost:3000/?message=oauth_fail',
+  }),
+  // async function (req, res) {
+  //   try {
+  //     const id = req.user;
+  //     console.log(req);
+  //     console.log(res);
+  //     console.log('id in router is', id);
+  //     console.log(accessToken);
+  //     let newUser = await User.findOne({ _id: req.user.id });
+  //     if (!newUser) {
+  //       console.log('unable to find new user');
+  //     }
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  //   // res.send('hello');
+  //   // console.log(req);
+  //   // console.log(res);
+  //   // const token = jwt.sign({ id }, jwtSecret.secret);
+  //   // res.redirect("http://localhost:3000/login?accessToken=" + token);
+  // }
+  async (req, res) => {
+    // const id = req.user.dataValues.id;
+    console.log('req is ', req.user);
+    console.log(req.user._id);
+    console.log(req.user.firstname);
+    console.log(req.user.lastname);
+    console.log(req.user.email);
+    console.log(req.user.password);
+    console.log(req.user.fortyTwoId);
+    const payload = {
+      user: {
+        id: req.user._id,
+      },
+    };
+    jwt.sign(
+      payload,
+      config.get('jwtSecret'),
+      { expiresIn: 360000 },
+      (err, token) => {
+        if (err) throw err;
+        console.log('generated token is', token);
+        res.redirect('http://localhost:3000/login/' + token);
+        // Need to make html page to grab the access Token as match.params.accessToken,
+        // then use axios to update the state
+
+        // res.json({ token }); // callback : if no error, get token
+      }
+    );
+  }
+);
+
+router.get('/facebook', passport.authenticate('facebook'));
+
+router.get(
+  '/facebook/callback',
+  passport.authenticate('facebook', function (err, user, info) {
+    console.log(err, user, info);
   })
+  // passport.authenticate('facebook', {
+  //   failureRedirect: 'http://localhost:3000/login',
+  // }),
   // async (req, res) => {
   //   const id = req.user.dataValues.id;
-  //   const token = jwt.sign({ id }, jwtSecret.secret);
-  //   res.redirect("http://localhost:3000/login?accessToken=" + token);
+  //   console.log(res);
+  //   // const token = jwt.sign({ id }, jwtSecret.secret);
+  //   // res.redirect("http://localhost:3000/login?accessToken=" + token);
   // }
 );
+// router.get('/facebook/callback', () => {
+//   console.log('Hello Lola');
+// });
 module.exports = router;

@@ -121,7 +121,7 @@ export const login = (username, password) => async (dispatch) => {
 
   try {
     const res = await axios.post('/api/auth', body, config); // make POST request to /api/auth, sending body and config
-
+    console.log(res.data);
     dispatch({
       type: LOGIN_SUCCESS,
       payload: res.data,
@@ -219,38 +219,40 @@ export const updatePwd = (formDataTwo, history, id) => async (dispatch) => {
 // Register via Github OAuth
 export const registerGithub = () => async () => {
   console.log('front reached2');
-  window.location.href = `http://localhost:5000/api/auth/auth/github`;
 
   try {
-    // const config = {
-    //   headers: {
-    //     // Accept: 'application/json',
-    //     'Content-Type': 'application/json',
-    //     // 'Access-Control-Allow-Origin': '*',
-    //     // 'Access-Control-Allow-Credentials': true,
-    //     // // Accept: `text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9`,
-    //     // 'X-CSRF-TOKEN': document
-    //     //   .querySelector('meta[name="csrf-token"]')
-    //     //   .getAttribute('content'),
-    //   },
-    // };
-    // const res = await axios.get(
-    //   `http://localhost:5000/api/auth/auth/github`,
-    //   config
-    // );
-    const config = {
-      headers: {
-        'X-Requested-With': 'XMLHttpRequest',
-        // 'Content-Type': 'application/x-www-form-urlencoded',
-      },
-    };
-    const res = await axios.get(
-      `https://github.com/login/oauth/authorize?response_type=code&client_id=9c4ca4e91c36b7692f63`,
-      // `https://github.com/login?client_id=9c4ca4e91c36b7692f63&return_to=%2Flogin%2Foauth%2Fauthorize%3Fclient_id%3D9c4ca4e91c36b7692f63%26response_type%3Dcode`,
-      config
-    );
+    window.location.href = `http://localhost:5000/api/auth/github`;
 
-    console.log(res);
+    // try {
+    //   // const config = {
+    //   //   headers: {
+    //   //     // Accept: 'application/json',
+    //   //     'Content-Type': 'application/json',
+    //   //     // 'Access-Control-Allow-Origin': '*',
+    //   //     // 'Access-Control-Allow-Credentials': true,
+    //   //     // // Accept: `text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9`,
+    //   //     // 'X-CSRF-TOKEN': document
+    //   //     //   .querySelector('meta[name="csrf-token"]')
+    //   //     //   .getAttribute('content'),
+    //   //   },
+    //   // };
+    //   // const res = await axios.get(
+    //   //   `http://localhost:5000/api/auth/auth/github`,
+    //   //   config
+    //   // );
+    //   const config = {
+    //     headers: {
+    //       'X-Requested-With': 'XMLHttpRequest',
+    //       // 'Content-Type': 'application/x-www-form-urlencoded',
+    //     },
+    //   };
+    //   const res = await axios.get(
+    //     `https://github.com/login/oauth/authorize?response_type=code&client_id=9c4ca4e91c36b7692f63`,
+    //     // `https://github.com/login?client_id=9c4ca4e91c36b7692f63&return_to=%2Flogin%2Foauth%2Fauthorize%3Fclient_id%3D9c4ca4e91c36b7692f63%26response_type%3Dcode`,
+    //     config
+    //   );
+
+    //   console.log(res);
     // dispatch({
     //   type: DELETE_NOTIFICATIONS,
     //   payload: id,
@@ -387,5 +389,50 @@ export const registerFortyTwo = () => {
   } catch (err) {
     console.log('github error');
     console.log(err);
+  }
+};
+
+// Register via Github OAuth
+export const registerFacebook = () => async () => {
+  console.log('front reached2');
+  try {
+    window.location.href = `http://localhost:5000/api/auth/facebook`;
+  } catch (err) {
+    console.log('github error');
+    console.log(err);
+  }
+};
+
+// Login User
+export const loginByAccessToken = (accessToken) => async (dispatch) => {
+  console.log('this route is hit');
+  try {
+    console.log('accessToken is ', accessToken);
+    dispatch({
+      type: LOGIN_SUCCESS,
+      payload: { token: accessToken },
+    });
+    if (sessionStorage.token) {
+      setAuthToken(sessionStorage.token);
+      console.log('auth token is set');
+    }
+    const res = await axios.get('/api/auth');
+    console.log(res);
+    dispatch({
+      type: USER_LOADED,
+      payload: res.data, // data of the user loaded
+    });
+
+    // dispatch(loadUser());
+  } catch (err) {
+    const errors = err.response.data.errors;
+
+    if (errors) {
+      errors.forEach((error) => dispatch(setAlert(error.msg, 'danger')));
+    }
+
+    dispatch({
+      type: LOGIN_FAIL,
+    });
   }
 };

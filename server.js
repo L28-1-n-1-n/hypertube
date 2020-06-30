@@ -2,7 +2,7 @@ const express = require('express');
 const fileUpload = require('express-fileupload');
 const connectDB = require('./config/db');
 const methodOverride = require('method-override');
-
+const session = require('express-session');
 const bodyParser = require('body-parser');
 const path = require('path');
 
@@ -170,8 +170,19 @@ app.use(express.json({ extended: false }));
 // );
 // // parse cookies
 // app.use(cookieParser());
+
+app.use(
+  session({
+    secret: 'BigFatCats',
+    // store: sessionStore, // connect-mongo session store
+    proxy: true,
+    resave: true,
+    saveUninitialized: true,
+  })
+);
 app.use(passport.initialize());
 
+app.use(passport.session());
 // GitHub
 // passport.use(
 //   new GitHubStrategy(

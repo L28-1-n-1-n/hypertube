@@ -1,7 +1,7 @@
 const passport = require('passport'),
   GitHubStrategy = require('passport-github2').Strategy;
 const FortyTwoStrategy = require('passport-42');
-
+const crypto = require('crypto');
 const chalk = require('chalk');
 const keys = require('./keys');
 const User = require('../models/User');
@@ -30,11 +30,14 @@ passport.use(
       //   clientSecret: keys.GITHUB.clientSecret,
       clientID: keys.githubClientID,
       clientSecret: keys.githubClientSecret,
-      callbackUrl: 'http://localhost:5000/auth/auth/github/callback',
+      callbackURL: 'http://localhost:5000/auth/github/callback',
       // callbackUrl: 'http://localhost:3000',
     },
     async (accessToken, refreshToken, profile, cb) => {
       console.log(chalk.yellow(profile));
+      console.log(chalk.yellow(JSON.stringify(profile)));
+      //   console.log(chalk.yellow(profile));
+
       const currentUser = await User.findOne({
         githubId: profile._json.id_str,
       });
@@ -46,8 +49,8 @@ passport.use(
           //   avatar: profile.photos[0].value,
           password: 'salut',
           githubId: profile._json.id_str,
-        }).save();
-
+        });
+        newUser.save();
         if (newUser) {
           cb(null, newUser);
         }
@@ -57,38 +60,84 @@ passport.use(
   )
 );
 
+// passport.use(
+//   'fortyTwo',
+//   new FortyTwoStrategy(
+//     {
+//       clientID: keys.FORTYTWO.clientID,
+//       clientSecret: keys.FORTYTWO.clientSecret,
+//       callbackURL: 'http://localhost:5000/api/auth/fortytwo/callback',
+//     },
+//     async (accessToken, refreshToken, profile, cb) => {
+//       console.log(chalk.yellow(profile));
+//       const currentUser = await User.findOne({
+//         fortyTwo_id: profile.id,
+//       });
+//       if (!currentUser) {
+//         const newUser = await new User({
+//           firstName: profile.name.givenName,
+//           lastName: profile.name.familyName,
+//           // picture: profile.photos[0].value,
+//           userName: profile.username + Math.floor(Math.random() * 100),
+//           fortytwo_id: profile.id,
+//         }).save();
+
+//         if (newUser) {
+//           cb(null, newUser);
+//         }
+//       } else {
+//         cb(null, currentUser);
+//       }
+//     }
+//   )
+// );
+
 passport.use(
   'fortyTwo',
   new FortyTwoStrategy(
     {
-      // clientID:
-      //   '34163cd6c87885d9996267d8e9777e2ae0b8eb83e0bcdc89b0fc3976169fb918',
-      // clientSecret:
-      //   '83d56a400a0d29c394d12c53334238b5505742f7cfe23606d7fb868272c2416f',
       clientID: keys.fortyTwoClientID,
       clientSecret: keys.fortyTwoClientSecret,
       // callbackURL: 'http://localhost:1337/api/v1/auth/42/callback',
-      callbackUrl: `http://localhost:5000/api/auth/fortytwo/callback`,
+      callbackURL: `http://localhost:5000/api/auth/fortytwo/callback`,
     },
     async (accessToken, refreshToken, profile, cb) => {
-      console.log(chalk.yellow(profile));
+      // console.log(profile);
+
       const currentUser = await User.findOne({
-        fortyTwo_id: profile.id,
+        fortyTwoId: profile.id,
       });
+      let userFields = {
+        firstname: profile.name.givenName,
+        lastname: profile.name.familyName,
+        // picture: profile.photos[0].value,
+        username: profile.username + Math.floor(Math.random() * 100),
+        email: profile.emails[0].value,
+        password: crypto.randomBytes(8).toString('hex'),
+        fortyTwoId: profile.id,
+        imageUrl: profile.photos[0].value,
+      };
+      console.log(userFields);
       if (!currentUser) {
         const newUser = await new User({
-          firstName: profile.name.givenName,
-          lastName: profile.name.familyName,
-          picture: profile.photos[0].value,
-          userName: profile.username + Math.floor(Math.random() * 100),
-          fortytwo_id: profile.id,
-        }).save();
+          firstname: profile.name.givenName,
+          lastname: profile.name.familyName,
+          // picture: profile.photos[0].value,
+          username: profile.username + Math.floor(Math.random() * 100),
+          email: profile.emails[0].value,
+          password: crypto.randomBytes(8).toString('hex'),
+          fortyTwoId: profile.id,
+          imageUrl: profile.photos[0].value,
+        });
+        newUser.save();
+        console.log(newUser);
 
         if (newUser) {
           cb(null, newUser);
         }
+      } else {
+        cb(null, currentUser);
       }
-      cb(null, currentUser);
     }
   )
 );
