@@ -142,13 +142,13 @@ const Homepage = ({ fetchYTS, movie: { movies } }) => {
           <div className='col-12'>
             <div className='row justify-content-center'>
               {movies &&
-                movies.map((item) => (
-                  <div key={item.id} className='filmCard m-1 col-7 col-sm-4 col-md-3 col-lg-2 bg-dark rounded text-center'>
+                movies.map((item, i) => (
+                  <div key={i} className='filmCard m-1 col-7 col-sm-4 col-md-3 col-lg-2 bg-dark rounded text-center'>
                     <div className='filmCard__top p-1 rounded-top'>
                       <h3>{item.title}</h3>
                     </div>
                     <div className='video_player rounded'>
-                      <Link to={"/player/"+ item.id}>
+                      <Link to={"/player/"+ item.imdb_code}>
                         <img
                           className='img-fluid'
                           src={playWhite}
