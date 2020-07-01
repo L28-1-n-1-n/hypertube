@@ -124,7 +124,7 @@ const Homepage = ({ fetchYTS, movie: { movies } }) => {
                     </div>
                     <div>
                       <p>Minimum rating:</p>
-                      <select className='d-flex m-auto' name='rating'>
+                      <select className='d-flex m-auto' name='rating' defaultValue="0">
                         <option value='9'>9</option>
                         <option value='8'>8</option>
                         <option value='7'>7</option>
@@ -134,9 +134,7 @@ const Homepage = ({ fetchYTS, movie: { movies } }) => {
                         <option value='3'>3</option>
                         <option value='2'>2</option>
                         <option value='1'>1</option>
-                        <option value='0' defaultValue>
-                          0
-                        </option>
+                        <option value='0'>0</option>
                       </select>
                     </div>
                     <div>

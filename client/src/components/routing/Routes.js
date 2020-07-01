@@ -15,7 +15,6 @@ import PrivateRoute from '../routing/PrivateRoute';
 import VerificationSuccess from '../verification/VerificationSuccess';
 import Recuperation from '../verification/Recuperation';
 import Reset from '../verification/Reset';
-import MatchCriteria from '../matchSettings/MatchCriteria';
 import Chat from '../chat/Chat';
 import ConnectedUsers from '../photos/ConnectedUsers';
 
@@ -38,7 +37,6 @@ const Routes = () => {
         <PrivateRoute exact path='/my-photos' component={MyPhotos} />
 
         <PrivateRoute exact path='/photos' component={Photos} />
-        <PrivateRoute exact path='/filters' component={MatchCriteria} />
         <PrivateRoute
           exact
           path='/connected-users'

@@ -169,8 +169,7 @@ export const fetchYTS = (inputs) => async (dispatch) => {
       if (fetchPOP_Results.length >= 1) {
         result2 = fetchPOP_Results.map(function (el) {
           var p = Object.assign({}, el);
-          console.log(el.rating.percentage)
-          p.rating = el.rating.percentage;
+          p.rating = el.rating.percentage / 10;
           p.medium_cover_image = el.images.poster;
           p.imdb_code = el.imdb_id;
           return p;
