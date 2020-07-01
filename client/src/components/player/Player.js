@@ -22,12 +22,12 @@ const Movie = ({
 }) => {
   const [formData, setFormData] = useState({
     comment: '',
-    movieId: '',
+    imdbId: '',
   });
   useEffect(() => {
     getMovieById(match.params.id);
     getMovieComments(match.params.id);
-    setFormData({ ...{ movieId: match.params.id } });
+    setFormData({ ...{ imdbId: match.params.id } });
   }, [getMovieById, getMovieComments, match.params.id]);
   console.log(oneMovie);
   console.log(match.params.id);

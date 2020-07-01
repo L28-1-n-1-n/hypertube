@@ -51,7 +51,7 @@ export const getProfiles = () => async (dispatch) => {
 };
 
 // Get profile by ID
-export const getProfileById = (username) => async (dispatch) => {
+export const getProfileByUsername = (username) => async (dispatch) => {
   try {
     // make request to backend api/profile/user/${username}
 

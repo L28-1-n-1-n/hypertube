@@ -11,12 +11,14 @@ import {
 } from './types';
 
 // Get movie by ID
-export const getMovieById = (movieId) => async (dispatch) => {
+export const getMovieById = (imdbId) => async (dispatch) => {
   try {
     // make request to YTS
 
+    const resId = await axios.get(`https://cors-anywhere.herokuapp.com/https://yts.mx/api/v2/list_movies.json?query_term=${imdbId}`);
+    console.log(resId)
     const res = await axios.get(
-      `https://cors-anywhere.herokuapp.com/https://yts.mx/api/v2/movie_details.json?movie_id=${movieId}&with_cast=true`
+      `https://cors-anywhere.herokuapp.com/https://yts.mx/api/v2/movie_details.json?movie_id=`+ resId.data.data.movies[0].id + `&with_cast=true`
     );
 
     console.log('res below from player.js');
@@ -54,11 +56,12 @@ export const addComment = (formData) => async (dispatch) => {
 };
 
 // Get profile by ID
-export const getMovieComments = (movieId) => async (dispatch) => {
+export const getMovieComments = (imdbId) => async (dispatch) => {
+  console.log(imdbId)
   try {
-    // make request to backend api/profile/user/${movieId}
+    // make request to backend api/profile/user/${imdbId}
 
-    const res = await axios.get(`/api/comments/${movieId}`);
+    const res = await axios.get(`/api/comments/${imdbId}`);
     console.log('res getMovieComments below');
     console.log(res.data.comments);
     dispatch({

@@ -1,16 +1,16 @@
 import React, { Fragment, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { getProfileById } from '../../actions/profile';
+import { getProfileByUsername } from '../../actions/profile';
 
 const Profile = ({
-  getProfileById,
+  getProfileByUsername,
   profile: { profile },
   match,
 }) => {
   useEffect(() => {
-    getProfileById(match.params.username);
-  }, [getProfileById, match.params.username]);
+    getProfileByUsername(match.params.username);
+  }, [getProfileByUsername, match.params.username]);
 
 console.log(profile)
   // Runs immediately when profile mounts
@@ -31,7 +31,7 @@ console.log(profile)
 };
 
 Profile.propTypes = {
-  getProfileById: PropTypes.func.isRequired,
+  getProfileByUsername: PropTypes.func.isRequired,
   profile: PropTypes.object.isRequired,
 };
 
@@ -40,5 +40,5 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps, {
-  getProfileById,
+  getProfileByUsername,
 })(Profile);

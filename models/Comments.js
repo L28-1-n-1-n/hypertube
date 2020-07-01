@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 
 const CommentSchema = new mongoose.Schema({
-  movieId: {
-    type: Number, //movie id
+  imdbId: {
+    type: String, //movie id
   },
   comments: [
     {

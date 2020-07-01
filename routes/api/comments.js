@@ -19,7 +19,7 @@ router.post(
 
     try {
       let user = await User.findOne({ _id: req.user.id });
-      const { comment, movieId } = req.body;
+      const { comment, imdbId } = req.body;
 
       const commentFields = {
         user: req.user.id,
@@ -28,7 +28,7 @@ router.post(
         time: Date.now(),
       };
 
-      let listOfComments = await Comments.findOne({ movieId: movieId });
+      let listOfComments = await Comments.findOne({ imdbId: imdbId });
       if (listOfComments) {
         const oneNewComment = await listOfComments.updateOne({
           $push: {
@@ -37,14 +37,14 @@ router.post(
         });
       } else {
         listOfComments = new Comments({
-          movieId: movieId,
+          imdbId: imdbId,
           comments: [],
         });
         listOfComments.comments.push(commentFields);
         await listOfComments.save();
       }
 
-      let newListOfComments = await Comments.findOne({ movieId: movieId });
+      let newListOfComments = await Comments.findOne({ imdbId: imdbId });
       newListOfComments.comments.reverse(); // show the latest comment first
 
       return res.json(newListOfComments);
@@ -56,13 +56,14 @@ router.post(
 );
 
 // @route   GET api/comments/:movidId
-// @desc    Get comments by movieId
+// @desc    Get comments by imdbId
 // @access  Private
 
-router.get('/:movieId', auth, async (req, res) => {
+router.get('/:imdbId', auth, async (req, res) => {
+  console.log(req.params.imdbId);
   try {
     const commentary = await Comments.findOne({
-      movieId: req.params.movieId,
+      imdbId: req.params.imdbId,
     });
     if (!commentary)
       return res
