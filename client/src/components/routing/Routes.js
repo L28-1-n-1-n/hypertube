@@ -31,7 +31,7 @@ const Routes = () => {
 
         <PrivateRoute exact path='/player/:id' component={Player} />
 
-        <PrivateRoute exact path='/profile/:id' component={Profile} />
+        <PrivateRoute exact path='/profile/:username' component={Profile} />
         <PrivateRoute exact path='/dashboard' component={Dashboard} />
         <PrivateRoute exact path='/edit-profile' component={EditProfile} />
         <PrivateRoute exact path='/my-photos' component={MyPhotos} />
