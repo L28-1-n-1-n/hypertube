@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -6,6 +6,12 @@ import { fetchYTS } from '../../actions/home';
 import playWhite from '../../img/play_white.png';
 
 const Homepage = ({ fetchYTS, movie: { movies } }) => {
+  const [listItems, setListItems] = useState(Array.from(Array(30).keys(), n => n + 1));
+  const [isFetching, setIsFetching] = useState(false);
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
   useEffect(() => {
     let params = new URLSearchParams(window.location.search);
     let search = params.get('search');
@@ -32,11 +38,33 @@ const Homepage = ({ fetchYTS, movie: { movies } }) => {
       };
     }
     fetchYTS(inputs);
-  }, [fetchYTS]);
+    if (!isFetching)
+      return;
+    fetchMoreListItems();
+  }, [fetchYTS, isFetching]);
+
+  function handleScroll() {
+    if (window.innerHeight + document.documentElement.scrollTop !== document.documentElement.offsetHeight)
+      return;
+    console.log('Fetch more list items!');
+    setIsFetching(true);
+  }
+
+  function fetchMoreListItems() {
+    setTimeout(() => {
+      setListItems(prevState => ([...prevState, ...Array.from(Array(20).keys(), n => n + prevState.length + 1)]));
+      setIsFetching(false);
+    }, 2000);
+  }
+
 
   // Runs immediately when profile mounts
   return (
     <Fragment>
+      {isFetching && 'Fetching more list items...'}
+      <ul className="list-group mb-2">
+        {listItems.map(listItem => <li className="list-group-item">List Item {listItem}</li>)}
+      </ul>
       <div
         id='homepage'
         className='container-fluid justify-content-center my-4 main-content-home'

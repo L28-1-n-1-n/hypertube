@@ -148,13 +148,13 @@ export const fetchYTS = (inputs) => async (dispatch) => {
       console.log(yolo)
       // var bite = yolo.filter(yolo[0].data[0].title === "Deadpool")
       var one = await axios.get(
-        'https://cors-anywhere.herokuapp.com/https://yts.mx/api/v2/list_movies.json?sort_by=rating&limit=50'
+        'https://cors-anywhere.herokuapp.com/https://yts.mx/api/v2/list_movies.json?sort_by=rating&limit=5'
       );
       var two = await axios.get(
-        'https://cors-anywhere.herokuapp.com/https://yts.mx/api/v2/list_movies.json?sort_by=rating&limit=50&page=2'
+        'https://cors-anywhere.herokuapp.com/https://yts.mx/api/v2/list_movies.json?sort_by=rating&limit=5&page=2'
       );
       var three = await axios.get(
-        'https://cors-anywhere.herokuapp.com/https://yts.mx/api/v2/list_movies.json?sort_by=rating&limit=50&page=3'
+        'https://cors-anywhere.herokuapp.com/https://yts.mx/api/v2/list_movies.json?sort_by=rating&limit=5&page=3'
       );
       var fetchYTS_Results = one.data.data.movies.concat(
         two.data.data.movies,
