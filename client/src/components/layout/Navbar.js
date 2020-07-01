@@ -81,7 +81,7 @@ export const Navbar = ({
       <a className="nav-link dropdown-toggle btn btn-outline-secondary" id="header-account-menu-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Menu</a>
       <div className="dropdown-menu account-menu bg-dropdown" aria-labelledby="header-account-menu-link">
         <Link className="dropdown-item" to="/homepage">Home</Link>
-        <Link className="dropdown-item" to="/account">Settings</Link>
+        <Link className="dropdown-item" to="/dashboard">Settings</Link>
         <Link className="dropdown-item" to="/logout">Sign out</Link>
       </div>
     </div>
