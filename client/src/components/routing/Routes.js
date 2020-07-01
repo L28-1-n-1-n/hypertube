@@ -18,7 +18,6 @@ import Recuperation from '../verification/Recuperation';
 import Reset from '../verification/Reset';
 import MatchCriteria from '../matchSettings/MatchCriteria';
 import Chat from '../chat/Chat';
-import RecentProfiles from '../photos/RecentProfiles';
 import ConnectedUsers from '../photos/ConnectedUsers';
 
 import Player from '../player/Player';
@@ -42,11 +41,6 @@ const Routes = () => {
 
         <PrivateRoute exact path='/photos' component={Photos} />
         <PrivateRoute exact path='/filters' component={MatchCriteria} />
-        <PrivateRoute
-          exact
-          path='/recent-profiles'
-          component={RecentProfiles}
-        />
         <PrivateRoute
           exact
           path='/connected-users'
