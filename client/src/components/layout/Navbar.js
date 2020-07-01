@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import { logout } from '../../actions/auth';
 import logo from '../../img/logo.png';
 export const Navbar = ({
-  auth: { isAuthenticated, loading },
+  auth: { isAuthenticated, loading, user },
   logout,
 }) => {
 
@@ -16,7 +16,10 @@ export const Navbar = ({
       <div className="dropdown-menu account-menu bg-dropdown" aria-labelledby="header-account-menu-link">
         <Link className="dropdown-item" to="/homepage">Home</Link>
         <Link className="dropdown-item" to="/dashboard">Settings</Link>
-        <Link className="dropdown-item" to="/logout">Sign out</Link>
+        <button href="#" className="dropdown-item"
+        onClick={() => {
+            logout(user._id);
+          }}>Sign out</button>
       </div>
     </div>
   );

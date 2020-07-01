@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import Moment from 'react-moment';
 import { forceRefresh } from '../../actions/socClient';
 import { connect } from 'react-redux';
-import { block } from '../../actions/profile';
 
 import {
   addLike,
@@ -21,7 +20,6 @@ const GalleryPhotoItem = ({
   myProfile,
   addClickedBy,
   forceRefresh,
-  block,
   auth,
   photo: {
     _id,
@@ -121,16 +119,6 @@ const GalleryPhotoItem = ({
             >
               <i className='fas fa-thumbs-down' />
             </button>
-            <button
-              onClick={() => {
-                block(profile.user);
-                forceRefresh(profile.user);
-              }}
-              type='button'
-              className='btn btn-danger'
-            >
-              <i className='fas fa-ban' /> {'Block'}
-            </button>
           </Fragment>
         )}
       </div>
@@ -151,7 +139,6 @@ GalleryPhotoItem.propTypes = {
   addClickedBy: PropTypes.func.isRequired,
   showActions: PropTypes.bool,
   forceRefresh: PropTypes.func.isRequired,
-  block: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -164,5 +151,4 @@ export default connect(mapStateToProps, {
   removeLike,
   addClickedBy,
   forceRefresh,
-  block,
 })(GalleryPhotoItem);

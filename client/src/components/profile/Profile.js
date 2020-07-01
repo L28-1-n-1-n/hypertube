@@ -6,11 +6,10 @@ import Spinner from '../layout/Spinner';
 import ProfileTop from './ProfileTop';
 import ProfileAbout from './ProfileAbout';
 import ProfilePhotoItem from '../photos/ProfilePhotoItem';
-import { getProfileById, reportFake } from '../../actions/profile';
+import { getProfileById } from '../../actions/profile';
 import { getAllPhotosById } from '../../actions/photo';
 
 const Profile = ({
-  reportFake,
   getProfileById,
   getAllPhotosById,
   profile: { profile, loading },
@@ -54,7 +53,6 @@ const Profile = ({
 
 Profile.propTypes = {
   getProfileById: PropTypes.func.isRequired,
-  reportFake: PropTypes.func.isRequired,
   profile: PropTypes.object.isRequired,
   auth: PropTypes.object.isRequired,
   photo: PropTypes.object.isRequired,
@@ -69,5 +67,4 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps, {
   getProfileById,
   getAllPhotosById,
-  reportFake,
 })(Profile);
