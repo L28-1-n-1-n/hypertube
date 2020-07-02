@@ -52,10 +52,16 @@ export const getProfiles = () => async (dispatch) => {
 
 // Get profile by ID
 export const getProfileByUsername = (username) => async (dispatch) => {
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+      'x-auth-token': localStorage.token,
+    },
+  };
   try {
     // make request to backend api/profile/user/${username}
 
-    const res = await axios.get(`/api/profile/user/${username}`);
+    const res = await axios.get(`/api/profile/user/${username}`, config);
     console.log(res)
     dispatch({
       type: GET_PROFILE,

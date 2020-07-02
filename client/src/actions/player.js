@@ -57,7 +57,6 @@ export const addComment = (formData) => async (dispatch) => {
 
 // Get profile by ID
 export const getMovieComments = (imdbId) => async (dispatch) => {
-  console.log(imdbId)
   const config = {
     headers: {
       'Content-Type': 'application/json',
