@@ -28,7 +28,7 @@ const Movie = ({
     getMovieById(match.params.id);
     getMovieComments(match.params.id);
     setFormData({ ...{ imdbId: match.params.id } });
-  }, [getMovieById, getMovieComments, match.params.id]);
+  }, [getMovieById, getMovieComments, match.params.id, user]);
   console.log(oneMovie);
   console.log(match.params.id);
   console.log(cast);

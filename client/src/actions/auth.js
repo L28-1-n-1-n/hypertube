@@ -23,8 +23,8 @@ import { socket } from './socClient';
 export const loadUser = () => async (dispatch) => {
   // if (localStorage.token) {
   //   setAuthToken(localStorage.token);
-  if (sessionStorage.token) {
-    setAuthToken(sessionStorage.token);
+  if (localStorage.token) {
+    setAuthToken(localStorage.token);
   }
 
   try {

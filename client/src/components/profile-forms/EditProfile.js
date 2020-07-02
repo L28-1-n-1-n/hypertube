@@ -18,7 +18,6 @@ const initialStateTwo = {
 };
 
 const EditProfile = ({
-  profile: { profile },
   auth: { user },
   updateUser,
   updatePwd,
@@ -30,15 +29,13 @@ const EditProfile = ({
   useEffect(() => {
       const profileData = { ...initialState };
       const profileDataTwo = { ...initialStateTwo };
-      for (const key in profile) {
-        if (key in profileData) profileData[key] = profile[key];
-      }
+
       for (const key in user) {
         if (key in profileData) profileData[key] = user[key];
       }
       setFormData(profileData);
       setFormDataTwo(profileDataTwo);
-  }, [profile, user]);
+  }, [user]);
 
   // The prop to depend on is loading, setFormData will run when it is loaded
   const {
@@ -227,12 +224,10 @@ const EditProfile = ({
 EditProfile.propTypes = {
   updateUser: PropTypes.func.isRequired,
   updatePwd: PropTypes.func.isRequired,
-  profile: PropTypes.object.isRequired,
   auth: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-  profile: state.profile,
   auth: state.auth,
 });
 

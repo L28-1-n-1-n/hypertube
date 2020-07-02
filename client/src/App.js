@@ -20,8 +20,8 @@ const App = () => {
     //   setAuthToken(localStorage.token);
 
     // Use session storage
-    if (sessionStorage.token) {
-      setAuthToken(sessionStorage.token);
+    if (localStorage.token) {
+      setAuthToken(localStorage.token);
       store.dispatch(loadUser());
     }
   }, []);

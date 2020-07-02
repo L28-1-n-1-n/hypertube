@@ -58,10 +58,16 @@ export const addComment = (formData) => async (dispatch) => {
 // Get profile by ID
 export const getMovieComments = (imdbId) => async (dispatch) => {
   console.log(imdbId)
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+      'x-auth-token': localStorage.token,
+    },
+  };
   try {
     // make request to backend api/profile/user/${imdbId}
 
-    const res = await axios.get(`/api/comments/${imdbId}`);
+    const res = await axios.get(`/api/comments/${imdbId}`, config);
     console.log('res getMovieComments below');
     console.log(res.data.comments);
     dispatch({
@@ -69,6 +75,6 @@ export const getMovieComments = (imdbId) => async (dispatch) => {
       payload: res.data.comments,
     });
   } catch (err) {
-    console.log(err);
+    // console.log(err);
   }
 };

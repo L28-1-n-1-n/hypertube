@@ -59,8 +59,7 @@ router.post(
 // @desc    Get comments by imdbId
 // @access  Private
 
-router.get('/:imdbId', auth, async (req, res) => {
-  console.log(req.params.imdbId);
+router.get('/:imdbId', async (req, res) => {
   try {
     const commentary = await Comments.findOne({
       imdbId: req.params.imdbId,
