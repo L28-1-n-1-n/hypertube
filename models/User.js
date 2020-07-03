@@ -35,6 +35,17 @@ const UserSchema = new mongoose.Schema({
   token: {
     type: String,
   },
+  fileName: {
+    type: String,
+    default: "generic_avatar.jpg",
+  },
+  filePath: {
+    type: String,
+    default: "/uploads/generic_avatar.jpg",
+  },
+  data: {
+    type: Buffer,
+  },
 });
 
 module.exports = User = mongoose.model('user', UserSchema);

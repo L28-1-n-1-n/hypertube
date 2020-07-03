@@ -2,9 +2,7 @@ import React, { Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-const Dashboard = ({
-}) => {
-
+const Dashboard = () => {
   return (
       <Fragment>
         <div className="container row mx-auto d-flex justify-content-center my-4">

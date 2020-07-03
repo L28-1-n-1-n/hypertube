@@ -3,11 +3,8 @@ import { setAlert } from './alert';
 
 import {
   GET_ONE_MOVIE,
-  MOVIE_DETAILS,
-  COMMENT_ERROR,
   NEW_COMMENT,
   GET_COMMENTS,
-  COMMENTSLIST_ERROR,
 } from './types';
 
 // Get movie by ID

@@ -8,7 +8,7 @@ import { forceRefresh } from '../actions/socClient';
 import { connect } from 'react-redux';
 import { addPhoto } from '../actions/photo';
 
-const FileUpload = ({ addPhoto, forceRefresh, user, photos }) => {
+const FileUpload = ({ addPhoto, forceRefresh, user }) => {
   const [file, setFile] = useState('');
 
   const [filename, setFilename] = useState('Choose File');
@@ -41,7 +41,7 @@ const FileUpload = ({ addPhoto, forceRefresh, user, photos }) => {
         {
           headers: {
             'Content-Type':
-              'multipart/form-data; boundary=${formData._boundary}',
+              `multipart/form-data; boundary=${formData._boundary}`,
           },
           onUploadProgress: (progressEvent) => {
             setUploadPercentage(
@@ -61,11 +61,6 @@ const FileUpload = ({ addPhoto, forceRefresh, user, photos }) => {
       setUploadedFile({ fileName, filePath });
 
       setUAMessage('File Uploaded');
-
-      if (photos.length === 0) {
-        console.log('refresh at photo');
-        forceRefresh(user._id);
-      }
       addPhoto(formData);
     } catch (err) {
       if (err.response.status === 500) {
@@ -76,7 +71,6 @@ const FileUpload = ({ addPhoto, forceRefresh, user, photos }) => {
     }
   };
   console.log('user here is', user);
-  console.log('photos length is', photos.length);
   return (
     <Fragment>
       <p className='lead'>
@@ -91,6 +85,7 @@ const FileUpload = ({ addPhoto, forceRefresh, user, photos }) => {
               className='custom-file-input'
               id='file'
               name='file'
+              accept="image/jpeg, image/png, image/jpg, image/JPEG, image/PNG, image/JPG"
               onChange={(e) => onChange(e)}
             />
 
@@ -108,14 +103,14 @@ const FileUpload = ({ addPhoto, forceRefresh, user, photos }) => {
           />
         </div>
       </form>
-      {/* {uploadedFile ? (
+      {uploadedFile ? (
         <div className='row mt-5'>
           <div className='col-md-6 m-auto'>
             <h3 className='text-center'>{uploadedFile.fileName}</h3>
             <img style={{ width: '100%' }} src={uploadedFile.filePath} alt='' />
           </div>
         </div>
-      ) : null} */}
+      ) : null}
     </Fragment>
   );
 };

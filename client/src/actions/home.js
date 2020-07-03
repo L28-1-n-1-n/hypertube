@@ -60,9 +60,9 @@ export const fetchYTS = (inputs) => async (dispatch) => {
     var result = [];
     var result2 = [];
 
-    if (inputs && inputsLength == 5) {
+    if (inputs && inputsLength === 5) {
       const dateinterval = inputs.year.split('_');
-      if (inputs.search != '') {
+      if (inputs.search !== '') {
         var searchYTS = await axios.get(
           'https://cors-anywhere.herokuapp.com/https://yts.mx/api/v2/list_movies.json?query_term=' +
             inputs.search +
@@ -92,7 +92,7 @@ export const fetchYTS = (inputs) => async (dispatch) => {
         }
         // let results = yolo[0].data.filter((item) => item.title === "Deadpool");
         // console.log(results)
-      } else if (inputs.search == '') {
+      } else if (inputs.search === '') {
         const dateinterval = inputs.year.split('_');
         var searchYTS = await axios.get(
           'https://cors-anywhere.herokuapp.com/https://yts.mx/api/v2/list_movies.json?genre=' +

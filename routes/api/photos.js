@@ -477,10 +477,6 @@ router.post('/', auth, upload.single('file'), async (req, res) => {
   if (req.files === null) {
     return res.status(400).json({ msg: 'No file uploaded' });
   }
-
-  const user = await User.findById(req.user.id).select('-password');
-
-  let profile = await Profile.findOne({ user: req.user.id });
   const file = req.files.file;
 
   const uploadsDir = path.join(
@@ -492,25 +488,35 @@ router.post('/', auth, upload.single('file'), async (req, res) => {
     'uploads'
   );
   // console.log(path.resolve(uploadsDir, file.name));
-  file.mv(path.resolve(uploadsDir, file.name), (err) => {
-    if (err) {
-      console.error(err);
-      return res.status(500).send(err);
-    }
-
-    // new Photo() is used to create new instance newPhoto from model Photo
-    const newPhoto = new Photo({
-      firstname: user.firstname,
-      user: req.user.id,
-      profile: profile.id,
-      fileName: file.name,
-      filePath: `/uploads/${file.name}`,
-      // data: fs.readFileSync(`${__dirname}/client/public/uploads/${file.name}`),
-      data: fs.readFileSync(path.resolve(uploadsDir, file.name)),
+  try {
+    file.mv(path.resolve(uploadsDir, file.name), async (err) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).send(err);
+      } 
+      const userFields = {
+        _id: req.user.id,
+        fileName: file.name,
+        filePath: `/uploads/${file.name}`,
+        data: fs.readFileSync(path.resolve(uploadsDir, file.name)),
+      };
+      let user = await User.findOne({ _id: req.user.id }).select(
+        '-username -password'
+      );
+      console.log(user)
+      if (user) {
+        user = await User.findOneAndUpdate(
+          { _id: req.user.id },
+          { $set: userFields },
+          { new: true },
+        );
+      }
+      return res.json(user);
     });
-    const photo = newPhoto.save();
-    res.json(photo);
-  });
+    } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+    }
 });
 
 // @route PUT api/photos/like/:id

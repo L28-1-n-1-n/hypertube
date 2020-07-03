@@ -96,7 +96,6 @@ const Register = ({ setAlert, register, isAuthenticated, justRegistered }) => {
                 autoComplete="off" 
                 id="email-address" 
                 name="email" 
-                type="email" 
                 value={email}
                 onChange={(e) => onChange(e)}
                 required 

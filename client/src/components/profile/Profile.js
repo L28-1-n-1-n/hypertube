@@ -20,7 +20,7 @@ console.log(profile)
         <div className="user-profile col-10 col-sm-12 col-md-9 col-lg-7 d-flex flex-column align-items-center bg-dark py-4 rounded">
             <h2>{profile && profile.username}</h2>
             <div className="user-photo p-2 bg-darker__light rounded d-flex justify-content-center align-items-center">
-                <img className="img-fluid" src="" alt="Profile picture" />
+                <img className="img-fluid" src={profile && profile.filePath} alt="Profile avatar" />
             </div>
         </div>
       </div>

@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { updateUser, updatePwd } from '../../actions/auth';
 
+import FileUpload from '../FileUpload';
+
 const initialState = {
   lang: '',
   username: '',
@@ -176,6 +178,7 @@ const EditProfile = ({
                   value={password}
                   onChange={(e) => setFormDataTwo({ ...formDataTwo, [e.target.name]: e.target.value })}
                   maxLength="25" 
+                  autoComplete="off"
                   required 
                 />
                 <label className="formContent__label" htmlFor="password"><span className="formContent__label__name">Password</span></label>
@@ -188,6 +191,7 @@ const EditProfile = ({
                   value={password2}
                   onChange={(e) => setFormDataTwo({ ...formDataTwo, [e.target.name]: e.target.value })}
                   maxLength="25" 
+                  autoComplete="off"
                   required 
                 />
                 <label className="formContent__label" htmlFor="password2"><span className="formContent__label__name">Confirm password</span></label>
@@ -201,7 +205,8 @@ const EditProfile = ({
           <div className="col-12 text-center my-3">
             <h3>Picture</h3>
           </div>
-          <form encType="multipart/form-data" action="updateAvatar">
+          <FileUpload user={user} />
+          {/* <form encType="multipart/form-data" action="updateAvatar">
             <div className="col-12">
                 <div className="form-group btn btn-rounded">
                   <label htmlFor="">Image :</label>
@@ -214,7 +219,7 @@ const EditProfile = ({
                     <button type="submit" className="btn btn-primary">Add</button>
                 </div>
             </div>
-          </form>
+          </form> */}
         </div>
       </div>
     </Fragment>
