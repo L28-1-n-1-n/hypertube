@@ -6,11 +6,6 @@ const auth = require('../../middleware/auth');
 const { check, validationResult } = require('express-validator');
 const Profile = require('../../models/Profile');
 const User = require('../../models/User');
-const Photo = require('../../models/Photo');
-const publicIp = require('public-ip');
-const ipLocation = require('iplocation');
-var UserList = require('../../config/userlist');
-var userlist = UserList.userlist;
 
 // @route   GET api/profile/me
 // @desc    Get current user's profile
@@ -23,7 +18,6 @@ router.get('/me', auth, async (req, res) => {
     const profile = await Profile.findOne({
       user: req.user.id,
     }).populate('user', ['firstname', 'lastname']);
-    console.log('USERLIST', userlist);
     if (!profile) {
       return res
         .status(400)

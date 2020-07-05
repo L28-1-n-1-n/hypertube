@@ -6,16 +6,13 @@ import Homepage from '../home/Homepage';
 import Alert from '../layout/Alert';
 import Dashboard from '../dashboard/Dashboard';
 import EditProfile from '../profile-forms/EditProfile';
-import MyPhotos from '../profile-forms/MyPhotos';
 
 import Profile from '../profile/Profile';
-import Photos from '../photos/Photos';
 import NotFound from '../layout/NotFound';
 import PrivateRoute from '../routing/PrivateRoute';
 import VerificationSuccess from '../verification/VerificationSuccess';
 import Recuperation from '../verification/Recuperation';
 import Reset from '../verification/Reset';
-import Chat from '../chat/Chat';
 import ConnectedUsers from '../photos/ConnectedUsers';
 
 import Player from '../player/Player';
@@ -34,15 +31,11 @@ const Routes = () => {
         <PrivateRoute exact path='/profile/:username' component={Profile} />
         <PrivateRoute exact path='/dashboard' component={Dashboard} />
         <PrivateRoute exact path='/edit-profile' component={EditProfile} />
-        <PrivateRoute exact path='/my-photos' component={MyPhotos} />
-
-        <PrivateRoute exact path='/photos' component={Photos} />
         <PrivateRoute
           exact
           path='/connected-users'
           component={ConnectedUsers}
         />
-        <PrivateRoute exact path='/chat' component={Chat} />
         <Route
           exact
           path='/confirmation/:token'
