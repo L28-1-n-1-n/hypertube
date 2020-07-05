@@ -3,11 +3,12 @@ import UploadAlertMessage from './UploadAlertMessage';
 import Progress from './Progress';
 import PropTypes from 'prop-types';
 import axios from 'axios';
+import { forceRefresh } from '../actions/socClient';
 
 import { connect } from 'react-redux';
 import { addPhoto } from '../actions/photo';
 
-const FileUpload = ({ addPhoto, user }) => {
+const FileUpload = ({ addPhoto, forceRefresh, user }) => {
   const [file, setFile] = useState('');
 
   const [filename, setFilename] = useState('Choose File');
@@ -116,6 +117,7 @@ const FileUpload = ({ addPhoto, user }) => {
 
 FileUpload.propTypes = {
   addPhoto: PropTypes.func.isRequired,
+  forceRefresh: PropTypes.func.isRequired,
 };
 
-export default connect(null, { addPhoto })(FileUpload);
+export default connect(null, { addPhoto, forceRefresh })(FileUpload);
