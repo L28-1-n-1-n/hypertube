@@ -1,6 +1,5 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { forceRefresh } from '../../actions/socClient';
 
 import Moment from 'react-moment';
 import { connect } from 'react-redux';
@@ -18,7 +17,6 @@ const ProfilePhotoItem = ({
   addLikedBy,
   photo: { _id, isProfilePic, firstname, user, likes, date, data, profile },
   showActions,
-  forceRefresh,
 }) => {
   return (
     <div className='profile-all-img bg-white p-1 my-1'>
@@ -35,7 +33,6 @@ const ProfilePhotoItem = ({
               onClick={() => {
                 addLike(_id);
                 addLikedBy(_id);
-                forceRefresh(profile.user);
               }}
               type='button'
               className='btn btn-light'
@@ -69,7 +66,6 @@ ProfilePhotoItem.propTypes = {
   showActions: PropTypes.bool,
   makeProfilePic: PropTypes.func.isRequired,
   profile: PropTypes.object.isRequired,
-  forceRefresh: PropTypes.func.isRequired,
 };
 
 export default connect(null, {
@@ -77,5 +73,4 @@ export default connect(null, {
   addLikedBy,
   removeLike,
   makeProfilePic,
-  forceRefresh,
 })(ProfilePhotoItem);

@@ -34,67 +34,7 @@ passport.deserializeUser((user, cb) => {
 // For Socket.io
 const http = require('http');
 const server = http.createServer(app);
-const socketio = require('socket.io');
-const io = socketio(server);
-const getApiAndEmit = (socket) => {
-  const response = new Date();
-  socket.emit('FromAPI', response);
-};
 // Run when client connects
-
-var UserList = require('./config/userlist');
-userlist = UserList.userlist;
-io.on('connection', (socket) => {
-  console.log('New WS Connection ...');
-
-  socket.emit('logchannel', socket.id);
-  // Broadcast to all clients except the current one
-  // Broadcast when a user connects
-  // io.emit(); will emit to ALL clients
-  console.log('Initial userlist ', userlist);
-  socket.on('conn_transfer', (m) => {
-    let tmp = userlist.findIndex((x) => x.user === m.user);
-
-    if (tmp !== -1) {
-      userlist[tmp].sid = m.sid;
-      console.log(userlist);
-    } else if (m.user && m.sid) {
-      userlist.push(m);
-    }
-    io.emit('listupdate', userlist);
-  });
-  // Runs when client disconnects
-  socket.on('disconnect', () => {
-    console.log('disconnected user is', socket.id);
-    let tmp = userlist.findIndex((x) => x.sid === socket.id);
-    if (tmp !== -1) {
-      userlist.splice(tmp, 1);
-      console.log(userlist);
-    }
-  });
-  socket.on('logout_disconnect', (m) => {
-    let tmp = userlist.findIndex((x) => x.user === m);
-    if (tmp !== -1) {
-      userlist.splice(tmp, 1);
-      console.log(userlist);
-    }
-  });
-  // Listen for newChatMessage
-  socket.on('newChatMessage', (msg) => {
-    io.emit('message', msg);
-  });
-  socket.on('initiateRefresh', (target_ID) => {
-    io.emit('refreshTarget', target_ID);
-  });
-  socket.on('initialList', () => {
-    io.emit('listupdate', userlist);
-    console.log('userlist passed on', userlist);
-  });
-});
-
-module.exports = {
-  io: io,
-};
 
 // Init Middleware
 app.use(bodyParser.json());

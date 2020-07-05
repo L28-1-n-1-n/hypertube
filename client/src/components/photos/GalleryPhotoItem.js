@@ -2,7 +2,6 @@ import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import Moment from 'react-moment';
-import { forceRefresh } from '../../actions/socClient';
 import { connect } from 'react-redux';
 
 import {
@@ -19,7 +18,6 @@ const GalleryPhotoItem = ({
   removeLike,
   myProfile,
   addClickedBy,
-  forceRefresh,
   auth,
   photo: {
     _id,
@@ -58,7 +56,6 @@ const GalleryPhotoItem = ({
             console.log(profile._id);
             console.log(myProfile.user._id);
             addClickedBy(profile._id, myProfile.user._id);
-            forceRefresh(profile.user);
           }}
         >
           <Image data={data} />
@@ -104,7 +101,6 @@ const GalleryPhotoItem = ({
                 addLike(_id);
                 addLikedBy(_id);
 
-                forceRefresh(profile.user);
               }}
               type='button'
               className='btn btn-light'
@@ -138,7 +134,6 @@ GalleryPhotoItem.propTypes = {
   removeLike: PropTypes.func.isRequired,
   addClickedBy: PropTypes.func.isRequired,
   showActions: PropTypes.bool,
-  forceRefresh: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -150,5 +145,4 @@ export default connect(mapStateToProps, {
   addLikedBy,
   removeLike,
   addClickedBy,
-  forceRefresh,
 })(GalleryPhotoItem);

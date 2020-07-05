@@ -2,7 +2,6 @@ import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import Moment from 'react-moment';
-import { forceRefresh } from '../../actions/socClient';
 import { disconnect } from '../../actions/profile';
 import { connect } from 'react-redux';
 
@@ -20,7 +19,6 @@ const ConnectedPhotoItem = ({
   removeLike,
   myProfile,
   addClickedBy,
-  forceRefresh,
   disconnect,
   auth,
   photo: {
@@ -56,7 +54,6 @@ const ConnectedPhotoItem = ({
           className='btn btn-primary'
           onClick={() => {
             addClickedBy(profile._id, myProfile.user._id);
-            forceRefresh(profile.user);
           }}
         >
           <Image data={data} />
@@ -95,7 +92,6 @@ const ConnectedPhotoItem = ({
               onClick={() => {
                 addLike(_id);
                 addLikedBy(_id);
-                forceRefresh(profile.user);
               }}
               type='button'
               className='btn btn-light'
@@ -137,7 +133,6 @@ ConnectedPhotoItem.propTypes = {
   removeLike: PropTypes.func.isRequired,
   addClickedBy: PropTypes.func.isRequired,
   showActions: PropTypes.bool,
-  forceRefresh: PropTypes.func.isRequired,
   disconnect: PropTypes.func.isRequired,
 };
 
@@ -150,6 +145,5 @@ export default connect(mapStateToProps, {
   addLikedBy,
   removeLike,
   addClickedBy,
-  forceRefresh,
   disconnect,
 })(ConnectedPhotoItem);

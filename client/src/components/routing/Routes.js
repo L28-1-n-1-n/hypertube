@@ -15,7 +15,6 @@ import PrivateRoute from '../routing/PrivateRoute';
 import VerificationSuccess from '../verification/VerificationSuccess';
 import Recuperation from '../verification/Recuperation';
 import Reset from '../verification/Reset';
-import Chat from '../chat/Chat';
 import ConnectedUsers from '../photos/ConnectedUsers';
 
 import Player from '../player/Player';
@@ -42,7 +41,6 @@ const Routes = () => {
           path='/connected-users'
           component={ConnectedUsers}
         />
-        <PrivateRoute exact path='/chat' component={Chat} />
         <Route
           exact
           path='/confirmation/:token'
