@@ -13,7 +13,6 @@ import PrivateRoute from '../routing/PrivateRoute';
 import VerificationSuccess from '../verification/VerificationSuccess';
 import Recuperation from '../verification/Recuperation';
 import Reset from '../verification/Reset';
-import ConnectedUsers from '../photos/ConnectedUsers';
 
 import Player from '../player/Player';
 
@@ -31,11 +30,6 @@ const Routes = () => {
         <PrivateRoute exact path='/profile/:username' component={Profile} />
         <PrivateRoute exact path='/dashboard' component={Dashboard} />
         <PrivateRoute exact path='/edit-profile' component={EditProfile} />
-        <PrivateRoute
-          exact
-          path='/connected-users'
-          component={ConnectedUsers}
-        />
         <Route
           exact
           path='/confirmation/:token'
