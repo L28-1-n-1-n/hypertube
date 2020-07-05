@@ -44,6 +44,9 @@ const UserSchema = new mongoose.Schema({
   facebookId: {
     type: String,
   },
+  imageUrl: {
+    type: String,
+  },
 });
 
 module.exports = User = mongoose.model('user', UserSchema);

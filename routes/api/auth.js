@@ -96,58 +96,91 @@ router.post(
   }
 );
 
-// router.all('*', (req, res, next) => {
-//   res.header('Access-Control-Allow-Origin', '*');
-//   res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
-//   res.header('Access-Control-Allow-Headers', '*');
-//   next();
-// });
-// @route   GET api/auth/auth/github
-// @desc    Github OAuth
-// @access  Public
-// router.get('/auth/github', passport.authenticate('github'));
+// router.get(
+//   '/github',
+//   passport.authenticate(
+//     'github'
+//     // {successRedirect: 'http://localhost:3000',
+//     // failureRedirect: 'http://localhost:3000/login',}
+//   )
+//   // function (req, res) {
+//   //   res.redirect('/');
+//   // }
+// );
 
+// authentication middleware
+// router.use(function (req, res, next) {
+//   if (req.user) {
+//     // or choose your own way of passing auth info
+//     return next();
+//   }
+
+//   // not authenticated, redirect to oauth flow
+//   var redirect_uri = new Buffer(req.originalUrl);
+//   res.redirect(
+//     '/api/auth/github?redirect_uri=' + redirect_uri.toString('base64')
+//   );
+// });
+
+// router.get('/github', function (req, res, next) {
+//   var callbackURL = '/auth/github/callback';
+//   if (req.query.redirect_uri) {
+//     callbackURL += '?redirect_uri=' + req.query.redirect_uri;
+//   }
+//   passport.authenticate('github', {
+//     scope: ['user:email'],
+//     callbackURL: callbackURL,
+//   })(req, res, next);
+// });
+
+// router.get('/github/callback', function (req, res, next) {
+//   var redirect_uri = '/';
+//   if (req.query.redirect_uri) {
+//     // prepend host to avoid open redirects
+//     redirect_uri =
+//       config.HOST +
+//       '/' +
+//       new Buffer(req.query.redirect_uri, 'base64').toString();
+//   }
+//   passport.authenticate('github', {
+//     failureRedirect: '/login',
+//     successRedirect: redirect_uri,
+//   })(req, res, next);
+// });
+
+//
+router.get('/github', passport.authenticate('github'));
 router.get(
-  '/github',
-  // auth,
-  passport.authenticate(
-    'github'
-    // {successRedirect: 'http://localhost:3000',
-    // failureRedirect: 'http://localhost:3000/login',}
-  )
+  '/github/callback',
+  passport.authenticate('github', {
+    failureRedirect: 'http://localhost:3000/?message=oauth_fail',
+  }),
+  async (req, res) => {
+    console.log(req.user);
+    const payload = {
+      user: {
+        id: req.user._id,
+      },
+    };
+    jwt.sign(
+      payload,
+      config.get('jwtSecret'),
+      { expiresIn: 360000 },
+      (err, token) => {
+        if (err) throw err;
+        console.log('generated token is', token);
+        res.redirect('http://localhost:3000/login/' + token);
+      }
+    );
+  }
+  // passport.authenticate('github', { scope: ['user:email'] }),
   // function (req, res) {
+  //   // Successful authentication, redirect home.
+  //   console.log('yaay');
   //   res.redirect('/');
   // }
 );
-
-// router.get(
-//   '/auth/auth/github',
-//   passport.authenticate('github', { email: `zto2.71828@gmail.com` })
-// );
-// router.get('/auth/github', () => {
-//   console.log('back reached');
-// });
-
-// router.get('/github', passportSetup, (req, res) => {
-//   console.log('back reached');
-//   try {
-//     // const user = await User.findById(req.user.id).select('-password');
-//     // const profile = await Profile.findOne({ user: req.user.id });
-//     // const logon_time = new Date();
-//     // if (profile) {
-//     //   profile.updateOne({ lastOnline: logon_time });
-//     // }
-//     // res.json(user);
-//     console.log(passportSetup);
-//     console.log('lol');
-//     // const response = await passport.authenticate('github')(req, res);
-//     // console.log(res);
-//     // console.log(response);
-//   } catch (err) {
-//     console.error(err.message);
-//     res.status(500).send('Server Error');
-//   }
-// });
+//
 
 // router.get('/github', async (req, res) => {
 //   console.log('back reached');
@@ -233,53 +266,28 @@ router.get(
 //     failureRedirect: 'http://localhost:3000/player',
 //   })
 // );
-router.get(
-  '/auth/github/callback',
-  passport.authenticate('github', { failureRedirect: '/login' }),
-  // passport.authenticate('github', { scope: ['user:email'] }),
-  function (req, res) {
-    // Successful authentication, redirect home.
-    console.log('yaay');
-    res.redirect('/');
-  }
-);
+// router.get(
+//   '/github/callback',
+//   passport.authenticate('github', {
+//     failureRedirect: 'http://localhost:3000/?message=oauth_fail',
+//   }),
+//   // passport.authenticate('github', { scope: ['user:email'] }),
+//   function (req, res) {
+//     // Successful authentication, redirect home.
+//     console.log('yaay');
+//     res.redirect('/');
+//   }
+// );
 
 router.get('/fortytwo', passport.authenticate('fortyTwo'));
 router.get(
   '/fortytwo/callback',
   passport.authenticate('fortyTwo', {
-    // successRedirect: 'http://localhost:3000/',
     failureRedirect: 'http://localhost:3000/?message=oauth_fail',
   }),
-  // async function (req, res) {
-  //   try {
-  //     const id = req.user;
-  //     console.log(req);
-  //     console.log(res);
-  //     console.log('id in router is', id);
-  //     console.log(accessToken);
-  //     let newUser = await User.findOne({ _id: req.user.id });
-  //     if (!newUser) {
-  //       console.log('unable to find new user');
-  //     }
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  //   // res.send('hello');
-  //   // console.log(req);
-  //   // console.log(res);
-  //   // const token = jwt.sign({ id }, jwtSecret.secret);
-  //   // res.redirect("http://localhost:3000/login?accessToken=" + token);
-  // }
+
   async (req, res) => {
-    // const id = req.user.dataValues.id;
-    console.log('req is ', req.user);
-    console.log(req.user._id);
-    console.log(req.user.firstname);
-    console.log(req.user.lastname);
-    console.log(req.user.email);
-    console.log(req.user.password);
-    console.log(req.user.fortyTwoId);
+    console.log(req.user);
     const payload = {
       user: {
         id: req.user._id,
@@ -293,10 +301,6 @@ router.get(
         if (err) throw err;
         console.log('generated token is', token);
         res.redirect('http://localhost:3000/login/' + token);
-        // Need to make html page to grab the access Token as match.params.accessToken,
-        // then use axios to update the state
-
-        // res.json({ token }); // callback : if no error, get token
       }
     );
   }

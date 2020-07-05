@@ -28,7 +28,7 @@ export const loadUser = () => async (dispatch) => {
   if (sessionStorage.token) {
     setAuthToken(sessionStorage.token);
   }
-
+  console.log('loadUser token is', sessionStorage.token);
   try {
     const res = await axios.get('/api/auth');
 
@@ -36,6 +36,7 @@ export const loadUser = () => async (dispatch) => {
       type: USER_LOADED,
       payload: res.data, // data of the user loaded
     });
+    console.log(res.data);
   } catch (err) {
     dispatch({
       type: AUTH_ERROR,

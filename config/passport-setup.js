@@ -5,7 +5,8 @@ const crypto = require('crypto');
 const chalk = require('chalk');
 const keys = require('./keys');
 const User = require('../models/User');
-
+const https = require('https');
+const { setFlagsFromString } = require('v8');
 // serialize the user.id to save in the cookie session
 // so the browser will remember the user when login
 passport.serializeUser((user, cb) => {
@@ -26,71 +27,109 @@ passport.deserializeUser((id, cb) => {
 passport.use(
   new GitHubStrategy(
     {
-      //   clientID: keys.GITHUB.clientID,
-      //   clientSecret: keys.GITHUB.clientSecret,
       clientID: keys.githubClientID,
       clientSecret: keys.githubClientSecret,
-      callbackURL: 'http://localhost:5000/auth/github/callback',
-      // callbackUrl: 'http://localhost:3000',
+      callbackURL: 'http://localhost:5000/api/auth/github/callback',
     },
     async (accessToken, refreshToken, profile, cb) => {
       console.log(chalk.yellow(profile));
       console.log(chalk.yellow(JSON.stringify(profile)));
       //   console.log(chalk.yellow(profile));
+      console.log(profile._json.id);
+      console.log(profile._json);
+      var username = 'L28-1-n-1-n';
+      var email;
+      const setEmail = (email, result) => {
+        email = result;
+      };
+      var options = {
+        host: 'api.github.com',
+        path: '/users/' + username + '/events/public',
+        method: 'GET',
+        headers: { 'user-agent': 'node.js' },
+      };
 
-      const currentUser = await User.findOne({
-        githubId: profile._json.id_str,
-      });
-      if (!currentUser) {
-        const newUser = await new User({
-          username: profile.username,
-          lastname: profile.displayName,
-          emailAddress: profile.emails[0].value,
-          //   avatar: profile.photos[0].value,
-          password: 'salut',
-          githubId: profile._json.id_str,
+      var req = https.request(options, function (res) {
+        var body = '';
+        res.on('data', function (chunk) {
+          // body += chunk.toString('utf8');
+          body += chunk;
         });
-        newUser.save();
-        if (newUser) {
-          cb(null, newUser);
-        }
-      }
-      cb(null, currentUser);
+
+        res.on('end', function () {
+          var i = 0;
+          var result = JSON.parse(body);
+          while (
+            !(
+              result[i] &&
+              result[i].payload &&
+              result[i].payload.commits[0] &&
+              result[i].payload.commits[0].author &&
+              result[i].payload.commits[0].author.email
+            ) &&
+            i < result.length
+          ) {
+            i++;
+          }
+          const result_email = JSON.parse(body)[0].payload.commits[i].author
+            .email;
+          if (typeof result_email === 'undefined') {
+            result_email = 'placeholder@email_unknown.com';
+          }
+          const register = async () => {
+            const currentUser = await User.findOne({
+              githubId: profile._json.id.toString(),
+            });
+
+            if (!currentUser) {
+              const newUser = await new User({
+                username: profile._json.login,
+                firstname: profile._json.login,
+                lastname: profile._json.login,
+                email: result_email,
+                password: crypto.randomBytes(8).toString('hex'),
+                githubId: profile._json.id.toString(),
+                imageUrl: profile.avatar_url,
+              });
+              newUser.save();
+              if (newUser) {
+                console.log('we are yere');
+                console.log(newUser);
+                cb(null, newUser);
+              }
+            } else {
+              cb(null, currentUser);
+            }
+          };
+
+          register();
+        });
+      });
+
+      req.end();
+
+      // const currentUser = await User.findOne({
+      //   githubId: profile._json.id.toString(),
+      // });
+      // console.log(email);
+      // if (!currentUser) {
+      //   const newUser = await new User({
+      //     username: profile._json.login,
+      //     lastname: profile.displayName,
+      //     // emailAddress: profile.emails[0].value,
+      //     //   avatar: profile.photos[0].value,
+      //     password: crypto.randomBytes(8).toString('hex'),
+      //     githubId: profile._json.id_str,
+      //   });
+      //   newUser.save();
+      //   if (newUser) {
+      //     cb(null, newUser);
+      //   }
+      // }
+      // cb(null, currentUser);
     }
   )
 );
-
-// passport.use(
-//   'fortyTwo',
-//   new FortyTwoStrategy(
-//     {
-//       clientID: keys.FORTYTWO.clientID,
-//       clientSecret: keys.FORTYTWO.clientSecret,
-//       callbackURL: 'http://localhost:5000/api/auth/fortytwo/callback',
-//     },
-//     async (accessToken, refreshToken, profile, cb) => {
-//       console.log(chalk.yellow(profile));
-//       const currentUser = await User.findOne({
-//         fortyTwo_id: profile.id,
-//       });
-//       if (!currentUser) {
-//         const newUser = await new User({
-//           firstName: profile.name.givenName,
-//           lastName: profile.name.familyName,
-//           // picture: profile.photos[0].value,
-//           userName: profile.username + Math.floor(Math.random() * 100),
-//           fortytwo_id: profile.id,
-//         }).save();
-
-//         if (newUser) {
-//           cb(null, newUser);
-//         }
-//       } else {
-//         cb(null, currentUser);
-//       }
-//     }
-//   )
-// );
 
 passport.use(
   'fortyTwo',
@@ -98,7 +137,6 @@ passport.use(
     {
       clientID: keys.fortyTwoClientID,
       clientSecret: keys.fortyTwoClientSecret,
-      // callbackURL: 'http://localhost:1337/api/v1/auth/42/callback',
       callbackURL: `http://localhost:5000/api/auth/fortytwo/callback`,
     },
     async (accessToken, refreshToken, profile, cb) => {
@@ -107,17 +145,7 @@ passport.use(
       const currentUser = await User.findOne({
         fortyTwoId: profile.id,
       });
-      let userFields = {
-        firstname: profile.name.givenName,
-        lastname: profile.name.familyName,
-        // picture: profile.photos[0].value,
-        username: profile.username + Math.floor(Math.random() * 100),
-        email: profile.emails[0].value,
-        password: crypto.randomBytes(8).toString('hex'),
-        fortyTwoId: profile.id,
-        imageUrl: profile.photos[0].value,
-      };
-      console.log(userFields);
+
       if (!currentUser) {
         const newUser = await new User({
           firstname: profile.name.givenName,

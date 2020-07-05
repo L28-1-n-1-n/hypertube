@@ -98,12 +98,21 @@ const Login = ({ login, isAuthenticated }) => {
               {/* <Link to="/auth/42" className="btn btn-outline-light icon-custom icon-custom__fortytwo">Log in</Link> */}
             </div>
             <div className='text-center mb-3'>
-              <Link
+              <a href='http://localhost:5000/api/auth/fortytwo'>
+                <button
+                  variant='link'
+                  className='btn btn-outline-light icon-custom icon-custom__fortytwo'
+                  type='button'
+                >
+                  Login Github
+                </button>
+              </a>
+              {/* <Link
                 to='api/auth/github'
                 className='btn btn-outline-light icon-custom icon-custom__github'
               >
                 Log in
-              </Link>
+              </Link> */}
             </div>
           </div>
         </div>
