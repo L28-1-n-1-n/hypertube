@@ -5,6 +5,7 @@ import { GET_MOVIES } from './types';
 
 // Get filtered movies from api
 export const fetchYTS = (inputs) => async (dispatch) => {
+  console.log('fetchYTS called');
   const filteredResults = (searchYTS) => {
     const dateinterval = inputs.year.split('_');
     const filtered = searchYTS.data.data.movies;
@@ -153,7 +154,7 @@ export const fetchYTS = (inputs) => async (dispatch) => {
           ),
 
           await axios.get(
-            `https://cors-anywhere.herokuapp.com/https://yts.mx/api/v2/list_movies.json?sort_by=rating&limit=5&page=${
+            `https://cors-anywhere.herokuapp.com/https://tv-v2.api-fetch.sh/movies/${
               3 * multi
             }`
           ),
