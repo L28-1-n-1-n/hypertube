@@ -6,8 +6,10 @@ import { fetchYTS } from '../../actions/home';
 import playWhite from '../../img/play_white.png';
 
 const Homepage = ({ fetchYTS, movie: { movies } }) => {
-  const [listItems, setListItems] = useState(Array.from(Array(30).keys(), n => n + 1));
+  const [displayMovies, setDisplayMovies] = useState([]);
+
   const [isFetching, setIsFetching] = useState(false);
+  const [searchCriteria, setSearchCriteria] = useState({});
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
@@ -19,7 +21,7 @@ const Homepage = ({ fetchYTS, movie: { movies } }) => {
     let rating = params.get('rating');
     let year = params.get('year');
     let order = params.get('order');
-    let inputs = {};
+    let inputs = { multiple: 1 };
     if (
       !(
         search == null &&
@@ -36,35 +38,85 @@ const Homepage = ({ fetchYTS, movie: { movies } }) => {
         year: year,
         order: order,
       };
+      setSearchCriteria(inputs);
     }
     fetchYTS(inputs);
-    if (!isFetching)
-      return;
-    fetchMoreListItems();
-  }, [fetchYTS, isFetching]);
+  }, [fetchYTS]);
 
+  useEffect(() => {
+    if (!isFetching) return;
+    fetchMoreMovies();
+  }, [isFetching]);
+
+  useEffect(() => {
+    nextItems();
+  }, [movies]);
+  let lastPos = 0;
   function handleScroll() {
-    if (window.innerHeight + document.documentElement.scrollTop !== document.documentElement.offsetHeight)
+    if (
+      window.innerHeight + document.documentElement.scrollTop ===
+      document.documentElement.offsetHeight
+    )
       return;
-    console.log('Fetch more list items!');
-    setIsFetching(true);
+    var st = window.pageYOffset || document.documentElement.scrollTop;
+    if (st > lastPos) {
+      console.log('Scrolling down');
+      console.log('Fetch more list items!');
+      setIsFetching(true);
+    }
+    lastPos = st <= 0 ? 0 : st;
   }
+  const nextItems = () => {
+    console.log('next Items called');
+    setDisplayMovies((prevState) => [
+      ...prevState,
+      ...movies.slice(prevState.length, prevState.length + 25),
+    ]);
+    setIsFetching(false);
+  };
+  function fetchMoreMovies() {
+    // if (displayMovies.length > 150 && displayMovies.length === movies.length) {
+    if (displayMovies.length > 150) {
+      let params = new URLSearchParams(window.location.search);
+      let search = params.get('search');
+      let genre = params.get('genre');
+      let rating = params.get('rating');
+      let year = params.get('year');
+      let order = params.get('order');
+      let inputs = { multiple: Math.floor(displayMovies.length / 30) + 1 };
 
-  function fetchMoreListItems() {
-    setTimeout(() => {
-      setListItems(prevState => ([...prevState, ...Array.from(Array(20).keys(), n => n + prevState.length + 1)]));
-      setIsFetching(false);
-    }, 2000);
+      if (
+        !(
+          search == null &&
+          genre == null &&
+          rating == null &&
+          year == null &&
+          order == null
+        )
+      ) {
+        inputs = {
+          search: search,
+          genre: genre,
+          rating: rating,
+          year: year,
+          order: order,
+        };
+        setSearchCriteria(inputs);
+        console.log(searchCriteria);
+      }
+      fetchYTS(inputs);
+    }
+    nextItems();
+    console.log(displayMovies);
+    // fetchYTS(searchCriteria);
   }
-
-
+  console.log(displayMovies);
+  console.log(displayMovies.length);
+  console.log(movies.length);
+  console.log('movies in front end', movies);
   // Runs immediately when profile mounts
   return (
     <Fragment>
-      {isFetching && 'Fetching more list items...'}
-      <ul className="list-group mb-2">
-        {listItems.map(listItem => <li className="list-group-item">List Item {listItem}</li>)}
-      </ul>
       <div
         id='homepage'
         className='container-fluid justify-content-center my-4 main-content-home'
@@ -124,7 +176,11 @@ const Homepage = ({ fetchYTS, movie: { movies } }) => {
                     </div>
                     <div>
                       <p>Minimum rating:</p>
-                      <select className='d-flex m-auto' name='rating' defaultValue="0">
+                      <select
+                        className='d-flex m-auto'
+                        name='rating'
+                        defaultValue='0'
+                      >
                         <option value='9'>9</option>
                         <option value='8'>8</option>
                         <option value='7'>7</option>
@@ -168,13 +224,17 @@ const Homepage = ({ fetchYTS, movie: { movies } }) => {
           <div className='col-12'>
             <div className='row justify-content-center'>
               {movies &&
-                movies.map((item, i) => (
-                  <div key={i} className='filmCard m-1 col-7 col-sm-4 col-md-3 col-lg-2 bg-dark rounded text-center'>
+                displayMovies &&
+                displayMovies.map((item, i) => (
+                  <div
+                    key={i}
+                    className='filmCard m-1 col-7 col-sm-4 col-md-3 col-lg-2 bg-dark rounded text-center'
+                  >
                     <div className='filmCard__top p-1 rounded-top'>
                       <h3>{item.title}</h3>
                     </div>
                     <div className='video_player rounded'>
-                      <Link to={"/player/"+ item.imdb_code}>
+                      <Link to={'/player/' + item.imdb_code}>
                         <img
                           className='img-fluid'
                           src={playWhite}
@@ -199,6 +259,8 @@ const Homepage = ({ fetchYTS, movie: { movies } }) => {
                 ))}
             </div>
           </div>
+
+          {isFetching && 'Fetching more list items...'}
         </div>
       </div>
     </Fragment>

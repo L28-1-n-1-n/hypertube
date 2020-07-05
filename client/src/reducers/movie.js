@@ -20,7 +20,9 @@ export default function (state = initialState, action) {
     case GET_MOVIES:
       return {
         ...state,
-        movies: payload,
+        // movies: payload,
+        // movies: [...state.movies, payload],
+        movies: state.movies.concat(payload),
         loading: false,
       };
     case GET_ONE_MOVIE:
