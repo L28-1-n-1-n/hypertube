@@ -7,7 +7,6 @@ import playWhite from '../../img/play_white.png';
 
 const Homepage = ({ fetchYTS, movie: { movies } }) => {
   const [displayMovies, setDisplayMovies] = useState([]);
-
   const [isFetching, setIsFetching] = useState(false);
   const [searchCriteria, setSearchCriteria] = useState({});
   useEffect(() => {
@@ -60,14 +59,11 @@ const Homepage = ({ fetchYTS, movie: { movies } }) => {
       return;
     var st = window.pageYOffset || document.documentElement.scrollTop;
     if (st > lastPos) {
-      console.log('Scrolling down');
-      console.log('Fetch more list items!');
       setIsFetching(true);
     }
     lastPos = st <= 0 ? 0 : st;
   }
   const nextItems = () => {
-    console.log('next Items called');
     setDisplayMovies((prevState) => [
       ...prevState,
       ...movies.slice(prevState.length, prevState.length + 25),
@@ -75,15 +71,14 @@ const Homepage = ({ fetchYTS, movie: { movies } }) => {
     setIsFetching(false);
   };
   function fetchMoreMovies() {
-    // if (displayMovies.length > 150 && displayMovies.length === movies.length) {
-    if (displayMovies.length > 150) {
+    if (displayMovies.length > 150 && displayMovies.length === movies.length) {
       let params = new URLSearchParams(window.location.search);
       let search = params.get('search');
       let genre = params.get('genre');
       let rating = params.get('rating');
       let year = params.get('year');
       let order = params.get('order');
-      let inputs = { multiple: Math.floor(displayMovies.length / 30) + 1 };
+      let inputs = { multiple: Math.floor(displayMovies.length / 150) + 1 };
 
       if (
         !(
@@ -102,18 +97,11 @@ const Homepage = ({ fetchYTS, movie: { movies } }) => {
           order: order,
         };
         setSearchCriteria(inputs);
-        console.log(searchCriteria);
       }
       fetchYTS(inputs);
     }
     nextItems();
-    console.log(displayMovies);
-    // fetchYTS(searchCriteria);
   }
-  console.log(displayMovies);
-  console.log(displayMovies.length);
-  console.log(movies.length);
-  console.log('movies in front end', movies);
   // Runs immediately when profile mounts
   return (
     <Fragment>
@@ -260,7 +248,7 @@ const Homepage = ({ fetchYTS, movie: { movies } }) => {
             </div>
           </div>
 
-          {isFetching && 'Fetching more list items...'}
+          {isFetching && 'Loading ...'}
         </div>
       </div>
     </Fragment>

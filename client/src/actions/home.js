@@ -5,9 +5,7 @@ import { GET_MOVIES } from './types';
 
 // Get filtered movies from api
 export const fetchYTS = (inputs) => async (dispatch) => {
-  console.log('fetchYTS called');
   const filteredResults = (searchYTS) => {
-    // console.log(searchYTS.length);
     const dateinterval = inputs.year.split('_');
     const filtered = searchYTS.data.data.movies;
     const tmp = [];
@@ -39,7 +37,6 @@ export const fetchYTS = (inputs) => async (dispatch) => {
   };
 
   const filteredPop = (searchPop, title, yearmin, yearmax, genre, rate) => {
-    // console.log(searchPop);
     let results = searchPop.filter(
       (item) =>
         item.title === title &&
@@ -84,25 +81,21 @@ export const fetchYTS = (inputs) => async (dispatch) => {
             '&sort_by=title' +
             '&order_by=' +
             inputs.order +
-            // `&limit=50`
             `&limit=${50 * multi}`
         );
         var searchYTS = tentativeSearchYTS.splice(0, 50 * (multi - 1));
         const searchPop = await axios.all([
           await axios.get(
-            // 'https://cors-anywhere.herokuapp.com/https://tv-v2.api-fetch.sh/movies/1'
             `https://cors-anywhere.herokuapp.com/https://tv-v2.api-fetch.sh/movies/${
               3 * multi - 2
             }`
           ),
           await axios.get(
-            // 'https://cors-anywhere.herokuapp.com/https://tv-v2.api-fetch.sh/movies/2'
             `https://cors-anywhere.herokuapp.com/https://tv-v2.api-fetch.sh/movies/${
               3 * multi - 1
             }`
           ),
           await axios.get(
-            // 'https://cors-anywhere.herokuapp.com/https://tv-v2.api-fetch.sh/movies/3'
             `https://cors-anywhere.herokuapp.com/https://tv-v2.api-fetch.sh/movies/${
               3 * multi
             }`
@@ -143,27 +136,23 @@ export const fetchYTS = (inputs) => async (dispatch) => {
             '&sort_by=rating' +
             '&order_by=' +
             inputs.order +
-            // '&limit=50'
             `&limit=${50 * multi}`
         );
         searchYTS = tentativeSearchYTS.splice(0, 50 * (multi - 1));
 
         const searchPop = await axios.all([
           await axios.get(
-            // 'https://cors-anywhere.herokuapp.com/https://tv-v2.api-fetch.sh/movies/1'
             `https://cors-anywhere.herokuapp.com/https://tv-v2.api-fetch.sh/movies/${
               3 * multi - 2
             }`
           ),
           await axios.get(
-            // 'https://cors-anywhere.herokuapp.com/https://tv-v2.api-fetch.sh/movies/2'
             `https://cors-anywhere.herokuapp.com/https://tv-v2.api-fetch.sh/movies/${
               3 * multi - 1
             }`
           ),
 
           await axios.get(
-            // 'https://cors-anywhere.herokuapp.com/https://tv-v2.api-fetch.sh/movies/3'
             `https://cors-anywhere.herokuapp.com/https://yts.mx/api/v2/list_movies.json?sort_by=rating&limit=5&page=${
               3 * multi
             }`
@@ -215,19 +204,16 @@ export const fetchYTS = (inputs) => async (dispatch) => {
       multi = inputs.multiple;
       const yolo = await axios.all([
         await axios.get(
-          // 'https://cors-anywhere.herokuapp.com/https://tv-v2.api-fetch.sh/movies/1'
           `https://cors-anywhere.herokuapp.com/https://tv-v2.api-fetch.sh/movies/${
             3 * multi - 2
           }`
         ),
         await axios.get(
-          // 'https://cors-anywhere.herokuapp.com/https://tv-v2.api-fetch.sh/movies/2'
           `https://cors-anywhere.herokuapp.com/https://tv-v2.api-fetch.sh/movies/${
             3 * multi - 1
           }`
         ),
         await axios.get(
-          // 'https://cors-anywhere.herokuapp.com/https://tv-v2.api-fetch.sh/movies/3'
           `https://cors-anywhere.herokuapp.com/https://tv-v2.api-fetch.sh/movies/${
             3 * multi
           }`
@@ -236,19 +222,16 @@ export const fetchYTS = (inputs) => async (dispatch) => {
       console.log(yolo);
       // var bite = yolo.filter(yolo[0].data[0].title === "Deadpool")
       var one = await axios.get(
-        // 'https://cors-anywhere.herokuapp.com/https://yts.mx/api/v2/list_movies.json?sort_by=rating&limit=5'
         `https://cors-anywhere.herokuapp.com/https://yts.mx/api/v2/list_movies.json?sort_by=rating&limit=${
           3 * multi - 2
         }`
       );
       var two = await axios.get(
-        // 'https://cors-anywhere.herokuapp.com/https://yts.mx/api/v2/list_movies.json?sort_by=rating&limit=5&page=2'
         `https://cors-anywhere.herokuapp.com/https://yts.mx/api/v2/list_movies.json?sort_by=rating&limit=5&page=${
           3 * multi - 1
         }`
       );
       var three = await axios.get(
-        // 'https://cors-anywhere.herokuapp.com/https://yts.mx/api/v2/list_movies.json?sort_by=rating&limit=5&page=3'
         `https://cors-anywhere.herokuapp.com/https://yts.mx/api/v2/list_movies.json?sort_by=rating&limit=5&page=${
           3 * multi
         }`
@@ -278,7 +261,6 @@ export const fetchYTS = (inputs) => async (dispatch) => {
           return o;
         });
       }
-      console.log('result before concat', result);
       result = result.concat(result2);
     }
     // result = result.concat(result2);
