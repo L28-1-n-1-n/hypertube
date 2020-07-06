@@ -55,6 +55,7 @@ const Login = ({ login, isAuthenticated }) => {
                   className="formContent__input" 
                   type="password" 
                   name="password" 
+                  autoComplete="off" 
                   maxLength="25"
                   value={password}
                   onChange={(e) => onChange(e)}
