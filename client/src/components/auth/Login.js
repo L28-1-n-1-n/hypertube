@@ -95,7 +95,6 @@ const Login = ({ login, isAuthenticated }) => {
                   Login 42
                 </button>
               </a>
-              {/* <Link to="/auth/42" className="btn btn-outline-light icon-custom icon-custom__fortytwo">Log in</Link> */}
             </div>
             <div className='text-center mb-3'>
               <a href='http://localhost:5000/api/auth/github'>
@@ -107,12 +106,6 @@ const Login = ({ login, isAuthenticated }) => {
                   Login Github
                 </button>
               </a>
-              {/* <Link
-                to='api/auth/github'
-                className='btn btn-outline-light icon-custom icon-custom__github'
-              >
-                Log in
-              </Link> */}
             </div>
           </div>
         </div>

@@ -198,7 +198,7 @@ const Register = ({ setAlert, register, isAuthenticated, justRegistered }) => {
                   className='btn btn-outline-light icon-custom icon-custom__github'
                   type='button'
                 >
-                  Sign up
+                  Sign up Github
                 </button>
               </a>
             </div>

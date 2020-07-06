@@ -16,13 +16,14 @@ import './styles/style.scss';
 const App = () => {
   useEffect(() => {
     // Use Local storage
-    // if (localStorage.token) {
-    //   setAuthToken(localStorage.token);
-
-    // Use session storage
-    if (sessionStorage.token) {
-      setAuthToken(sessionStorage.token);
+    if (localStorage.token) {
+      setAuthToken(localStorage.token);
       store.dispatch(loadUser());
+
+      // Use session storage
+      // if (sessionStorage.token) {
+      //   setAuthToken(sessionStorage.token);
+      //   store.dispatch(loadUser());
     }
   }, []);
 

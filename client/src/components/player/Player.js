@@ -37,7 +37,7 @@ const Movie = ({
   console.log(torrents);
   console.log(movieComments);
   console.log(comments);
-  console.log(sessionStorage.token);
+  console.log(localStorage.token);
 
   const { comment } = formData;
 

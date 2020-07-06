@@ -21,12 +21,12 @@ import { socket } from './socClient';
 
 // Load User
 export const loadUser = () => async (dispatch) => {
-  // if (localStorage.token) {
-  //   setAuthToken(localStorage.token);
-  if (sessionStorage.token) {
-    setAuthToken(sessionStorage.token);
+  if (localStorage.token) {
+    setAuthToken(localStorage.token);
+    // if (sessionStorage.token) {
+    //   setAuthToken(sessionStorage.token);
   }
-  console.log('loadUser token is', sessionStorage.token);
+
   try {
     const res = await axios.get('/api/auth');
 
@@ -34,7 +34,6 @@ export const loadUser = () => async (dispatch) => {
       type: USER_LOADED,
       payload: res.data, // data of the user loaded
     });
-    console.log(res.data);
   } catch (err) {
     dispatch({
       type: AUTH_ERROR,
@@ -120,7 +119,6 @@ export const login = (username, password) => async (dispatch) => {
 
   try {
     const res = await axios.post('/api/auth', body, config); // make POST request to /api/auth, sending body and config
-    console.log(res.data);
     dispatch({
       type: LOGIN_SUCCESS,
       payload: res.data,
@@ -193,8 +191,6 @@ export const updatePwd = (formDataTwo, history, id) => async (dispatch) => {
       config
     );
 
-    console.log('formdata from updatepwd method below');
-    console.log(formDataTwo);
     dispatch({
       type: UPDATE_PWD,
       payload: res.data,
@@ -207,7 +203,7 @@ export const updatePwd = (formDataTwo, history, id) => async (dispatch) => {
     if (errors) {
       errors.forEach((error) => dispatch(setAlert(error.msg, 'danger')));
     }
-    console.log(formDataTwo);
+
     dispatch({
       type: PWD_ERROR,
       payload: { msg: err.response.statusText, status: err.response.status },
@@ -220,7 +216,7 @@ export const registerGithub = () => async () => {
   try {
     window.location.href = `http://localhost:5000/api/auth/github`;
   } catch (err) {
-    console.log('github error');
+    console.log('github auth error');
     console.log(err);
   }
 };
@@ -231,7 +227,7 @@ export const registerFortyTwo = () => {
   try {
     window.location.href = `http://localhost:5000/api/auth/fortytwo`;
   } catch (err) {
-    console.log('github error');
+    console.log('fortytwo auth error');
     console.log(err);
   }
 };
@@ -243,8 +239,11 @@ export const loginByAccessToken = (accessToken) => async (dispatch) => {
       type: LOGIN_SUCCESS,
       payload: { token: accessToken },
     });
-    if (sessionStorage.token) {
-      setAuthToken(sessionStorage.token);
+    // if (sessionStorage.token) {
+    //   setAuthToken(sessionStorage.token);
+    // }
+    if (localStorage.token) {
+      setAuthToken(localStorage.token);
     }
     const res = await axios.get('/api/auth');
     dispatch({

@@ -26,7 +26,6 @@ const transporter = nodemailer.createTransport({
 // @desc    Find user by userID
 // @access  Public
 router.get('/', auth, async (req, res) => {
-  console.log('/api/auth route is hit');
   try {
     const user = await User.findById(req.user.id).select('-password');
     const profile = await Profile.findOne({ user: req.user.id });
@@ -107,10 +106,9 @@ router.get('/github', passport.authenticate('github'));
 router.get(
   '/github/callback',
   passport.authenticate('github', {
-    failureRedirect: 'http://localhost:3000/?message=oauth_fail',
+    failureRedirect: 'http://localhost:3000/',
   }),
   async (req, res) => {
-    console.log(req.user);
     const payload = {
       user: {
         id: req.user._id,
@@ -122,7 +120,6 @@ router.get(
       { expiresIn: 360000 },
       (err, token) => {
         if (err) throw err;
-        console.log('generated token is', token);
         res.redirect('http://localhost:3000/login/' + token);
       }
     );
@@ -140,11 +137,10 @@ router.get('/fortytwo', passport.authenticate('fortyTwo'));
 router.get(
   '/fortytwo/callback',
   passport.authenticate('fortyTwo', {
-    failureRedirect: 'http://localhost:3000/?message=oauth_fail',
+    failureRedirect: 'http://localhost:3000/',
   }),
 
   async (req, res) => {
-    console.log(req.user);
     const payload = {
       user: {
         id: req.user._id,
@@ -156,7 +152,6 @@ router.get(
       { expiresIn: 360000 },
       (err, token) => {
         if (err) throw err;
-        console.log('generated token is', token);
         res.redirect('http://localhost:3000/login/' + token);
       }
     );

@@ -32,7 +32,7 @@ passport.use(
       callbackURL: 'http://localhost:5000/api/auth/github/callback',
     },
     async (accessToken, refreshToken, profile, cb) => {
-      console.log(chalk.yellow(JSON.stringify(profile)));
+      // console.log(chalk.yellow(JSON.stringify(profile)));
 
       var options = {
         host: 'api.github.com',
@@ -123,7 +123,6 @@ passport.use(
           imageUrl: profile.photos[0].value,
         });
         newUser.save();
-        console.log(newUser);
 
         if (newUser) {
           cb(null, newUser);

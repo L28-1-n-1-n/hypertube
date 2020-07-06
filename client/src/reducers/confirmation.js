@@ -38,8 +38,8 @@ export default function (state = initialState, action) {
         loading: false,
       };
     case RECUPERATION_ERROR:
-      // localStorage.removeItem('token'); // Remove token completely from local storage
-      sessionStorage.removeItem('token'); // Remove token completely from local storage
+      localStorage.removeItem('token'); // Remove token completely from local storage
+      // sessionStorage.removeItem('token'); // Remove token completely from local storage
 
       return {
         ...state,
