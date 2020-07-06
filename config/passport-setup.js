@@ -6,7 +6,7 @@ const chalk = require('chalk');
 const keys = require('./keys');
 const User = require('../models/User');
 const https = require('https');
-const { setFlagsFromString } = require('v8');
+
 // serialize the user.id to save in the cookie session
 // so the browser will remember the user when login
 passport.serializeUser((user, cb) => {
@@ -32,19 +32,11 @@ passport.use(
       callbackURL: 'http://localhost:5000/api/auth/github/callback',
     },
     async (accessToken, refreshToken, profile, cb) => {
-      console.log(chalk.yellow(profile));
       console.log(chalk.yellow(JSON.stringify(profile)));
-      //   console.log(chalk.yellow(profile));
-      console.log(profile._json.id);
-      console.log(profile._json);
-      var username = 'L28-1-n-1-n';
-      var email;
-      const setEmail = (email, result) => {
-        email = result;
-      };
+
       var options = {
         host: 'api.github.com',
-        path: '/users/' + username + '/events/public',
+        path: '/users/' + profile.username + '/events/public',
         method: 'GET',
         headers: { 'user-agent': 'node.js' },
       };
@@ -52,8 +44,7 @@ passport.use(
       var req = https.request(options, function (res) {
         var body = '';
         res.on('data', function (chunk) {
-          // body += chunk.toString('utf8');
-          body += chunk;
+          body += chunk.toString('utf8');
         });
 
         res.on('end', function () {
@@ -93,40 +84,17 @@ passport.use(
               });
               newUser.save();
               if (newUser) {
-                console.log('we are yere');
-                console.log(newUser);
                 cb(null, newUser);
               }
             } else {
               cb(null, currentUser);
             }
           };
-
           register();
         });
       });
 
       req.end();
-
-      // const currentUser = await User.findOne({
-      //   githubId: profile._json.id.toString(),
-      // });
-      // console.log(email);
-      // if (!currentUser) {
-      //   const newUser = await new User({
-      //     username: profile._json.login,
-      //     lastname: profile.displayName,
-      //     // emailAddress: profile.emails[0].value,
-      //     //   avatar: profile.photos[0].value,
-      //     password: crypto.randomBytes(8).toString('hex'),
-      //     githubId: profile._json.id_str,
-      //   });
-      //   newUser.save();
-      //   if (newUser) {
-      //     cb(null, newUser);
-      //   }
-      // }
-      // cb(null, currentUser);
     }
   )
 );
@@ -140,8 +108,6 @@ passport.use(
       callbackURL: `http://localhost:5000/api/auth/fortytwo/callback`,
     },
     async (accessToken, refreshToken, profile, cb) => {
-      // console.log(profile);
-
       const currentUser = await User.findOne({
         fortyTwoId: profile.id,
       });
@@ -150,7 +116,6 @@ passport.use(
         const newUser = await new User({
           firstname: profile.name.givenName,
           lastname: profile.name.familyName,
-          // picture: profile.photos[0].value,
           username: profile.username + Math.floor(Math.random() * 100),
           email: profile.emails[0].value,
           password: crypto.randomBytes(8).toString('hex'),

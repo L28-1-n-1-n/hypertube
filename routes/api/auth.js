@@ -96,60 +96,14 @@ router.post(
   }
 );
 
-// router.get(
-//   '/github',
-//   passport.authenticate(
-//     'github'
-//     // {successRedirect: 'http://localhost:3000',
-//     // failureRedirect: 'http://localhost:3000/login',}
-//   )
-//   // function (req, res) {
-//   //   res.redirect('/');
-//   // }
-// );
-
-// authentication middleware
-// router.use(function (req, res, next) {
-//   if (req.user) {
-//     // or choose your own way of passing auth info
-//     return next();
-//   }
-
-//   // not authenticated, redirect to oauth flow
-//   var redirect_uri = new Buffer(req.originalUrl);
-//   res.redirect(
-//     '/api/auth/github?redirect_uri=' + redirect_uri.toString('base64')
-//   );
-// });
-
-// router.get('/github', function (req, res, next) {
-//   var callbackURL = '/auth/github/callback';
-//   if (req.query.redirect_uri) {
-//     callbackURL += '?redirect_uri=' + req.query.redirect_uri;
-//   }
-//   passport.authenticate('github', {
-//     scope: ['user:email'],
-//     callbackURL: callbackURL,
-//   })(req, res, next);
-// });
-
-// router.get('/github/callback', function (req, res, next) {
-//   var redirect_uri = '/';
-//   if (req.query.redirect_uri) {
-//     // prepend host to avoid open redirects
-//     redirect_uri =
-//       config.HOST +
-//       '/' +
-//       new Buffer(req.query.redirect_uri, 'base64').toString();
-//   }
-//   passport.authenticate('github', {
-//     failureRedirect: '/login',
-//     successRedirect: redirect_uri,
-//   })(req, res, next);
-// });
-
-//
+// @route   GET api/auth/github
+// @desc    Authenticate user via Github
+// @access  Public
 router.get('/github', passport.authenticate('github'));
+
+// @route   GET api/auth/github/callback
+// @desc    Callback after github authentication
+// @access  Public
 router.get(
   '/github/callback',
   passport.authenticate('github', {
@@ -173,113 +127,16 @@ router.get(
       }
     );
   }
-  // passport.authenticate('github', { scope: ['user:email'] }),
-  // function (req, res) {
-  //   // Successful authentication, redirect home.
-  //   console.log('yaay');
-  //   res.redirect('/');
-  // }
 );
-//
 
-// router.get('/github', async (req, res) => {
-//   console.log('back reached');
-//   try {
-//     // const user = await User.findById(req.user.id).select('-password');
-//     // const profile = await Profile.findOne({ user: req.user.id });
-//     // const logon_time = new Date();
-//     // if (profile) {
-//     //   profile.updateOne({ lastOnline: logon_time });
-//     // }
-//     // res.json(user);
-//     console.log(passportSetup);
-//     const response = await passport.authenticate('github')(req, res);
-//     console.log(res);
-//     console.log(response);
-//   } catch (err) {
-//     console.error(err.message);
-//     res.status(500).send('Server Error');
-//   }
-// });
-
-// router.post(
-//   '/auth/github',
-//   // wrap passport.authenticate call in a middleware function
-//   function (req, res, next) {
-//     // call passport authentication passing the "local" strategy name and a callback function
-//     console.log('back reached');
-//     passport.authenticate('github', function (error, user, info) {
-//       // this will execute in any case, even if a passport strategy will find an error
-//       // log everything to console
-//       console.log('yolo');
-//       console.log(error);
-//       console.log(user);
-//       console.log(info);
-
-//       if (error) {
-//         res.status(401).send(error);
-//       } else if (!user) {
-//         res.status(401).send(info);
-//       } else {
-//         next();
-//       }
-
-//       res.status(401).send(info);
-//     })(req, res);
-//   },
-
-//   // function to call once successfully authenticated
-//   function (req, res) {
-//     res.status(200).send('logged in!');
-//   }
-// );
-
-// router.get('/auth/github', () => {
-//   console.log('back reached');
-//   passport.authenticate('github', {
-//     failureRedirect: 'http://localhost:3000/login',
-//   }),
-//     function (req, res) {
-//       res.redirect('/');
-//     };
-// });
-// router.get('/auth/github', (request, res) => {
-//   console.log('we are here');
-//   request(
-//     {
-//       url:
-//         'https://github.com/login/oauth/authorize?response_type=code&client_id=9c4ca4e91c36b7692f63',
-//     },
-//     (error, response, body) => {
-//       if (error || response.statusCode !== 200) {
-//         return res.status(500).json({ type: 'error', message: err.message });
-//       }
-
-//       res.json(JSON.parse(body));
-//     }
-//   );
-// });
-// router.get(
-//   '/auth/github/redirect',
-//   passport.authenticate('github', {
-//     successRedirect: 'http://localhost:3000',
-//     failureRedirect: 'http://localhost:3000/player',
-//   })
-// );
-// router.get(
-//   '/github/callback',
-//   passport.authenticate('github', {
-//     failureRedirect: 'http://localhost:3000/?message=oauth_fail',
-//   }),
-//   // passport.authenticate('github', { scope: ['user:email'] }),
-//   function (req, res) {
-//     // Successful authentication, redirect home.
-//     console.log('yaay');
-//     res.redirect('/');
-//   }
-// );
-
+// @route   GET api/auth/fortytwo
+// @desc    Authenticate user via fortytwo strategy
+// @access  Public
 router.get('/fortytwo', passport.authenticate('fortyTwo'));
+
+// @route   GET api/auth/fortytwo/callback
+// @desc    Callback after fortytwo authentication
+// @access  Public
 router.get(
   '/fortytwo/callback',
   passport.authenticate('fortyTwo', {
@@ -306,24 +163,4 @@ router.get(
   }
 );
 
-router.get('/facebook', passport.authenticate('facebook'));
-
-router.get(
-  '/facebook/callback',
-  passport.authenticate('facebook', function (err, user, info) {
-    console.log(err, user, info);
-  })
-  // passport.authenticate('facebook', {
-  //   failureRedirect: 'http://localhost:3000/login',
-  // }),
-  // async (req, res) => {
-  //   const id = req.user.dataValues.id;
-  //   console.log(res);
-  //   // const token = jwt.sign({ id }, jwtSecret.secret);
-  //   // res.redirect("http://localhost:3000/login?accessToken=" + token);
-  // }
-);
-// router.get('/facebook/callback', () => {
-//   console.log('Hello Lola');
-// });
 module.exports = router;

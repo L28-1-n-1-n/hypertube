@@ -1,27 +1,13 @@
 import React, { Fragment, useState } from 'react';
 import { connect } from 'react-redux';
-import { Link, Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import { setAlert } from '../../actions/alert';
-import {
-  register,
-  registerGithub,
-  registerFortyTwo,
-  registerFacebook,
-} from '../../actions/auth';
-// import { register } from '../../actions/auth';
+import { register } from '../../actions/auth';
 
 import PropTypes from 'prop-types';
 
 // setAlert is pulled out of props
-const Register = ({
-  setAlert,
-  register,
-  registerGithub,
-  registerFortyTwo,
-  registerFacebook,
-  isAuthenticated,
-  justRegistered,
-}) => {
+const Register = ({ setAlert, register, isAuthenticated, justRegistered }) => {
   const [formData, setFormData] = useState({
     firstname: '',
     lastname: '',
@@ -201,43 +187,20 @@ const Register = ({
                   variant='link'
                   className='btn btn-outline-light icon-custom icon-custom__fortytwo'
                   type='button'
-                  // onClick={() => registerFortyTwo()}
-                  // href='http://localhost:5000/api/auth/fortytwo'
                 >
                   Sign up 42
                 </button>
               </a>
             </div>
             <div className='text-center mb-3'>
-              <button
-                className='btn btn-outline-light icon-custom icon-custom__github'
-                type='button'
-                onClick={() => registerGithub()}
-                // onClick={() => {
-                //   const xhr = new XMLHttpRequest();
-                //   xhr.open('GET', '/api/auth/auth/github', true);
-                //   xhr.onload = (req, res) => {
-                //     console.log('loaded');
-                //     if (req.status >= 200 && req.status < 400) {
-                //       this.setState({ users: xhr.responseText, done: true });
-                //     }
-                //   };
-                //   console.log('we are here');
-                //   xhr.send();
-                // }}
-                // href='http://localhost:5000/api/auth/auth/github'
-              >
-                Sign up
-              </button>
-            </div>
-            <div className='text-center mb-3'>
-              <button
-                className='btn btn-outline-light icon-custom icon-custom__fortytwo'
-                type='button'
-                onClick={() => registerFacebook()}
-              >
-                FB signup
-              </button>
+              <a href='http://localhost:5000/api/auth/github'>
+                <button
+                  className='btn btn-outline-light icon-custom icon-custom__github'
+                  type='button'
+                >
+                  Sign up
+                </button>
+              </a>
             </div>
           </div>
         </div>
@@ -249,9 +212,6 @@ const Register = ({
 Register.propTypes = {
   setAlert: PropTypes.func.isRequired,
   register: PropTypes.func.isRequired,
-  registerGithub: PropTypes.func.isRequired,
-  registerFortyTwo: PropTypes.func.isRequired,
-  registerFacebook: PropTypes.func.isRequired,
   isAuthenticated: PropTypes.bool,
   justRegistered: PropTypes.bool,
 };
@@ -264,8 +224,5 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps, {
   setAlert,
   register,
-  registerGithub,
-  registerFortyTwo,
-  registerFacebook,
 })(Register);
-// export default connect(mapStateToProps, { setAlert, register })(Register); // export connect with setAlert action, so it is available within props
+// export connect with setAlert action, so it is available within props
