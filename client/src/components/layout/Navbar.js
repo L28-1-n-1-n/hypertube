@@ -16,7 +16,7 @@ export const Navbar = ({
       <div className="dropdown-menu account-menu bg-dropdown" aria-labelledby="header-account-menu-link">
         <Link className="dropdown-item" to="/homepage">Home</Link>
         <Link className="dropdown-item" to="/dashboard">Settings</Link>
-        <button href="#" className="dropdown-item"
+        <button href="#" className="dropdown-item logout-button"
         onClick={() => {
             logout(user._id);
           }}>Sign out</button>

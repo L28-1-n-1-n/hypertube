@@ -2,6 +2,7 @@ import React, { Fragment, useState, useEffect } from 'react';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { setAlert } from '../../actions/alert';
 import { updateUser, updatePwd } from '../../actions/auth';
 
 import FileUpload from '../FileUpload';
@@ -23,6 +24,7 @@ const EditProfile = ({
   auth: { user },
   updateUser,
   updatePwd,
+  setAlert,
   history,
 }) => {
   const [formData, setFormData] = useState(initialState);
@@ -111,13 +113,13 @@ const EditProfile = ({
                   <input 
                     className="formContent__input" 
                     type="email" 
-                    name="email-address" 
+                    name="email" 
                     value={email}
                     onChange={(e) => onChange(e)}
                     autoComplete="off" 
                     required 
                   />
-                  <label className="formContent__label" htmlFor="email-address"><span className="formContent__label__name">Email address</span></label>
+                  <label className="formContent__label" htmlFor="email"><span className="formContent__label__name">Email address</span></label>
                 </div>
                 <div>
                   <p>Language</p>
@@ -170,7 +172,11 @@ const EditProfile = ({
           </div>
           <form onSubmit={(e) => {
             e.preventDefault();
-            updatePwd(formDataTwo, history, user._id);
+            if (password !== password2) {
+              setAlert('Passwords do not match', 'danger'); // alert type is danger
+            } else {
+              updatePwd(formDataTwo, history, user._id);
+            }
           }} >
             <div className="col-12">
               <div className="formContent">
@@ -232,6 +238,7 @@ const EditProfile = ({
 EditProfile.propTypes = {
   updateUser: PropTypes.func.isRequired,
   updatePwd: PropTypes.func.isRequired,
+  setAlert: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
 };
 
@@ -242,6 +249,7 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps, {
   updateUser,
   updatePwd,
+  setAlert,
 })(withRouter(EditProfile));
 
 // EditProfile is wrapped in withRouter() to enable use of "history" action
