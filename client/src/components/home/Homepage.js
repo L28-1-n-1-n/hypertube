@@ -2,12 +2,13 @@ import React, { Fragment, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { fetchYTS } from '../../actions/home';
+import { fetchYTS, fetchInfiniteYTS } from '../../actions/home';
 import playWhite from '../../img/play_white.png';
 
-const Homepage = ({ fetchYTS, movie: { movies } }) => {
+const Homepage = ({ fetchYTS, fetchInfiniteYTS, movie: { movies } }) => {
   const [displayMovies, setDisplayMovies] = useState([]);
   const [isFetching, setIsFetching] = useState(false);
+  const [lastFetch, setLastFetch] = useState('');
   const [searchCriteria, setSearchCriteria] = useState({});
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
@@ -36,17 +37,27 @@ const Homepage = ({ fetchYTS, movie: { movies } }) => {
         rating: rating,
         year: year,
         order: order,
+        multiple: 1,
       };
       setSearchCriteria(inputs);
     }
+    console.log(inputs);
     fetchYTS(inputs);
-  }, [fetchYTS]);
+  }, []);
 
   useEffect(() => {
     if (!isFetching) return;
-    fetchMoreMovies();
+    // fetchMoreMovies();
+    nextItems();
   }, [isFetching]);
-
+  const nextItems = () => {
+    setDisplayMovies((prevState) => [
+      ...prevState,
+      ...movies.slice(prevState.length, prevState.length + 25),
+    ]);
+    setIsFetching(false);
+    fetchMoreMovies();
+  };
   useEffect(() => {
     nextItems();
   }, [movies]);
@@ -63,15 +74,10 @@ const Homepage = ({ fetchYTS, movie: { movies } }) => {
     }
     lastPos = st <= 0 ? 0 : st;
   }
-  const nextItems = () => {
-    setDisplayMovies((prevState) => [
-      ...prevState,
-      ...movies.slice(prevState.length, prevState.length + 25),
-    ]);
-    setIsFetching(false);
-  };
+
   function fetchMoreMovies() {
-    if (displayMovies.length > 150 && displayMovies.length === movies.length) {
+    if (displayMovies.length === movies.length && lastFetch !== movies.length) {
+      console.log('will make api call');
       let params = new URLSearchParams(window.location.search);
       let search = params.get('search');
       let genre = params.get('genre');
@@ -95,12 +101,15 @@ const Homepage = ({ fetchYTS, movie: { movies } }) => {
           rating: rating,
           year: year,
           order: order,
+          multiple: Math.floor(displayMovies.length / 150) + 1,
         };
         setSearchCriteria(inputs);
       }
-      fetchYTS(inputs);
+      console.log(inputs);
+      fetchInfiniteYTS(inputs);
+      setLastFetch(movies.length);
     }
-    nextItems();
+    // nextItems();
   }
   // Runs immediately when profile mounts
   return (
@@ -257,6 +266,7 @@ const Homepage = ({ fetchYTS, movie: { movies } }) => {
 
 Homepage.propTypes = {
   fetchYTS: PropTypes.func.isRequired,
+  fetchInfiniteYTS: PropTypes.func.isRequired,
   movie: PropTypes.object.isRequired,
 };
 
@@ -266,4 +276,5 @@ const mapStateToProps = (state) => ({
 
 export default connect(mapStateToProps, {
   fetchYTS,
+  fetchInfiniteYTS,
 })(Homepage);
