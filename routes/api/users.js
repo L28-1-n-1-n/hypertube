@@ -125,11 +125,7 @@ router.post(
   [
     auth,
     [
-      check('lang', 'Lang is required').isIn([
-        'fr',
-        'en',
-        'es',
-      ]),
+      check('lang', 'Lang is required').isIn(['fr', 'en', 'es']),
       check('username', 'Please fill in username 1').not().isEmpty(),
       check('firstname', 'Please fill in first name').not().isEmpty(),
       check('lastname', 'Please fill in last name').not().isEmpty(),
@@ -152,12 +148,25 @@ router.post(
       email: email,
       lang: lang,
     };
-
     try {
-      let user = await User.findOne({ _id: req.user.id }).select(
-        '-username -password'
-      );
-
+      let user = await User.findOne({ _id: req.user.id }).select('-password');
+      console.log(user);
+      if (email !== user.email) {
+        let newMail = await User.findOne({ email: email });
+        if (newMail) {
+          return res
+            .status(400)
+            .json({ errors: [{ msg: 'Email taken. Choose another one.' }] }); // array of errors
+        }
+      }
+      if (username !== user.username) {
+        let newUsername = await User.findOne({ username: username });
+        if (newUsername) {
+          return res.status(400).json({
+            errors: [{ msg: 'Username taken. Please choose another one.' }],
+          }); // array of errors
+        }
+      }
       if (user) {
         user = await User.findOneAndUpdate(
           { _id: req.user.id },
