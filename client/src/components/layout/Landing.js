@@ -9,22 +9,20 @@ export const Landing = ({ isAuthenticated }) => {
   }
 
   return (
-    <section className='landing'>
-      <div className='dark-overlay'>
-        <div className='landing-inner'>
-          <h1 className='x-large'>Tindurr</h1>
-          <p className='lead'>Find and chat with your next match !</p>
-          <div className='buttons'>
-            <Link to='./register' className='btn btn-primary'>
-              Sign Up
-            </Link>
-            <Link to='./login' className='btn btn-light'>
-              Login
-            </Link>
-          </div>
-        </div>
+    <div className="container row mx-auto d-flex flex-column justify-content-center align-items-center my-4">
+      <div className='text-center'>
+        <h1>Hypertube</h1>
+        <p>Find your movie!</p>
       </div>
-    </section>
+      <div>
+        <Link to='./register' className='btn rounded btn-primary mx-2'>
+          Sign Up
+        </Link>
+        <Link to='./login' className='btn rounded btn-primary mx-2'>
+          Login
+        </Link>
+      </div>
+    </div>
   );
 };
 
