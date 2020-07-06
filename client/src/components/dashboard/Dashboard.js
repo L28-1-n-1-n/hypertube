@@ -9,7 +9,6 @@ const Dashboard = () => {
           <div className="col-xs-6 btn-group btn-group-lg btn-group-vertical mx-auto">
             <Link to='/homepage' className="btn btn-info rounded my-3" type="submit" name="pictures">Home</Link>
             <Link to="/edit-profile" className="btn btn-info rounded my-3" type="submit" name="preferences">Settings</Link>
-            <Link to='/my-photos' className="btn btn-info rounded my-3" type="submit" name="pictures">Pictures</Link>
           </div>
         </div>
       </Fragment>

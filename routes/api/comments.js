@@ -65,9 +65,7 @@ router.get('/:imdbId', async (req, res) => {
       imdbId: req.params.imdbId,
     });
     if (!commentary)
-      return res
-        .status(400)
-        .json({ msg: 'There is no commentary for this movie' });
+      return res;
 
     commentary.comments.reverse(); // show the latest comment first
     res.json(commentary);

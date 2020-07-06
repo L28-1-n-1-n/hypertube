@@ -126,6 +126,7 @@ const EditProfile = ({
                       type="radio" 
                       id="english" 
                       name="lang" 
+                      className="mr-2"
                       value="en" 
                       checked={lang === 'en' ? true : false}
                       onChange={(e) => onChange(e)}
@@ -137,6 +138,7 @@ const EditProfile = ({
                       type="radio" 
                       id="french" 
                       name="lang" 
+                      className="mr-2"
                       value="fr"
                       checked={lang === 'fr' ? true : false}
                       onChange={(e) => onChange(e)}
@@ -148,6 +150,7 @@ const EditProfile = ({
                       type="radio" 
                       id="spanish" 
                       name="lang" 
+                      className="mr-2"
                       value="es"
                       checked={lang === 'es' ? true : false}
                       onChange={(e) => onChange(e)}

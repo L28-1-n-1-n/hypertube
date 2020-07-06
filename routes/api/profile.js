@@ -120,17 +120,17 @@ router.get('/user/:username', auth, async (req, res) => {
     const profile = await User.findOne({
       username: req.params.username,
     });
-    if (!profile)
-      return res
-        .status(400)
-        .json({ msg: 'There is no profile for this user' });
+    if (!profile) {
+      retStatus = 'Success';
+      return res.send({
+        retStatus: retStatus,
+        redirectTo: 'http://localhost:3000',
+        msg: 'Redirecting',
+      })
+    }
     res.json(profile);
   } catch (err) {
     console.error(err.message);
-    console.error('Non ca fonctionne pas du tout la');
-    if (err.kind == 'ObjectId') {
-      return res.status(400).json({ msg: 'Profile not found' }); // display message for non-valid userid
-    }
     res.status(500).send('Server Error');
   }
 });

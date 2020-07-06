@@ -63,6 +63,11 @@ export const getProfileByUsername = (username) => async (dispatch) => {
 
     const res = await axios.get(`/api/profile/user/${username}`, config);
     console.log(res)
+    if(res.data.retStatus === 'Success') {
+      if(res.data.redirectTo && res.data.msg === 'Redirecting') {
+        window.location = res.data.redirectTo;
+      }
+    }
     dispatch({
       type: GET_PROFILE,
       payload: res.data,
