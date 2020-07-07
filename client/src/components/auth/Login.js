@@ -64,7 +64,7 @@ const Login = ({ login, isAuthenticated }) => {
                 <label className="formContent__label" htmlFor="password"><span className="formContent__label__name">Password</span></label>
               </div>
               <div className="text-center my-3">
-                <a href="/password/forgot" className="forgot_passwd">Forgot your password?</a>
+                <a href="/recuperation" className="forgot_passwd">Forgot your password?</a>
               </div>
               <div className="text-center mb-3">
                 <button className="btn btn-primary">Sign in</button>

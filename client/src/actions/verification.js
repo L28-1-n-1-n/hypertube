@@ -43,10 +43,19 @@ export const fpCheckEmail = ({ email }) => async (dispatch) => {
 
   try {
     const res = await axios.post(`/api/recuperation`, body, config);
-    dispatch({
-      type: RECUPERATE_ACCOUNT,
-      payload: res.data,
-    });
+
+    if(res.data.retStatus === 'Error') {
+      if(res.data.authorized === false && res.data.msg) {
+        dispatch(setAlert(res.data.msg, 'danger'));
+      }
+    }
+    else {
+      dispatch({
+        type: RECUPERATE_ACCOUNT,
+        payload: res.data,
+      });
+      dispatch(setAlert('You received a mail.', 'success'));
+    }
   } catch (err) {
     const errors = err.response.data.errors;
 
@@ -73,17 +82,25 @@ export const fpReset = ({ token, password }) => async (dispatch) => {
 
   try {
     const res = await axios.post(`/api/reset`, body, config);
-    dispatch({
-      type: RESET_PW,
-      payload: res.data,
-    });
+
+    if(res.data.retStatus === 'Error') {
+      if(res.data.authorized === false && res.data.msg) {
+        dispatch(setAlert(res.data.msg, 'danger'));
+      }
+    }
+    else {
+      dispatch({
+        type: RESET_PW,
+        payload: res.data,
+      });
+      dispatch(setAlert('Password updated', 'success'));
+    }
   } catch (err) {
     const errors = err.response.data.errors;
     //  const errors = ((err.response || {}).data).errors;
     if (errors) {
       errors.forEach((error) => dispatch(setAlert(error.msg, 'danger')));
     }
-
     dispatch({
       type: RESET_PW_ERROR,
       payload: { msg: err.response.statusText, status: err.response.status },

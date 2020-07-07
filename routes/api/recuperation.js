@@ -17,16 +17,24 @@ router.post(
       const errors = validationResult(req);
 
       if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() }); // array of errors
+        retStatus = 'Error';
+        return res.send({
+          retStatus: retStatus,
+          authorized: false,
+          msg: 'Please include a valid email.',
+        })
       }
 
       const { email } = req.body;
       // See if user exists
       let user = await User.findOne({ email: email }).select('-password');
       if (!user) {
-        return res
-          .status(404)
-          .json({ errors: [{ msg: 'User already exists' }] });
+        retStatus = 'Error';
+        return res.send({
+          retStatus: retStatus,
+          authorized: false,
+          msg: 'An error as occured. Please try again.',
+        })
       }
 
       // Get payload
@@ -46,12 +54,12 @@ router.post(
           user.token = token;
           user.save();
           const url = `http://localhost:3000/reset/${token}`;
-          const html = `Hello, <br />You've recently asked to recover your Tindurr Account.<br /><br />Please click the link below to enter a new password:<br /><a href=${url}>${url}</a>`;
+          const html = `Hello, <br />You've recently asked to recover your Hypertube Account.<br /><br />Please click the link below to enter a new password:<br /><a href=${url}>${url}</a>`;
 
           var mailOptions = {
             from: 'no-reply.tindurr@outlook.com',
             to: user.email,
-            subject: 'Recover your Tindurr Account',
+            subject: 'Recover your Hypertube Account',
             html: html,
           };
           transporter.sendMail(mailOptions, (error, info) => {
@@ -67,7 +75,12 @@ router.post(
     } catch (err) {
       console.error(err.message);
       if (err.kind === 'ObjectId') {
-        return res.status(404).json({ msg: 'Token not valid' });
+        retStatus = 'Error';
+        return res.send({
+          retStatus: retStatus,
+          authorized: false,
+          msg: 'Invalid token.',
+        })
       }
       res.status(500).send('Server Error');
     }

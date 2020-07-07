@@ -8,7 +8,6 @@ const Reset = ({ setAlert, fpReset, match }) => {
     password: '',
     password2: '',
   });
-  const [showText, setShowText] = useState(false);
   const { password, password2 } = formData;
 
   const token = match.params.token;
@@ -20,44 +19,56 @@ const Reset = ({ setAlert, fpReset, match }) => {
     if (password !== password2) {
       setAlert('Passwords do not match', 'danger'); // alert type is danger
     } else {
-      fpReset({ token, password });
-      setShowText(!showText);
+      if(password.match(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{4,}$/))
+      {
+        fpReset({ token, password });
+      }
+      else {
+        setAlert('Password must contain at least 4 char including 1 number, caps and low key', 'danger'); // alert type is danger
+      }
     }
   };
 
   return (
     <Fragment>
-      <h1 className='large text-primary-T'>Reset Passowrd</h1>
-      <p className='lead'>
-        <i className='fas fa-user'></i> Please put in a new password.
-      </p>
-      <form className='form' onSubmit={(e) => onSubmit(e)}>
-        <div className='form-group'>
-          <input
-            type='password'
-            placeholder='Password'
-            name='password'
-            value={password}
-            onChange={(e) => onChange(e)}
-          />
-        </div>
-        <div className='form-group'>
-          <input
-            type='password'
-            placeholder='Confirm Password'
-            name='password2'
-            value={password2}
-            onChange={(e) => onChange(e)}
-            minLength='6'
-          />
-        </div>
-        <input type='submit' className='btn btn-primary' value='Confirm' />
-        {showText && (
-          <div>
-            <p className='lead'>Please login again.</p>
+      <div className="container row mx-auto d-flex flex-column align-items-center my-4">
+        <div id="login" className="col-9 col-md-8 col-lg-5 shadow__light px-5 py-3 my-4 mx-1 rounded">
+          <div className="row justify-content-center my-3">
+              <h3>Reset Passowrd</h3>
           </div>
-        )}
-      </form>
+          <div className="col-12">
+          <form className='form' onSubmit={(e) => onSubmit(e)}>
+              <div className="formContent">
+              <input
+                className="formContent__input" 
+                type='password'
+                autoComplete="off" 
+                name='password'
+                value={password}
+                onChange={(e) => onChange(e)}
+                required
+              />
+                <label className="formContent__label" htmlFor="username"><span className="formContent__label__name">New password</span></label>
+              </div>
+              <div className="formContent">
+                <input
+                  className="formContent__input" 
+                  type='password'
+                  autoComplete="off" 
+                  name='password2'
+                  value={password2}
+                  onChange={(e) => onChange(e)}
+                  required
+                />
+                <label className="formContent__label" htmlFor="password"><span className="formContent__label__name">Confirm password</span></label>
+              </div>
+              <div className="text-center mb-3">
+                <button className="btn btn-primary">Confirm</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
     </Fragment>
   );
 };

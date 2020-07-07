@@ -18,7 +18,12 @@ router.post(
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() }); // array of errors
+      retStatus = 'Error';
+      return res.send({
+        retStatus: retStatus,
+        authorized: false,
+        msg: 'A password is required.',
+      })
     }
 
     const { token, password } = req.body;
@@ -27,7 +32,12 @@ router.post(
       let user = await User.findOne({ token: token });
 
       if (!user) {
-        return res.status(404).json({ errors: [{ msg: 'Token not valid' }] });
+        retStatus = 'Error';
+        return res.send({
+          retStatus: retStatus,
+          authorized: false,
+          msg: 'An error as occured. Please try again.',
+        })
       }
 
       // Encrypt password
@@ -36,10 +46,16 @@ router.post(
 
       // Save user in Database
       await user.save();
+      return res.json(user)
     } catch (err) {
       console.error(err.message);
       if (err.kind === 'ObjectId') {
-        return res.status(404).json({ msg: 'Token not valid' });
+        retStatus = 'Error';
+        return res.send({
+          retStatus: retStatus,
+          authorized: false,
+          msg: 'An error as occured. Please try again.',
+        })
       }
       res.status(500).send('Server Error');
     }

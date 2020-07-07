@@ -7,7 +7,6 @@ const Recuperation = ({ fpCheckEmail }) => {
   const [formData, setFormData] = useState({
     email: '',
   });
-  const [showText, setShowText] = useState(false);
   const { email } = formData;
 
   const onChange = (e) =>
@@ -17,40 +16,38 @@ const Recuperation = ({ fpCheckEmail }) => {
     e.preventDefault();
 
     fpCheckEmail({ email });
-    setShowText(!showText);
   };
 
   // Redirect if logged in
 
   return (
     <Fragment>
-      <h1 className='large text-primary-T'>Reset Passowrd</h1>
-      <p className='lead'>
-        <i className='fas fa-user'></i> Please enter the email you registered
-        with.
-      </p>
-      <form className='form' onSubmit={(e) => onSubmit(e)}>
-        <div className='form-group'>
-          <input
-            type='email'
-            placeholder='Email Address'
-            name='email'
-            value={email}
-            onChange={(e) => onChange(e)}
-            required
-          />
-        </div>
-        <input type='submit' className='btn btn-primary' value='Email Me' />
-        {showText && (
-          <div>
-            <p className='lead'>
-              If the provided email address matches that account's verified
-              email address, you'll receive an email with the reset link
-              shortly.
-            </p>
+      <div className="container row mx-auto d-flex flex-column align-items-center my-4">
+          <div className="col-9 col-md-8 col-lg-5 shadow__light px-5 py-3 my-4 mx-1 rounded">
+              <div className="row justify-content-center my-3">
+                  <h3>Reset password</h3>
+              </div>
+                <form onSubmit={(e) => onSubmit(e)}>
+                  <div className="col-12">
+                    <div className="formContent">
+                        <input
+                          type='email'
+                          className='formContent__input'
+                          name='email'
+                          autoComplete="off"
+                          value={email}
+                          onChange={(e) => onChange(e)}
+                          required
+                        />
+                        <label className="formContent__label" htmlFor="email"><span className="formContent__label__name">Email linked to your account</span></label>
+                    </div>
+                    <div className="text-center my-3">
+                        <button className="btn btn-primary" type="submit">Confirm</button>
+                    </div>
+                  </div>
+                  </form>
           </div>
-        )}
-      </form>
+      </div>
     </Fragment>
   );
 };
