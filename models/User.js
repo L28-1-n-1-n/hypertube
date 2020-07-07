@@ -37,14 +37,23 @@ const UserSchema = new mongoose.Schema({
   },
   fileName: {
     type: String,
-    default: "generic_avatar.jpg",
+    default: 'generic_avatar.jpg',
   },
   filePath: {
     type: String,
-    default: "/uploads/generic_avatar.jpg",
+    default: '/uploads/generic_avatar.jpg',
   },
   data: {
     type: Buffer,
+  },
+  githubId: {
+    type: String,
+  },
+  fortyTwoId: {
+    type: String,
+  },
+  imageUrl: {
+    type: String,
   },
 });
 

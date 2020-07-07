@@ -4,11 +4,12 @@ const bcrypt = require('bcryptjs');
 const { check, validationResult } = require('express-validator');
 const jwt = require('jsonwebtoken');
 const config = require('config');
+const passport = require('passport');
 const auth = require('../../middleware/auth');
 const User = require('../../models/User');
+require('../../config/passport-setup');
 
 const nodemailer = require('nodemailer');
-const Profile = require('../../models/Profile');
 
 const MAILER_USER = config.get('mailerUser');
 const MAILER_PASS = config.get('mailerPass');
@@ -50,7 +51,7 @@ router.post(
         retStatus: retStatus,
         authorized: false,
         msg: 'Invalid password or username.',
-      })
+      });
     }
     // See if user exists
     const { username, password } = req.body;
@@ -62,7 +63,7 @@ router.post(
           retStatus: retStatus,
           authorized: false,
           msg: 'Invalid password or username.',
-        })
+        });
       }
 
       const isMatch = await bcrypt.compare(password, user.password);
@@ -72,7 +73,7 @@ router.post(
           retStatus: retStatus,
           authorized: false,
           msg: 'Invalid password or username.',
-        })
+        });
       }
 
       // Get payload
@@ -96,6 +97,69 @@ router.post(
       console.error(err.message);
       res.status(500).send('Server error');
     }
+  }
+);
+
+// @route   GET api/auth/github
+// @desc    Authenticate user via Github
+// @access  Public
+router.get('/github', passport.authenticate('github'));
+
+// @route   GET api/auth/github/callback
+// @desc    Callback after github authentication
+// @access  Public
+router.get(
+  '/github/callback',
+  passport.authenticate('github', {
+    failureRedirect: 'http://localhost:3000/',
+  }),
+  async (req, res) => {
+    const payload = {
+      user: {
+        id: req.user._id,
+      },
+    };
+    jwt.sign(
+      payload,
+      config.get('jwtSecret'),
+      { expiresIn: 360000 },
+      (err, token) => {
+        if (err) throw err;
+        res.redirect('http://localhost:3000/login/' + token);
+      }
+    );
+  }
+);
+
+// @route   GET api/auth/fortytwo
+// @desc    Authenticate user via fortytwo strategy
+// @access  Public
+router.get('/fortytwo', passport.authenticate('fortyTwo'));
+
+// @route   GET api/auth/fortytwo/callback
+// @desc    Callback after fortytwo authentication
+// @access  Public
+router.get(
+  '/fortytwo/callback',
+  passport.authenticate('fortyTwo', {
+    failureRedirect: 'http://localhost:3000/',
+  }),
+
+  async (req, res) => {
+    const payload = {
+      user: {
+        id: req.user._id,
+      },
+    };
+    jwt.sign(
+      payload,
+      config.get('jwtSecret'),
+      { expiresIn: 360000 },
+      (err, token) => {
+        if (err) throw err;
+        res.redirect('http://localhost:3000/login/' + token);
+      }
+    );
   }
 );
 

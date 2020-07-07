@@ -12,24 +12,13 @@ const PORT = process.env.PORT || 5000;
 const router = express.Router();
 
 const cors = require('cors');
-const passport = require("passport");
-const FortyTwoStrategy = require("passport-42");
-const GitHubStrategy = require("passport-github2");
-const keys = require("./config/keys");
-const chalk = require("chalk");
+const passport = require('passport');
+const passportStrategy = require('./config/passport-setup');
+const keys = require('./config/keys');
+const chalk = require('chalk');
 const User = require('./models/User');
 
 connectDB();
-
-passport.serializeUser((user, cb) => {
-  cb(null, user);
-});
-
-passport.deserializeUser((user, cb) => {
-  cb(null, user);
-});
-
-
 
 // For Socket.io
 const http = require('http');
@@ -41,46 +30,10 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json({ extended: false }));
 app.use(cors());
-app.use(passport.initialize())
-
-// GitHub
-passport.use(new GitHubStrategy({
-  clientID: keys.GITHUB.clientID,
-  clientSecret: keys.GITHUB.clientSecret,
-  callbackUrl: "http://localhost:5000/auth/github/callback"
-},
-(accessToken, refreshToken, profile, cb) => {
-  console.log(chalk.yellow(profile));
-  let newUser = {
-    'username': profile.username,
-    'lastname': profile.displayName,
-    'firstname': profile.displayName,
-    'emailAddress': profile.emails[0].value,
-    'avatar': profile.photos[0].value,
-    'password': "salut"
-};
-console.log(User);
-  User.findOne({username: newUser.username}), function (err, user){
-    if(err) throw err;
-    console.log(chalk.blue(err))
-  };
-}))
-
-
+app.use(passport.initialize());
 
 app.use(fileUpload());
 app.use(express.static(path.join(__dirname, '/client/public')));
-
-
-app.get("/auth/github", (req,res,next) => {
-  passport.authenticate("github")(req,res,next);
-})
-
-app.get("/auth/github/callback", (req,res,next) => {
-  passport.authenticate("github", (err, user) => {
-    res.redirect("http://localhost:3000/homepage");
-  })(req, res, next)
-})
 
 app.get('/', (req, res) => {
   res.send('API Running');

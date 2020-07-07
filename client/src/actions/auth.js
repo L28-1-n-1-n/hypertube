@@ -82,12 +82,11 @@ export const register = ({
   try {
     const res = await axios.post('/api/users', body, config);
 
-    if(res.data.retStatus === 'Error') {
-      if(res.data.authorized === false && res.data.msg) {
+    if (res.data.retStatus === 'Error') {
+      if (res.data.authorized === false && res.data.msg) {
         dispatch(setAlert(res.data.msg, 'danger'));
       }
-    }
-    else {
+    } else {
       dispatch({
         type: REGISTER_SUCCESS,
         payload: res.data,
@@ -125,19 +124,18 @@ export const login = (username, password) => async (dispatch) => {
 
   try {
     const res = await axios.post('/api/auth', body, config); // make POST request to /api/auth, sending body and config
-    
-    if(res.data.retStatus === 'Error') {
-      if(res.data.authorized === false && res.data.msg) {
+
+    if (res.data.retStatus === 'Error') {
+      if (res.data.authorized === false && res.data.msg) {
         dispatch(setAlert(res.data.msg, 'danger'));
       }
-    }
-    else {
-    dispatch({
-      type: LOGIN_SUCCESS,
-      payload: res.data,
-    });
+    } else {
+      dispatch({
+        type: LOGIN_SUCCESS,
+        payload: res.data,
+      });
 
-    dispatch(loadUser());
+      dispatch(loadUser());
     }
   } catch (err) {
     const errors = err.response.data.errors;
@@ -169,12 +167,11 @@ export const updateUser = (formData, history, id) => async (dispatch) => {
 
     const res = await axios.post(`/api/users/${id}`, formData, config);
 
-    if(res.data.retStatus === 'Error') {
-      if(res.data.authorized === false && res.data.msg) {
+    if (res.data.retStatus === 'Error') {
+      if (res.data.authorized === false && res.data.msg) {
         dispatch(setAlert(res.data.msg, 'danger'));
       }
-    }
-    else {
+    } else {
       dispatch({
         type: UPDATE_USER,
         payload: res.data,
@@ -196,7 +193,6 @@ export const updateUser = (formData, history, id) => async (dispatch) => {
   }
 };
 
-
 // Update users's password
 export const updatePwd = (formDataTwo, history, id) => async (dispatch) => {
   try {
@@ -206,14 +202,17 @@ export const updatePwd = (formDataTwo, history, id) => async (dispatch) => {
       },
     };
 
-    const res = await axios.post(`/api/users/resetPWD/${id}`, formDataTwo, config);
+    const res = await axios.post(
+      `/api/users/resetPWD/${id}`,
+      formDataTwo,
+      config
+    );
 
-    if(res.data.retStatus === 'Error') {
-      if(res.data.authorized === false && res.data.msg) {
+    if (res.data.retStatus === 'Error') {
+      if (res.data.authorized === false && res.data.msg) {
         dispatch(setAlert(res.data.msg, 'danger'));
       }
-    }
-    else {
+    } else {
       dispatch({
         type: UPDATE_PWD,
         payload: res.data,
@@ -227,10 +226,39 @@ export const updatePwd = (formDataTwo, history, id) => async (dispatch) => {
     if (errors) {
       errors.forEach((error) => dispatch(setAlert(error.msg, 'danger')));
     }
-    console.log(formDataTwo)
+    console.log(formDataTwo);
     dispatch({
       type: PWD_ERROR,
       payload: { msg: err.response.statusText, status: err.response.status },
+    });
+  }
+};
+
+// Login Redirect by OAuth
+export const loginByAccessToken = (accessToken) => async (dispatch) => {
+  try {
+    dispatch({
+      type: LOGIN_SUCCESS,
+      payload: { token: accessToken },
+    });
+    // if (sessionStorage.token) {
+    //   setAuthToken(sessionStorage.token);
+    // }
+    if (localStorage.token) {
+      setAuthToken(localStorage.token);
+    }
+    const res = await axios.get('/api/auth');
+    dispatch({
+      type: USER_LOADED,
+      payload: res.data,
+    });
+  } catch (err) {
+    const errors = err.response.data.errors;
+    if (errors) {
+      errors.forEach((error) => dispatch(setAlert(error.msg, 'danger')));
+    }
+    dispatch({
+      type: LOGIN_FAIL,
     });
   }
 };

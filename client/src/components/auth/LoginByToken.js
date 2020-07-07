@@ -1,5 +1,5 @@
-import React, { Fragment, useEffect } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Redirect } from 'react-router-dom';
 
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -12,9 +12,7 @@ const LoginByToken = ({
   loginByAccessToken,
 }) => {
   useEffect(() => {
-    console.log(match.params.accessToken);
     loginByAccessToken(match.params.accessToken);
-    console.log('after');
   }, [loginByAccessToken, match.params.accessToken]);
 
   if (isAuthenticated) {
