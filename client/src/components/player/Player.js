@@ -1,5 +1,6 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import {
   getMovieById,
@@ -126,7 +127,7 @@ const Movie = ({
                 movieComments.map((item, i) => (
                   <div key={i} className='d-flex'>
                     <div className='comment-text d-flex flex-column'>
-                      <span>{item.username}</span>
+                      <Link to={'/profile/' + item.username}>{item.username}</Link>
                       <span className='comment-text__text'>{item.text}</span>
                     </div>
                   </div>

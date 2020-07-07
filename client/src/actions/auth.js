@@ -169,13 +169,19 @@ export const updateUser = (formData, history, id) => async (dispatch) => {
 
     const res = await axios.post(`/api/users/${id}`, formData, config);
 
-    dispatch({
-      type: UPDATE_USER,
-      payload: res.data,
-    });
+    if(res.data.retStatus === 'Error') {
+      if(res.data.authorized === false && res.data.msg) {
+        dispatch(setAlert(res.data.msg, 'danger'));
+      }
+    }
+    else {
+      dispatch({
+        type: UPDATE_USER,
+        payload: res.data,
+      });
 
-    dispatch(setAlert('User Details Updated', 'success'));
-
+      dispatch(setAlert('User Details Updated', 'success'));
+    }
   } catch (err) {
     const errors = err.response.data.errors;
 
@@ -202,15 +208,19 @@ export const updatePwd = (formDataTwo, history, id) => async (dispatch) => {
 
     const res = await axios.post(`/api/users/resetPWD/${id}`, formDataTwo, config);
 
-    console.log("formdata from updatepwd method below")
-    console.log(formDataTwo)
-    dispatch({
-      type: UPDATE_PWD,
-      payload: res.data,
-    });
+    if(res.data.retStatus === 'Error') {
+      if(res.data.authorized === false && res.data.msg) {
+        dispatch(setAlert(res.data.msg, 'danger'));
+      }
+    }
+    else {
+      dispatch({
+        type: UPDATE_PWD,
+        payload: res.data,
+      });
 
-    dispatch(setAlert('Password updated', 'success'));
-
+      dispatch(setAlert('Password updated', 'success'));
+    }
   } catch (err) {
     const errors = err.response.data.errors;
 

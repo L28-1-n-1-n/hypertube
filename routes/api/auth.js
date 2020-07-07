@@ -26,11 +26,6 @@ const transporter = nodemailer.createTransport({
 router.get('/', auth, async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select('-password');
-    const profile = await Profile.findOne({ user: req.user.id });
-    const logon_time = new Date();
-    if (profile) {
-      profile.updateOne({ lastOnline: logon_time });
-    }
     res.json(user);
   } catch (err) {
     console.error(err.message);
@@ -50,7 +45,12 @@ router.post(
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() }); // array of errors
+      retStatus = 'Error';
+      return res.send({
+        retStatus: retStatus,
+        authorized: false,
+        msg: 'Invalid password or username.',
+      })
     }
     // See if user exists
     const { username, password } = req.body;

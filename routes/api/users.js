@@ -148,7 +148,12 @@ router.post(
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+      retStatus = 'Error';
+      return res.send({
+        retStatus: retStatus,
+        authorized: false,
+        msg: 'An error as occured. Please verify the informations provided and try again.',
+      })
     }
     const { username, firstname, lastname, email, lang } = req.body;
     const userFields = {
@@ -165,17 +170,23 @@ router.post(
       if (email !== user.email) {
         let newMail = await User.findOne({ email: email });
         if (newMail) {
-          return res
-            .status(400)
-            .json({ errors: [{ msg: 'Email taken. Choose another one.' }] }); // array of errors
+          retStatus = 'Error';
+          return res.send({
+            retStatus: retStatus,
+            authorized: false,
+            msg: 'Username or email taken. Choose another one.',
+          })
         }
       }
       if (username !== user.username) {
         let newUsername = await User.findOne({ username: username });
         if (newUsername) {
-          return res.status(400).json({
-            errors: [{ msg: 'Username taken. Please choose another one.' }],
-          }); // array of errors
+          retStatus = 'Error';
+          return res.send({
+            retStatus: retStatus,
+            authorized: false,
+            msg: 'Username or email taken. Choose another one.',
+          })
         }
       }
       if (user) {
@@ -207,7 +218,12 @@ router.post(
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+      retStatus = 'Error';
+      return res.send({
+        retStatus: retStatus,
+        authorized: false,
+        msg: 'An error as occured. Please verify the informations provided and try again.',
+      })
     }
     const { password } = req.body;
     const salt = await bcrypt.genSalt(10);

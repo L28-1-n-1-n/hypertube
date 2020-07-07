@@ -40,13 +40,19 @@ export const addComment = (formData) => async (dispatch) => {
     };
 
     const res = await axios.post(`/api/comments/addcomment`, formData, config);
+    if(res.data.retStatus === 'Error') {
+      if(res.data.authorized === false && res.data.msg) {
+        dispatch(setAlert(res.data.msg, 'danger'));
+      }
+    }
+    else {
+      dispatch({
+        type: NEW_COMMENT,
+        payload: res.data.comments[0], // add latest comment, which is the first element of the array comments reversed in the backend within the object newListOfComments
+      });
 
-    dispatch({
-      type: NEW_COMMENT,
-      payload: res.data.comments[0], // add latest comment, which is the first element of the array comments reversed in the backend within the object newListOfComments
-    });
-
-    dispatch(setAlert('Comment added', 'success'));
+      dispatch(setAlert('Comment added', 'success'));
+    }
   } catch (err) {
     console.log(err);
   }

@@ -14,7 +14,12 @@ router.post(
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+      retStatus = 'Error';
+      return res.send({
+        retStatus: retStatus,
+        authorized: false,
+        msg: 'Comment cannot be empty.',
+      })
     }
 
     try {
