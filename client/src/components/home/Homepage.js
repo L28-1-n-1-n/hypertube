@@ -76,7 +76,11 @@ const Homepage = ({ fetchYTS, fetchInfiniteYTS, movie: { movies } }) => {
   }
 
   function fetchMoreMovies() {
-    if (displayMovies.length === movies.length && lastFetch !== movies.length) {
+    if (
+      displayMovies.length > 150 &&
+      displayMovies.length === movies.length &&
+      lastFetch !== movies.length
+    ) {
       console.log('will make api call');
       let params = new URLSearchParams(window.location.search);
       let search = params.get('search');
