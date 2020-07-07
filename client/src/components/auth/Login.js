@@ -1,5 +1,5 @@
 import React, { Fragment, useState } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { login } from '../../actions/auth';
@@ -29,59 +29,84 @@ const Login = ({ login, isAuthenticated }) => {
   }
   return (
     <Fragment>
-      <div className="container row mx-auto d-flex flex-column align-items-center my-4">
-        <div id="login" className="col-9 col-md-8 col-lg-5 shadow__light px-5 py-3 my-4 mx-1 rounded">
-          <div className="row justify-content-center my-3">
-              <h3>Log in</h3>
+      <div className='container row mx-auto d-flex flex-column align-items-center my-4'>
+        <div
+          id='login'
+          className='col-9 col-md-8 col-lg-5 shadow__light px-5 py-3 my-4 mx-1 rounded'
+        >
+          <div className='row justify-content-center my-3'>
+            <h3>Log in</h3>
           </div>
-          <div className="col-12">
-            <form action="login" onSubmit={(e) => onSubmit(e)}>
-              <div className="formContent">
-                <input 
-                  className="formContent__input" 
-                  type="text" 
-                  autoComplete="off" 
-                  name="username" 
-                  maxLength="15" 
-                  focus-first="true"
+          <div className='col-12'>
+            <form action='login' onSubmit={(e) => onSubmit(e)}>
+              <div className='formContent'>
+                <input
+                  className='formContent__input'
+                  type='text'
+                  autoComplete='off'
+                  name='username'
+                  maxLength='15'
+                  focus-first='true'
                   value={username}
                   onChange={(e) => onChange(e)}
-                  required 
+                  required
                 />
-                <label className="formContent__label" htmlFor="username"><span className="formContent__label__name">Username</span></label>
+                <label className='formContent__label' htmlFor='username'>
+                  <span className='formContent__label__name'>Username</span>
+                </label>
               </div>
-              <div className="formContent">
-                <input 
-                  className="formContent__input" 
-                  type="password" 
-                  name="password" 
-                  autoComplete="off" 
-                  maxLength="25"
+              <div className='formContent'>
+                <input
+                  className='formContent__input'
+                  type='password'
+                  name='password'
+                  autoComplete='off'
+                  maxLength='25'
                   value={password}
                   onChange={(e) => onChange(e)}
-                  required 
+                  required
                 />
-                <label className="formContent__label" htmlFor="password"><span className="formContent__label__name">Password</span></label>
+                <label className='formContent__label' htmlFor='password'>
+                  <span className='formContent__label__name'>Password</span>
+                </label>
               </div>
-              <div className="text-center my-3">
-                <a href="/recuperation" className="forgot_passwd">Forgot your password?</a>
+              <div className='text-center my-3'>
+                <a href='/recuperation' className='forgot_passwd'>
+                  Forgot your password?
+                </a>
               </div>
-              <div className="text-center mb-3">
-                <button className="btn btn-primary">Sign in</button>
+              <div className='text-center mb-3'>
+                <button className='btn btn-primary'>Sign in</button>
               </div>
             </form>
           </div>
         </div>
-        <div className="col-9 col-md-8 col-lg-5 shadow__light px-5 py-3 my-4 mx-1 rounded">
-          <div className="row justify-content-center my-3">
-              <h3>Log in with:</h3>
+        <div className='col-9 col-md-8 col-lg-5 shadow__light px-5 py-3 my-4 mx-1 rounded'>
+          <div className='row justify-content-center my-3'>
+            <h3>Log in with:</h3>
           </div>
-          <div className="col-12">
-            <div className="text-center mb-3">
-              <Link to="/auth/42" className="btn btn-outline-light icon-custom icon-custom__fortytwo">Log in</Link>
+          <div className='col-12'>
+            <div className='text-center mb-3'>
+              <a href='http://localhost:5000/api/auth/fortytwo'>
+                <button
+                  variant='link'
+                  className='btn btn-outline-light icon-custom icon-custom__fortytwo'
+                  type='button'
+                >
+                  Log in
+                </button>
+              </a>
             </div>
-            <div className="text-center mb-3">
-              <Link to="api/auth/github" className="btn btn-outline-light icon-custom icon-custom__github">Log in</Link>
+            <div className='text-center mb-3'>
+              <a href='http://localhost:5000/api/auth/github'>
+                <button
+                  variant='link'
+                  className='btn btn-outline-light icon-custom icon-custom__github'
+                  type='button'
+                >
+                  Log in
+                </button>
+              </a>
             </div>
           </div>
         </div>
