@@ -175,7 +175,13 @@ const EditProfile = ({
             if (password !== password2) {
               setAlert('Passwords do not match', 'danger'); // alert type is danger
             } else {
-              updatePwd(formDataTwo, history, user._id);
+              if(password.match(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{4,}$/))
+              {
+                updatePwd(formDataTwo, history, user._id);
+              }
+              else {
+                setAlert('Password must contain at least 4 char including 1 number, caps and low key', 'danger'); // alert type is danger
+              }
             }
           }} >
             <div className="col-12">

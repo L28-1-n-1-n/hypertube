@@ -33,7 +33,13 @@ const Register = ({ setAlert, register, isAuthenticated, justRegistered }) => {
     if (password !== password2) {
       setAlert('Passwords do not match', 'danger'); // alert type is danger
     } else {
-      register({ firstname, lastname, username, email, password });
+      if(password.match(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{4,}$/))
+      {
+        register({ firstname, lastname, username, email, password });
+      }
+      else {
+        setAlert('Password must contain at least 4 char including 1 number, caps and low key', 'danger'); // alert type is danger
+      }
     }
   };
 
