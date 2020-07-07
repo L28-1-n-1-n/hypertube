@@ -56,11 +56,16 @@ const FileUpload = ({ addPhoto, user }) => {
       );
       console.log(res);
       const { fileName, filePath } = res.data;
-
-      setUploadedFile({ fileName, filePath });
-
-      setUAMessage('File Uploaded');
-      addPhoto(formData);
+      if(res.data.retStatus === 'Error') {
+        if(res.data.authorized === false && res.data.msg) {
+          setUAMessage(res.data.msg)
+        }
+      }
+      else {
+        setUploadedFile({ fileName, filePath });
+        setUAMessage('File Uploaded');
+        addPhoto(formData);
+      }
     } catch (err) {
       if (err.response.status === 500) {
         setUAMessage('There was a problem with the server');

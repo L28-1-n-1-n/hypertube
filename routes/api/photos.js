@@ -475,7 +475,12 @@ router.get('/:id/profilepic', auth, async (req, res) => {
 // const io = require('../../server').io;
 router.post('/', auth, upload.single('file'), async (req, res) => {
   if (req.files === null) {
-    return res.status(400).json({ msg: 'No file uploaded' });
+    retStatus = 'Error';
+    return res.send({
+      retStatus: retStatus,
+      authorized: false,
+      msg: 'No file uploaded.',
+    })
   }
   const file = req.files.file;
 
