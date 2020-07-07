@@ -121,7 +121,7 @@ export const fetchYTS = (inputs) => async (dispatch) => {
         // console.log(results)
       } else if (inputs.search === '') {
         const dateinterval = inputs.year.split('_');
-        var searchYTS = await axios.get(
+        searchYTS = await axios.get(
           'https://cors-anywhere.herokuapp.com/https://yts.mx/api/v2/list_movies.json?genre=' +
             inputs.genre +
             '&minimum_rating=' +
@@ -142,7 +142,7 @@ export const fetchYTS = (inputs) => async (dispatch) => {
             'https://cors-anywhere.herokuapp.com/https://tv-v2.api-fetch.sh/movies/3'
           ),
         ]);
-        var fetchPOP_Results = searchPop[0].data.concat(
+        fetchPOP_Results = searchPop[0].data.concat(
           searchPop[1].data,
           searchPop[2].data
         );
@@ -226,7 +226,7 @@ export const fetchYTS = (inputs) => async (dispatch) => {
         three.data.data.movies
       );
 
-      var fetchPOP_Results = yolo[0].data.concat(yolo[1].data, yolo[2].data);
+      fetchPOP_Results = yolo[0].data.concat(yolo[1].data, yolo[2].data);
 
       if (fetchPOP_Results.length >= 1) {
         result2 = fetchPOP_Results.map(function (el) {
@@ -381,7 +381,7 @@ export const fetchInfiniteYTS = (inputs) => async (dispatch) => {
         // console.log(results)
       } else if (inputs.search === '') {
         const dateinterval = inputs.year.split('_');
-        var searchYTS = await axios.get(
+        searchYTS = await axios.get(
           'https://cors-anywhere.herokuapp.com/https://yts.mx/api/v2/list_movies.json?genre=' +
             inputs.genre +
             '&minimum_rating=' +
@@ -402,7 +402,7 @@ export const fetchInfiniteYTS = (inputs) => async (dispatch) => {
             'https://cors-anywhere.herokuapp.com/https://tv-v2.api-fetch.sh/movies/3'
           ),
         ]);
-        var fetchPOP_Results = searchPop[0].data.concat(
+        fetchPOP_Results = searchPop[0].data.concat(
           searchPop[1].data,
           searchPop[2].data
         );
@@ -486,7 +486,7 @@ export const fetchInfiniteYTS = (inputs) => async (dispatch) => {
         three.data.data.movies
       );
 
-      var fetchPOP_Results = yolo[0].data.concat(yolo[1].data, yolo[2].data);
+      fetchPOP_Results = yolo[0].data.concat(yolo[1].data, yolo[2].data);
 
       if (fetchPOP_Results.length >= 1) {
         result2 = fetchPOP_Results.map(function (el) {

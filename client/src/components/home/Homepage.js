@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -9,11 +9,26 @@ const Homepage = ({ fetchYTS, fetchInfiniteYTS, movie: { movies } }) => {
   const [displayMovies, setDisplayMovies] = useState([]);
   const [isFetching, setIsFetching] = useState(false);
   const [lastFetch, setLastFetch] = useState('');
-  const [searchCriteria, setSearchCriteria] = useState({});
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+
+  function useWindowScrollListener() {
+    const handleScroll = useCallback(() => {
+      let lastPos = 0;
+      if (
+        window.innerHeight + document.documentElement.scrollTop ===
+        document.documentElement.offsetHeight
+      )
+        return;
+      var st = window.pageYOffset || document.documentElement.scrollTop;
+      if (st > lastPos) {
+        setIsFetching(true);
+      }
+      lastPos = st <= 0 ? 0 : st;
+    }, []);
+    useEffect(() => {
+      window.addEventListener('scroll', handleScroll);
+      return () => window.removeEventListener('scroll', handleScroll);
+    }, [handleScroll]);
+  }
   useEffect(() => {
     let params = new URLSearchParams(window.location.search);
     let search = params.get('search');
@@ -39,11 +54,10 @@ const Homepage = ({ fetchYTS, fetchInfiniteYTS, movie: { movies } }) => {
         order: order,
         multiple: 1,
       };
-      setSearchCriteria(inputs);
     }
     console.log(inputs);
     fetchYTS(inputs);
-  }, []);
+  }, [fetchYTS]);
 
   useEffect(() => {
     if (!isFetching) return;
@@ -61,19 +75,6 @@ const Homepage = ({ fetchYTS, fetchInfiniteYTS, movie: { movies } }) => {
   useEffect(() => {
     nextItems();
   }, [movies]);
-  let lastPos = 0;
-  function handleScroll() {
-    if (
-      window.innerHeight + document.documentElement.scrollTop ===
-      document.documentElement.offsetHeight
-    )
-      return;
-    var st = window.pageYOffset || document.documentElement.scrollTop;
-    if (st > lastPos) {
-      setIsFetching(true);
-    }
-    lastPos = st <= 0 ? 0 : st;
-  }
 
   function fetchMoreMovies() {
     if (
@@ -107,7 +108,6 @@ const Homepage = ({ fetchYTS, fetchInfiniteYTS, movie: { movies } }) => {
           order: order,
           multiple: Math.floor(displayMovies.length / 150) + 1,
         };
-        setSearchCriteria(inputs);
       }
       console.log(inputs);
       fetchInfiniteYTS(inputs);
@@ -115,6 +115,7 @@ const Homepage = ({ fetchYTS, fetchInfiniteYTS, movie: { movies } }) => {
     }
     // nextItems();
   }
+  useWindowScrollListener();
   // Runs immediately when profile mounts
   return (
     <Fragment>
