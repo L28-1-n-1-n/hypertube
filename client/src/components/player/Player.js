@@ -67,6 +67,9 @@ const Movie = ({
                 <b>Title: {oneMovie && oneMovie.title}</b>
               </p>
               <p>
+                <b>{oneMovie && oneMovie.description_intro}</b>
+              </p>
+              <p>
                 <b>
                   Casting:{' '}
                   {cast &&
@@ -85,13 +88,12 @@ const Movie = ({
             </div>
             <div className='video-desc__details'>
               {torrents &&
-                torrents.map((item, i) => (
-                  <p key={i}>
-                    <span>{item.quality} </span>
-                    <a href={item.url}>{oneMovie && oneMovie.title_long}</a>
-                    <span> {item.size}</span>
+                  <p>
+                    <span>{torrents[0].quality} </span>
+                    <a href={torrents[0].url}>{oneMovie && oneMovie.title_long}</a>
+                    <span> {torrents[0].size}</span>
                   </p>
-                ))}
+                }
             </div>
           </div>
           <div className='video-comment p-2 rounded-bottom'>
