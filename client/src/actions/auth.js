@@ -82,17 +82,24 @@ export const register = ({
   try {
     const res = await axios.post('/api/users', body, config);
 
-    dispatch({
-      type: REGISTER_SUCCESS,
-      payload: res.data,
-    });
+    if(res.data.retStatus === 'Error') {
+      if(res.data.authorized === false && res.data.msg) {
+        dispatch(setAlert(res.data.msg, 'danger'));
+      }
+    }
+    else {
+      dispatch({
+        type: REGISTER_SUCCESS,
+        payload: res.data,
+      });
 
-    dispatch(
-      setAlert(
-        'Please check your email and click on verification link.',
-        'success'
-      )
-    );
+      dispatch(
+        setAlert(
+          'Please check your email and click on verification link.',
+          'success'
+        )
+      );
+    }
   } catch (err) {
     const errors = err.response.data.errors;
 
@@ -118,13 +125,20 @@ export const login = (username, password) => async (dispatch) => {
 
   try {
     const res = await axios.post('/api/auth', body, config); // make POST request to /api/auth, sending body and config
-
+    
+    if(res.data.retStatus === 'Error') {
+      if(res.data.authorized === false && res.data.msg) {
+        dispatch(setAlert(res.data.msg, 'danger'));
+      }
+    }
+    else {
     dispatch({
       type: LOGIN_SUCCESS,
       payload: res.data,
     });
 
     dispatch(loadUser());
+    }
   } catch (err) {
     const errors = err.response.data.errors;
 

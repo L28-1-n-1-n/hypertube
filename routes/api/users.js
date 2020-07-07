@@ -39,22 +39,33 @@ router.post(
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() }); // array of errors
+      retStatus = 'Error';
+      return res.send({
+        retStatus: retStatus,
+        authorized: false,
+        msg: 'An error as occured. Please verify the informations provided and try again.',
+      })
     }
 
     const { firstname, lastname, username, email, password } = req.body;
     try {
       let user = await User.findOne({ email });
       if (user) {
-        return res
-          .status(400)
-          .json({ errors: [{ msg: 'User already exists' }] }); // array of errors
+        retStatus = 'Error';
+        return res.send({
+          retStatus: retStatus,
+          authorized: false,
+          msg: 'User already exists. Either change the username or email.',
+        })
       }
       user = await User.findOne({ username });
       if (user) {
-        return res.status(400).json({
-          errors: [{ msg: 'Username taken. Please choose another one.' }],
-        }); // array of errors
+        retStatus = 'Error';
+        return res.send({
+          retStatus: retStatus,
+          authorized: false,
+          msg: 'User already exists. Either change the username or email.',
+        })
       }
 
       // Create User

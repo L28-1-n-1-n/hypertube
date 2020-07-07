@@ -57,16 +57,22 @@ router.post(
     try {
       let user = await User.findOne({ username });
       if (!user) {
-        return res
-          .status(400)
-          .json({ errors: [{ msg: 'Invalid credentials' }] }); // array of errors
+        retStatus = 'Error';
+        return res.send({
+          retStatus: retStatus,
+          authorized: false,
+          msg: 'Invalid password or username.',
+        })
       }
 
       const isMatch = await bcrypt.compare(password, user.password);
       if (!isMatch) {
-        return res
-          .status(400)
-          .json({ errors: [{ msg: 'Invalid credentials' }] }); // array of errors
+        retStatus = 'Error';
+        return res.send({
+          retStatus: retStatus,
+          authorized: false,
+          msg: 'Invalid password or username.',
+        })
       }
 
       // Get payload

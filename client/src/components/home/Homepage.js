@@ -63,6 +63,7 @@ const Homepage = ({ fetchYTS, fetchInfiniteYTS, movie: { movies } }) => {
     if (!isFetching) return;
     // fetchMoreMovies();
     nextItems();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isFetching]);
   const nextItems = () => {
     setDisplayMovies((prevState) => [
@@ -74,6 +75,7 @@ const Homepage = ({ fetchYTS, fetchInfiniteYTS, movie: { movies } }) => {
   };
   useEffect(() => {
     nextItems();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [movies]);
 
   function fetchMoreMovies() {
