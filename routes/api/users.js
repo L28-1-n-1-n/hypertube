@@ -104,12 +104,12 @@ router.post(
           user.token = token;
           user.save();
           const url = `http://localhost:3000/confirmation/${token}`;
-          const html = `Hello, <br />Thank you for signing up for Tindurr.<br /><br />Please click the link below to activate your account:<br /><a href=${url}>${url}</a>`;
+          const html = `Hello, <br />Thank you for signing up for Hypertube.<br /><br />Please click the link below to activate your account:<br /><a href=${url}>${url}</a>`;
 
           var mailOptions = {
-            from: 'no-reply.tindurr@outlook.com',
+            from: 'no-reply.hypertube@outlook.com',
             to: user.email,
-            subject: 'Confirm your Tindurr Account',
+            subject: 'Confirm your Hypertube Account',
             html: html,
           };
           transporter.sendMail(mailOptions, (error, info) => {

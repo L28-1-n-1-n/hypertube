@@ -9,33 +9,52 @@ export const Navbar = ({
   auth: { isAuthenticated, loading, user },
   logout,
 }) => {
-
   const authLinks = (
-    <div className="nav-item dropdown">
-      <button className="nav-link dropdown-toggle btn btn-outline-secondary" id="header-account-menu-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Menu</button>
-      <div className="dropdown-menu account-menu bg-dropdown" aria-labelledby="header-account-menu-link">
-        <Link className="dropdown-item" to="/homepage">Home</Link>
-        <Link className="dropdown-item" to="/dashboard">Settings</Link>
-        <button href="#" className="dropdown-item logout-button"
-        onClick={() => {
+    <div className='nav-item dropdown'>
+      <button
+        className='nav-link dropdown-toggle btn btn-outline-secondary'
+        id='header-account-menu-link'
+        data-toggle='dropdown'
+        aria-haspopup='true'
+        aria-expanded='false'
+      >
+        Menu
+      </button>
+      <div
+        className='dropdown-menu account-menu bg-dropdown'
+        aria-labelledby='header-account-menu-link'
+      >
+        <Link className='dropdown-item' to='/homepage'>
+          Home
+        </Link>
+        <Link className='dropdown-item' to='/edit-profile'>
+          Settings
+        </Link>
+        <button
+          href='#'
+          className='dropdown-item logout-button'
+          onClick={() => {
             logout(user._id);
-          }}>Sign out</button>
+          }}
+        >
+          Sign out
+        </button>
       </div>
     </div>
   );
   // 'hide-sm' hides small items when we are on mobile devices, to make things responsive
   const guestLinks = (
-    <div className="header__sign">
+    <div className='header__sign'>
       <Link to='/login'>Log in</Link>
       <Link to='/register'>Sign up</Link>
     </div>
   );
 
   return (
-    <header id="page-header" className="header px-3">
-      <div className="header__logo">
-        <Link to="/homepage">
-          <img alt="Logo Hypertube" src={logo} />
+    <header id='page-header' className='header px-3'>
+      <div className='header__logo'>
+        <Link to='/homepage'>
+          <img alt='Logo Hypertube' src={logo} />
         </Link>
       </div>
 

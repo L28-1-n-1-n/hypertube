@@ -57,7 +57,7 @@ router.post(
           const html = `Hello, <br />You've recently asked to recover your Hypertube Account.<br /><br />Please click the link below to enter a new password:<br /><a href=${url}>${url}</a>`;
 
           var mailOptions = {
-            from: 'no-reply.tindurr@outlook.com',
+            from: 'no-reply.hypertube@outlook.com',
             to: user.email,
             subject: 'Recover your Hypertube Account',
             html: html,
