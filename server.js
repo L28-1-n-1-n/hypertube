@@ -1,25 +1,22 @@
 const express = require('express');
 const fileUpload = require('express-fileupload');
 const connectDB = require('./config/db');
-
 const bodyParser = require('body-parser');
 const path = require('path');
-
 const config = require('config');
-const db = config.get('mongoURI');
+
+const db = process.env.mongoURI;
+
 const app = express();
 const PORT = process.env.PORT || 5000;
 const router = express.Router();
-
 const cors = require('cors');
 const passport = require('passport');
 const passportStrategy = require('./config/passport-setup');
-const keys = require('./config/keys');
-const chalk = require('chalk');
-const User = require('./models/User');
-
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config();
+}
 connectDB();
-
 // For Socket.io
 const http = require('http');
 const server = http.createServer(app);

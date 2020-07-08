@@ -43,8 +43,9 @@ router.post(
       return res.send({
         retStatus: retStatus,
         authorized: false,
-        msg: 'An error as occured. Please verify the informations provided and try again.',
-      })
+        msg:
+          'An error as occured. Please verify the informations provided and try again.',
+      });
     }
 
     const { firstname, lastname, username, email, password } = req.body;
@@ -56,7 +57,7 @@ router.post(
           retStatus: retStatus,
           authorized: false,
           msg: 'User already exists. Either change the username or email.',
-        })
+        });
       }
       user = await User.findOne({ username });
       if (user) {
@@ -65,7 +66,7 @@ router.post(
           retStatus: retStatus,
           authorized: false,
           msg: 'User already exists. Either change the username or email.',
-        })
+        });
       }
 
       // Create User
@@ -96,7 +97,7 @@ router.post(
 
       jwt.sign(
         payload,
-        config.get('jwtSecret'),
+        process.env.jwtSecret,
         { expiresIn: 360000 },
         (err, token) => {
           if (err) throw err;
@@ -152,8 +153,9 @@ router.post(
       return res.send({
         retStatus: retStatus,
         authorized: false,
-        msg: 'An error as occured. Please verify the informations provided and try again.',
-      })
+        msg:
+          'An error as occured. Please verify the informations provided and try again.',
+      });
     }
     const { username, firstname, lastname, email, lang } = req.body;
     const userFields = {
@@ -175,7 +177,7 @@ router.post(
             retStatus: retStatus,
             authorized: false,
             msg: 'Username or email taken. Choose another one.',
-          })
+          });
         }
       }
       if (username !== user.username) {
@@ -186,7 +188,7 @@ router.post(
             retStatus: retStatus,
             authorized: false,
             msg: 'Username or email taken. Choose another one.',
-          })
+          });
         }
       }
       if (user) {
@@ -204,7 +206,6 @@ router.post(
   }
 );
 
-
 router.post(
   '/resetPWD/:id',
   [
@@ -212,7 +213,10 @@ router.post(
     [
       check('password', 'Please fill in password').not().isEmpty(),
       check('password2', 'Please fill confirm password').not().isEmpty(),
-      check('password', 'Password must at least contain 6 characters').isLength({ min: 6 }),
+      check(
+        'password',
+        'Password must at least contain 6 characters'
+      ).isLength({ min: 6 }),
     ],
   ],
   async (req, res) => {
@@ -222,8 +226,9 @@ router.post(
       return res.send({
         retStatus: retStatus,
         authorized: false,
-        msg: 'An error as occured. Please verify the informations provided and try again.',
-      })
+        msg:
+          'An error as occured. Please verify the informations provided and try again.',
+      });
     }
     const { password } = req.body;
     const salt = await bcrypt.genSalt(10);
@@ -250,7 +255,5 @@ router.post(
     }
   }
 );
-
-
 
 module.exports = router;

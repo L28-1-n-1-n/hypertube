@@ -8,11 +8,13 @@ const passport = require('passport');
 const auth = require('../../middleware/auth');
 const User = require('../../models/User');
 require('../../config/passport-setup');
-
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config();
+}
 const nodemailer = require('nodemailer');
 
-const MAILER_USER = config.get('mailerUser');
-const MAILER_PASS = config.get('mailerPass');
+const MAILER_USER = process.env.mailerUser;
+const MAILER_PASS = process.env.mailerPass;
 const transporter = nodemailer.createTransport({
   service: 'Outlook365',
   auth: {
@@ -86,7 +88,7 @@ router.post(
       // Use payload and token to sign token
       jwt.sign(
         payload,
-        config.get('jwtSecret'),
+        process.env.jwtSecret,
         { expiresIn: 360000 },
         (err, token) => {
           if (err) throw err;
@@ -121,7 +123,7 @@ router.get(
     };
     jwt.sign(
       payload,
-      config.get('jwtSecret'),
+      process.env.jwtSecret,
       { expiresIn: 360000 },
       (err, token) => {
         if (err) throw err;
@@ -153,7 +155,7 @@ router.get(
     };
     jwt.sign(
       payload,
-      config.get('jwtSecret'),
+      process.env.jwtSecret,
       { expiresIn: 360000 },
       (err, token) => {
         if (err) throw err;

@@ -22,7 +22,7 @@ router.post(
           retStatus: retStatus,
           authorized: false,
           msg: 'Please include a valid email.',
-        })
+        });
       }
 
       const { email } = req.body;
@@ -34,7 +34,7 @@ router.post(
           retStatus: retStatus,
           authorized: false,
           msg: 'An error as occured. Please try again.',
-        })
+        });
       }
 
       // Get payload
@@ -47,7 +47,7 @@ router.post(
 
       jwt.sign(
         payload,
-        config.get('jwtSecret'),
+        process.env.jwtSecret,
         { expiresIn: 360000 },
         (err, token) => {
           if (err) throw err;
@@ -80,7 +80,7 @@ router.post(
           retStatus: retStatus,
           authorized: false,
           msg: 'Invalid token.',
-        })
+        });
       }
       res.status(500).send('Server Error');
     }
