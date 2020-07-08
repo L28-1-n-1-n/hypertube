@@ -14,12 +14,12 @@ export const Navbar = ({
     <div className="nav-item dropdown">
       <button className="nav-link dropdown-toggle btn btn-outline-secondary" id="header-account-menu-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Menu</button>
       <div className="dropdown-menu account-menu bg-dropdown" aria-labelledby="header-account-menu-link">
-        <Link className="dropdown-item" to="/homepage">Home</Link>
-        <Link className="dropdown-item" to="/dashboard">Settings</Link>
+        <Link className="dropdown-item" to="/homepage">{user && (user.lang === "en" ? 'Home' : user.lang === "fr" ? 'Accueil' : 'Inicio')}</Link>
+        <Link className="dropdown-item" to="/dashboard">{user && (user.lang === "en" ? 'Settings' : user.lang === "fr" ? 'Paramètres' : 'Configuración')}</Link>
         <button href="#" className="dropdown-item logout-button"
         onClick={() => {
             logout(user._id);
-          }}>Sign out</button>
+          }}>{user && (user.lang === "en" ? 'Sign out' : user.lang === "fr" ? 'Déconnexion' : 'Cerrar Sesión')}</button>
       </div>
     </div>
   );

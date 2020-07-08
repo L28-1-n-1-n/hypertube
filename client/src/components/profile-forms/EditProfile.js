@@ -69,7 +69,7 @@ const EditProfile = ({
       <div id="edit-profile" className="container row mx-auto d-flex justify-content-center my-4">
         <div className="col-md-7 col-sm-10 col-10 col-lg-5 shadow__light px-5 py-3 my-4 mx-2 rounded">
             <div className="col-12 text-center my-3">
-                <h3>Informations</h3>
+                <h3>{user && (user.lang === "en" ? 'Informations' : user.lang === "fr" ? 'Informations' : 'Informaciones')}</h3>
             </div>
             <form onSubmit={(e) => onSubmit(e)}>
               <div className="col-12">
@@ -83,7 +83,7 @@ const EditProfile = ({
                     autoComplete="off" 
                     required 
                   />
-                  <label className="formContent__label" htmlFor="username"><span className="formContent__label__name">Username</span></label>
+                  <label className="formContent__label" htmlFor="username"><span className="formContent__label__name">{user && (user.lang === "en" ? 'Username' : user.lang === "fr" ? 'Pseudo' : 'Nombre de Usuario')}</span></label>
                 </div>
                 <div className="formContent">
                   <input 
@@ -95,7 +95,7 @@ const EditProfile = ({
                     autoComplete="off" 
                     required 
                   />
-                  <label className="formContent__label" htmlFor="firstname"><span className="formContent__label__name">Firstname</span></label>
+                  <label className="formContent__label" htmlFor="firstname"><span className="formContent__label__name">{user && (user.lang === "en" ? 'Firstname' : user.lang === "fr" ? 'Prénom' : 'Primer Nombre')}</span></label>
                 </div>
                 <div className="formContent">
                   <input 
@@ -107,7 +107,7 @@ const EditProfile = ({
                     autoComplete="off" 
                     required 
                   />
-                  <label className="formContent__label" htmlFor="lastname"><span className="formContent__label__name">Lastname</span></label>
+                  <label className="formContent__label" htmlFor="lastname"><span className="formContent__label__name">{user && (user.lang === "en" ? 'Lastname' : user.lang === "fr" ? 'Nom' : 'Apellido')}</span></label>
                 </div>
                 <div className="formContent">
                   <input 
@@ -119,10 +119,10 @@ const EditProfile = ({
                     autoComplete="off" 
                     required 
                   />
-                  <label className="formContent__label" htmlFor="email"><span className="formContent__label__name">Email address</span></label>
+                  <label className="formContent__label" htmlFor="email"><span className="formContent__label__name">{user && (user.lang === "en" ? 'Email address' : user.lang === "fr" ? 'Email' : 'Email')}</span></label>
                 </div>
                 <div>
-                  <p>Language</p>
+                  <p>{user && (user.lang === "en" ? 'Language' : user.lang === "fr" ? 'Langue' : 'Idioma')}</p>
                   <div>
                     <input 
                       type="radio" 
@@ -133,7 +133,7 @@ const EditProfile = ({
                       checked={lang === 'en' ? true : false}
                       onChange={(e) => onChange(e)}
                     />
-                    <label htmlFor="english">English</label>
+                    <label htmlFor="english">{user && (user.lang === "en" ? 'English' : user.lang === "fr" ? 'Anglais' : 'Inglés')}</label>
                   </div>
                   <div>
                     <input 
@@ -145,7 +145,7 @@ const EditProfile = ({
                       checked={lang === 'fr' ? true : false}
                       onChange={(e) => onChange(e)}
                     />
-                    <label htmlFor="french">French</label>
+                    <label htmlFor="french">{user && (user.lang === "en" ? 'French' : user.lang === "fr" ? 'Français' : 'Francés')}</label>
                   </div>
                   <div>
                     <input 
@@ -157,18 +157,18 @@ const EditProfile = ({
                       checked={lang === 'es' ? true : false}
                       onChange={(e) => onChange(e)}
                     />
-                    <label htmlFor="spanish">Spanish</label>
+                    <label htmlFor="spanish">{user && (user.lang === "en" ? 'Spanish' : user.lang === "fr" ? 'Espagnol' : 'Español')}</label>
                   </div>
                 </div>
                 <div className="col-xs-6 text-center my-3">
-                  <button type="submit" className="btn btn-primary">Update</button>
+                  <button type="submit" className="btn btn-primary">{user && (user.lang === "en" ? 'Update' : user.lang === "fr" ? 'Actualiser' : 'Actualizar')}</button>
                 </div>
               </div>
             </form>
         </div>
         <div className="col-md-7 col-sm-10 col-10 col-lg-5 shadow__light px-5 py-3 my-4 mx-2 rounded">
           <div className="col-12 text-center my-3">
-              <h3>Password</h3>
+              <h3>{user && (user.lang === "en" ? 'Password' : user.lang === "fr" ? 'Mot de passe' : 'Contraseña')}</h3>
           </div>
           <form onSubmit={(e) => {
             e.preventDefault();
@@ -196,7 +196,7 @@ const EditProfile = ({
                   autoComplete="off"
                   required 
                 />
-                <label className="formContent__label" htmlFor="password"><span className="formContent__label__name">Password</span></label>
+                <label className="formContent__label" htmlFor="password"><span className="formContent__label__name">{user && (user.lang === "en" ? 'Password' : user.lang === "fr" ? 'Mot de passe' : 'Contraseña')}</span></label>
               </div>
               <div className="formContent">
                 <input 
@@ -209,32 +209,18 @@ const EditProfile = ({
                   autoComplete="off"
                   required 
                 />
-                <label className="formContent__label" htmlFor="password2"><span className="formContent__label__name">Confirm password</span></label>
+                <label className="formContent__label" htmlFor="password2"><span className="formContent__label__name">{user && (user.lang === "en" ? 'Confirm password' : user.lang === "fr" ? 'Confirmer mot de passe' : 'Confirma contraseña')}</span></label>
               </div>
               <div className="col-xs-6 text-center my-3">    
-                <button type="submit" className="btn btn-primary">Update password</button>
+                <button type="submit" className="btn btn-primary">{user && (user.lang === "en" ? 'Update password' : user.lang === "fr" ? 'Actualiser mot de passe' : 'Actualizar contraseña')}</button>
               </div>
             </div>
           </form>
           <hr/>
           <div className="col-12 text-center my-3">
-            <h3>Picture</h3>
+            <h3>{user && (user.lang === "en" ? 'Picture' : user.lang === "fr" ? 'Photo' : 'Foto')}</h3>
           </div>
           <FileUpload user={user} />
-          {/* <form encType="multipart/form-data" action="updateAvatar">
-            <div className="col-12">
-                <div className="form-group btn btn-rounded">
-                  <label htmlFor="">Image :</label>
-                  <input 
-                    className="form-control-file" 
-                    type="file" 
-                  />
-                </div>
-                <div className="col-xs-6 text-center my-3">
-                    <button type="submit" className="btn btn-primary">Add</button>
-                </div>
-            </div>
-          </form> */}
         </div>
       </div>
     </Fragment>
