@@ -80,7 +80,7 @@ passport.use(
                 email: result_email,
                 password: crypto.randomBytes(8).toString('hex'),
                 githubId: profile._json.id.toString(),
-                imageUrl: profile.avatar_url,
+                filePath: profile._json.avatar_url,
               });
               newUser.save();
               if (newUser) {
@@ -120,7 +120,7 @@ passport.use(
           email: profile.emails[0].value,
           password: crypto.randomBytes(8).toString('hex'),
           fortyTwoId: profile.id,
-          imageUrl: profile.photos[0].value,
+          filePath: profile.photos[0].value,
         });
         newUser.save();
 
