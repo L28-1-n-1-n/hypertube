@@ -3,8 +3,11 @@ const passport = require('passport'),
 const FortyTwoStrategy = require('passport-42');
 const crypto = require('crypto');
 const chalk = require('chalk');
-const keys = require('./keys');
 const User = require('../models/User');
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config();
+}
+
 const https = require('https');
 
 // serialize the user.id to save in the cookie session
@@ -27,74 +30,37 @@ passport.deserializeUser((id, cb) => {
 passport.use(
   new GitHubStrategy(
     {
-      clientID: keys.githubClientID,
-      clientSecret: keys.githubClientSecret,
+      clientID: process.env.githubClientID,
+      clientSecret: process.env.githubClientSecret,
       callbackURL: 'http://localhost:5000/api/auth/github/callback',
     },
     async (accessToken, refreshToken, profile, cb) => {
       // console.log(chalk.yellow(JSON.stringify(profile)));
-
-      var options = {
-        host: 'api.github.com',
-        path: '/users/' + profile.username + '/events/public',
-        method: 'GET',
-        headers: { 'user-agent': 'node.js' },
-      };
-
-      var req = https.request(options, function (res) {
-        var body = '';
-        res.on('data', function (chunk) {
-          body += chunk.toString('utf8');
-        });
-
-        res.on('end', function () {
-          var i = 0;
-          var result = JSON.parse(body);
-          while (
-            !(
-              result[i] &&
-              result[i].payload &&
-              result[i].payload.commits[0] &&
-              result[i].payload.commits[0].author &&
-              result[i].payload.commits[0].author.email
-            ) &&
-            i < result.length
-          ) {
-            i++;
-          }
-          const result_email = JSON.parse(body)[0].payload.commits[i].author
-            .email;
-          if (typeof result_email === 'undefined') {
-            result_email = 'placeholder@email_unknown.com';
-          }
-          const register = async () => {
-            const currentUser = await User.findOne({
-              githubId: profile._json.id.toString(),
-            });
-
-            if (!currentUser) {
-              const newUser = await new User({
-                username: profile._json.login,
-                firstname: profile._json.login,
-                lastname: profile._json.login,
-                email: result_email,
-                password: crypto.randomBytes(8).toString('hex'),
-                githubId: profile._json.id.toString(),
-                imageUrl: profile.avatar_url,
-              });
-              newUser.save();
-              if (newUser) {
-                cb(null, newUser);
-              }
-            } else {
-              cb(null, currentUser);
-            }
-          };
-          register();
-        });
+      const currentUser = await User.findOne({
+        githubId: profile._json.id.toString(),
       });
 
-      req.end();
+      if (!currentUser) {
+        const newUser = await new User({
+          username: profile._json.login,
+          firstname: profile._json.login,
+          lastname: profile._json.login,
+          email:
+            crypto.randomBytes(8).toString('hex') +
+            '@' +
+            crypto.randomBytes(8).toString('hex') +
+            '.com',
+          password: crypto.randomBytes(8).toString('hex'),
+          githubId: profile._json.id.toString(),
+          filePath: profile._json.avatar_url,
+        });
+        newUser.save();
+        if (newUser) {
+          cb(null, newUser);
+        }
+      } else {
+        cb(null, currentUser);
+      }
     }
   )
 );
@@ -103,8 +69,8 @@ passport.use(
   'fortyTwo',
   new FortyTwoStrategy(
     {
-      clientID: keys.fortyTwoClientID,
-      clientSecret: keys.fortyTwoClientSecret,
+      clientID: process.env.fortyTwoClientID,
+      clientSecret: process.env.fortyTwoClientSecret,
       callbackURL: `http://localhost:5000/api/auth/fortytwo/callback`,
     },
     async (accessToken, refreshToken, profile, cb) => {
@@ -120,7 +86,7 @@ passport.use(
           email: profile.emails[0].value,
           password: crypto.randomBytes(8).toString('hex'),
           fortyTwoId: profile.id,
-          imageUrl: profile.photos[0].value,
+          filePath: profile.photos[0].value,
         });
         newUser.save();
 
