@@ -13,10 +13,14 @@ export const getMovieById = (imdbId) => async (dispatch) => {
   try {
     // make request to YTS
 
-    const resId = await axios.get(`https://cors-anywhere.herokuapp.com/https://yts.mx/api/v2/list_movies.json?query_term=${imdbId}`);
-    console.log(resId)
+    const resId = await axios.get(
+      `https://cors-anywhere.herokuapp.com/https://yts.mx/api/v2/list_movies.json?query_term=${imdbId}`
+    );
+    console.log(resId);
     const res = await axios.get(
-      `https://cors-anywhere.herokuapp.com/https://yts.mx/api/v2/movie_details.json?movie_id=`+ resId.data.data.movies[0].id + `&with_cast=true`
+      `https://cors-anywhere.herokuapp.com/https://yts.mx/api/v2/movie_details.json?movie_id=` +
+        resId.data.data.movies[0].id +
+        `&with_cast=true`
     );
 
     console.log('res below from player.js');
@@ -41,12 +45,11 @@ export const addComment = (formData) => async (dispatch) => {
     };
 
     const res = await axios.post(`/api/comments/addcomment`, formData, config);
-    if(res.data.retStatus === 'Error') {
-      if(res.data.authorized === false && res.data.msg) {
+    if (res.data.retStatus === 'Error') {
+      if (res.data.authorized === false && res.data.msg) {
         dispatch(setAlert(res.data.msg, 'danger'));
       }
-    }
-    else {
+    } else {
       dispatch({
         type: NEW_COMMENT,
         payload: res.data.comments[0], // add latest comment, which is the first element of the array comments reversed in the backend within the object newListOfComments
@@ -84,25 +87,16 @@ export const getMovieComments = (imdbId) => async (dispatch) => {
 
 // Download movie
 export const downloadMovie = (imdbId) => async (dispatch) => {
-  console.log(imdbId)
   try {
-    const config = {
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-      },
-    };
-
-    const res = await axios.post(`/api/player/download`, imdbId, config);
-    if(res.data.retStatus === 'Error') {
-      if(res.data.authorized === false && res.data.msg) {
+    const res = await axios.post(`/api/player/download`, { movieId: imdbId });
+    if (res.data.retStatus === 'Error') {
+      if (res.data.authorized === false && res.data.msg) {
         dispatch(setAlert(res.data.msg, 'danger'));
       }
-    }
-    else {
+    } else {
       dispatch({
         type: DOWNLOAD_MOVIE,
-        payload: res.data, 
+        payload: res.data,
       });
 
       dispatch(setAlert('Movie downloaded', 'success'));
