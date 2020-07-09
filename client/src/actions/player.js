@@ -5,6 +5,7 @@ import {
   GET_ONE_MOVIE,
   NEW_COMMENT,
   GET_COMMENTS,
+  DOWNLOAD_MOVIE,
 } from './types';
 
 // Get movie by ID
@@ -78,5 +79,35 @@ export const getMovieComments = (imdbId) => async (dispatch) => {
     });
   } catch (err) {
     // console.log(err);
+  }
+};
+
+// Download movie
+export const downloadMovie = (imdbId) => async (dispatch) => {
+  console.log(imdbId)
+  try {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+    };
+
+    const res = await axios.post(`/api/player/download`, imdbId, config);
+    if(res.data.retStatus === 'Error') {
+      if(res.data.authorized === false && res.data.msg) {
+        dispatch(setAlert(res.data.msg, 'danger'));
+      }
+    }
+    else {
+      dispatch({
+        type: DOWNLOAD_MOVIE,
+        payload: res.data, 
+      });
+
+      dispatch(setAlert('Movie downloaded', 'success'));
+    }
+  } catch (err) {
+    console.log(err);
   }
 };

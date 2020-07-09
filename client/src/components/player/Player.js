@@ -6,11 +6,13 @@ import {
   getMovieById,
   addComment,
   getMovieComments,
+  downloadMovie,
 } from '../../actions/player';
 
 const Movie = ({
   getMovieById,
   getMovieComments,
+  downloadMovie,
   movie: {
     oneMovie,
     oneMovie: { cast },
@@ -95,6 +97,14 @@ const Movie = ({
                   </p>
                 }
             </div>
+            <div className='video-desc__details'>
+            <form onSubmit={(e) => {
+              e.preventDefault();
+              downloadMovie(match.params.id);
+              }}>
+                <button className="btn btn-sm btn-success" type="submit">Download</button>
+            </form>
+            </div>
           </div>
           <div className='video-comment p-2 rounded-bottom'>
             <div className='video-comment__new'>
@@ -145,6 +155,7 @@ const Movie = ({
 Movie.propTypes = {
   getMovieById: PropTypes.func.isRequired,
   getMovieComments: PropTypes.func.isRequired,
+  downloadMovie: PropTypes.func.isRequired,
   addComment: PropTypes.func.isRequired,
   movie: PropTypes.object.isRequired,
   auth: PropTypes.object.isRequired,
@@ -159,4 +170,5 @@ export default connect(mapStateToProps, {
   getMovieById,
   getMovieComments,
   addComment,
+  downloadMovie,
 })(Movie);
