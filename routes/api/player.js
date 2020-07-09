@@ -30,7 +30,10 @@ router.get('/downloaded/:imdbId', async (req, res) => {
       movieId: req.params.imdbId,
     });
     if (!down)
+    {
+      console.log("NOTHING DOWNLOADED")
       return res;
+    }
     console.log("Movie is downloaded already")
     res.json(down);
   } catch (err) {

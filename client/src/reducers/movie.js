@@ -3,12 +3,14 @@ import {
   GET_ONE_MOVIE,
   GET_COMMENTS,
   NEW_COMMENT,
+  DOWNLOADED_MOVIE,
 } from '../actions/types';
 
 const initialState = {
   movies: [],
   oneMovie: [],
   movieComments: [],
+  filepath: [],
   loading: true,
   error: {},
 };
@@ -42,6 +44,12 @@ export default function (state = initialState, action) {
         ...state,
         // copy existing movieComments array, add new comment to the top of the array
         movieComments: [payload, ...state.movieComments],
+        loading: false,
+      };
+    case DOWNLOADED_MOVIE:
+      return {
+        ...state,
+        filepath: payload,
         loading: false,
       };
     default:

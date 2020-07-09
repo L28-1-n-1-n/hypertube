@@ -20,6 +20,7 @@ const Movie = ({
     oneMovie: { cast },
     oneMovie: { torrents },
     movieComments,
+    filepath,
   },
   match,
   addComment,
@@ -40,6 +41,7 @@ const Movie = ({
   console.log(cast);
   console.log(torrents);
   console.log(movieComments);
+  console.log(filepath)
 
   const onChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -148,6 +150,7 @@ const Movie = ({
                   </div>
                 ))}
             </div>
+            {filepath.movieId ? 'Salut' : 'Yolo'}
           </div>
         </div>
       </div>
