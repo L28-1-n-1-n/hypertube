@@ -6,6 +6,7 @@ import {
   NEW_COMMENT,
   GET_COMMENTS,
   DOWNLOAD_MOVIE,
+  DOWNLOADED_MOVIE,
 } from './types';
 
 // Get movie by ID
@@ -100,6 +101,27 @@ export const downloadMovie = (imdbId) => async (dispatch) => {
       });
 
       dispatch(setAlert('Movie downloaded', 'success'));
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+
+// Download movie
+export const getDownloadedMovie = (imdbId) => async (dispatch) => {
+  try {
+    const res = await axios.get(`/api/player/downloaded/:imdbid`, imdbId);
+    if (res.data.retStatus === 'Error') {
+      if (res.data.authorized === false && res.data.msg) {
+        dispatch(setAlert(res.data.msg, 'danger'));
+      }
+    } else {
+      dispatch({
+        type: DOWNLOADED_MOVIE,
+        payload: res.data,
+      });
+      dispatch(setAlert('Comment added', 'success'));
     }
   } catch (err) {
     console.log(err);

@@ -23,4 +23,24 @@ router.post('/download', auth, async (req, res) => {
   }
 });
 
+
+router.get('/downloaded/:imdbId', async (req, res) => {
+  try {
+    const down = await Downloaded.findOne({
+      movieId: req.params.imdbId,
+    });
+    if (!down)
+      return res;
+    console.log("Movie is downloaded already")
+    res.json(down);
+  } catch (err) {
+    console.error(err.message);
+    console.error('Non ca fonctionne pas du tout la');
+    if (err.kind == 'ObjectId') {
+      return res.status(400).json({ msg: 'Profile not found' }); // display message for non-valid userid
+    }
+    res.status(500).send('Server Error');
+  }
+});
+
 module.exports = router;

@@ -7,12 +7,14 @@ import {
   addComment,
   getMovieComments,
   downloadMovie,
+  getDownloadedMovie,
 } from '../../actions/player';
 
 const Movie = ({
   getMovieById,
   getMovieComments,
   downloadMovie,
+  getDownloadedMovie,
   movie: {
     oneMovie,
     oneMovie: { cast },
@@ -30,8 +32,9 @@ const Movie = ({
   useEffect(() => {
     getMovieById(match.params.id);
     getMovieComments(match.params.id);
+    getDownloadedMovie(match.params.id);
     setFormData({ ...{ imdbId: match.params.id } });
-  }, [getMovieById, getMovieComments, match.params.id, user]);
+  }, [getMovieById, getMovieComments, getDownloadedMovie, match.params.id, user]);
   console.log(oneMovie);
   console.log(match.params.id);
   console.log(cast);
@@ -156,6 +159,7 @@ Movie.propTypes = {
   getMovieById: PropTypes.func.isRequired,
   getMovieComments: PropTypes.func.isRequired,
   downloadMovie: PropTypes.func.isRequired,
+  getDownloadedMovie: PropTypes.func.isRequired,
   addComment: PropTypes.func.isRequired,
   movie: PropTypes.object.isRequired,
   auth: PropTypes.object.isRequired,
@@ -171,4 +175,5 @@ export default connect(mapStateToProps, {
   getMovieComments,
   addComment,
   downloadMovie,
+  getDownloadedMovie,
 })(Movie);
