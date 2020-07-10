@@ -12,7 +12,7 @@ router.post('/download', auth, async (req, res) => {
     const imdbId = req.body;
     movieDownloaded = new Downloaded({
       movieId: req.body.movieId,
-      moviePath: '/public/upload/video.mp4',
+      moviePath: '/uploads/video.mp4',
     });
     await movieDownloaded.save();
 

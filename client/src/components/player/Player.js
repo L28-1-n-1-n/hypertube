@@ -113,7 +113,9 @@ const Movie = ({
               )}
             </div>
             {moviePath ? (
-              moviePath
+              <video id="videoPlayer" controls muted="muted"> 
+                  <source src={moviePath} type="video/mp4" />
+              </video>
             ) : (
               <div className='video-desc__details'>
                 <form
