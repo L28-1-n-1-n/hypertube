@@ -4,6 +4,7 @@ import {
   GET_COMMENTS,
   NEW_COMMENT,
   DOWNLOADED_MOVIE,
+  DOWNLOAD_NEW_MOVIE,
 } from '../actions/types';
 
 const initialState = {
@@ -45,9 +46,10 @@ export default function (state = initialState, action) {
         loading: false,
       };
     case DOWNLOADED_MOVIE:
+    case DOWNLOAD_NEW_MOVIE:
       return {
         ...state,
-        oneMovie: payload,
+        oneMovie: Object.assign(state.oneMovie, payload),
         loading: false,
       };
     default:

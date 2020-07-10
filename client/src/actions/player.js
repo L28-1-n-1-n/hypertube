@@ -7,6 +7,7 @@ import {
   GET_COMMENTS,
   DOWNLOAD_MOVIE,
   DOWNLOADED_MOVIE,
+  DOWNLOAD_NEW_MOVIE,
 } from './types';
 
 // Get movie by ID
@@ -103,12 +104,12 @@ export const downloadMovie = (imdbId) => async (dispatch) => {
       }
     } else if (res.data.retStatus && res.data.retStatus === 'Empty') {
       dispatch({
-        type: DOWNLOAD_MOVIE,
+        type: DOWNLOAD_NEW_MOVIE,
         payload: { moviePath: 'Empty' },
       });
     } else {
       dispatch({
-        type: DOWNLOAD_MOVIE,
+        type: DOWNLOAD_NEW_MOVIE,
         payload: res.data,
       });
       dispatch(setAlert('Movie downloaded', 'success'));
@@ -127,6 +128,7 @@ export const getDownloadedMovie = (imdbId) => async (dispatch) => {
         dispatch(setAlert(res.data.msg, 'danger'));
       }
     } else {
+      console.log(res.data.moviePath);
       dispatch({
         type: DOWNLOADED_MOVIE,
         payload: { moviePath: res.data.moviePath },
