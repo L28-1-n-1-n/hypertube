@@ -19,8 +19,8 @@ const Movie = ({
     oneMovie,
     oneMovie: { cast },
     oneMovie: { torrents },
+    oneMovie: { moviePath },
     movieComments,
-    filepath,
   },
   match,
   addComment,
@@ -35,19 +35,25 @@ const Movie = ({
     getMovieComments(match.params.id);
     getDownloadedMovie(match.params.id);
     setFormData({ ...{ imdbId: match.params.id } });
-  }, [getMovieById, getMovieComments, getDownloadedMovie, match.params.id, user]);
+  }, [
+    getMovieById,
+    getMovieComments,
+    getDownloadedMovie,
+    match.params.id,
+    user,
+  ]);
   console.log(oneMovie);
   console.log(match.params.id);
   console.log(cast);
   console.log(torrents);
   console.log(movieComments);
-  console.log(filepath)
 
   const onChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   console.log(formData);
+  console.log(moviePath);
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -80,7 +86,9 @@ const Movie = ({
                 <b>
                   Casting:{' '}
                   {cast &&
-                    cast.map((item, i) => <span key={i}>{' ' + item.name + ','}</span>)}
+                    cast.map((item, i) => (
+                      <span key={i}>{' ' + item.name + ','}</span>
+                    ))}
                 </b>
               </p>
               <p>
@@ -94,22 +102,32 @@ const Movie = ({
               </p>
             </div>
             <div className='video-desc__details'>
-              {torrents &&
-                  <p>
-                    <span>{torrents[0].quality} </span>
-                    <a href={torrents[0].url}>{oneMovie && oneMovie.title_long}</a>
-                    <span> {torrents[0].size}</span>
-                  </p>
-                }
+              {torrents && (
+                <p>
+                  <span>{torrents[0].quality} </span>
+                  <a href={torrents[0].url}>
+                    {oneMovie && oneMovie.title_long}
+                  </a>
+                  <span> {torrents[0].size}</span>
+                </p>
+              )}
             </div>
-            <div className='video-desc__details'>
-            <form onSubmit={(e) => {
-              e.preventDefault();
-              downloadMovie(match.params.id);
-              }}>
-                <button className="btn btn-sm btn-success" type="submit">Download</button>
-            </form>
-            </div>
+            {moviePath ? (
+              moviePath
+            ) : (
+              <div className='video-desc__details'>
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    downloadMovie(match.params.id);
+                  }}
+                >
+                  <button className='btn btn-sm btn-success' type='submit'>
+                    Download
+                  </button>
+                </form>
+              </div>
+            )}
           </div>
           <div className='video-comment p-2 rounded-bottom'>
             <div className='video-comment__new'>
@@ -144,13 +162,14 @@ const Movie = ({
                 movieComments.map((item, i) => (
                   <div key={i} className='d-flex'>
                     <div className='comment-text d-flex flex-column'>
-                      <Link to={'/profile/' + item.username}>{item.username}</Link>
+                      <Link to={'/profile/' + item.username}>
+                        {item.username}
+                      </Link>
                       <span className='comment-text__text'>{item.text}</span>
                     </div>
                   </div>
                 ))}
             </div>
-            {filepath.movieId ? 'Salut' : 'Yolo'}
           </div>
         </div>
       </div>

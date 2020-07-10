@@ -23,18 +23,19 @@ router.post('/download', auth, async (req, res) => {
   }
 });
 
-
 router.get('/downloaded/:imdbId', async (req, res) => {
   try {
     const down = await Downloaded.findOne({
       movieId: req.params.imdbId,
     });
-    if (!down)
-    {
-      console.log("NOTHING DOWNLOADED")
-      return res;
+
+    if (!down) {
+      console.log('NOTHING DOWNLOADED');
+      return res.send({
+        retStatus: 'Empty',
+      });
     }
-    console.log("Movie is downloaded already")
+    console.log('Movie is downloaded already');
     res.json(down);
   } catch (err) {
     console.error(err.message);

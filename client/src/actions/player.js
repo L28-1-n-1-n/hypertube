@@ -77,10 +77,17 @@ export const getMovieComments = (imdbId) => async (dispatch) => {
     const res = await axios.get(`/api/comments/${imdbId}`, config);
     console.log('res getMovieComments below');
     console.log(res.data.comments);
-    dispatch({
-      type: GET_COMMENTS,
-      payload: res.data.comments,
-    });
+    if (res.data.retStatus && res.data.retStatus === 'Empty') {
+      dispatch({
+        type: GET_COMMENTS,
+        payload: [],
+      });
+    } else {
+      dispatch({
+        type: GET_COMMENTS,
+        payload: res.data.comments,
+      });
+    }
   } catch (err) {
     // console.log(err);
   }
@@ -94,19 +101,22 @@ export const downloadMovie = (imdbId) => async (dispatch) => {
       if (res.data.authorized === false && res.data.msg) {
         dispatch(setAlert(res.data.msg, 'danger'));
       }
+    } else if (res.data.retStatus && res.data.retStatus === 'Empty') {
+      dispatch({
+        type: DOWNLOAD_MOVIE,
+        payload: { moviePath: 'Empty' },
+      });
     } else {
       dispatch({
         type: DOWNLOAD_MOVIE,
         payload: res.data,
       });
-
       dispatch(setAlert('Movie downloaded', 'success'));
     }
   } catch (err) {
     console.log(err);
   }
 };
-
 
 // Download movie
 export const getDownloadedMovie = (imdbId) => async (dispatch) => {
@@ -119,7 +129,7 @@ export const getDownloadedMovie = (imdbId) => async (dispatch) => {
     } else {
       dispatch({
         type: DOWNLOADED_MOVIE,
-        payload: res.data,
+        payload: { moviePath: res.data.moviePath },
       });
     }
   } catch (err) {

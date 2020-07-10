@@ -10,7 +10,7 @@ const initialState = {
   movies: [],
   oneMovie: [],
   movieComments: [],
-  filepath: [],
+  // filepath: [],
   loading: true,
   error: {},
 };
@@ -22,15 +22,13 @@ export default function (state = initialState, action) {
     case GET_MOVIES:
       return {
         ...state,
-        // movies: payload,
-        // movies: [...state.movies, payload],
         movies: state.movies.concat(payload),
         loading: false,
       };
     case GET_ONE_MOVIE:
       return {
         ...state,
-        oneMovie: payload,
+        oneMovie: Object.assign(state.oneMovie, payload),
         loading: false,
       };
     case GET_COMMENTS:
@@ -49,7 +47,7 @@ export default function (state = initialState, action) {
     case DOWNLOADED_MOVIE:
       return {
         ...state,
-        filepath: payload,
+        oneMovie: payload,
         loading: false,
       };
     default:
