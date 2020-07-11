@@ -15,10 +15,12 @@ const Movie = ({
   getMovieComments,
   downloadMovie,
   getDownloadedMovie,
+
   movie: {
     oneMovie,
     oneMovie: { cast },
     oneMovie: { torrents },
+    oneMovie: { movieMagnet },
     oneMovie: { moviePath },
     movieComments,
   },
@@ -43,17 +45,28 @@ const Movie = ({
     user,
   ]);
   console.log(oneMovie);
+  console.log(movieMagnet);
   console.log(match.params.id);
   console.log(cast);
   console.log(torrents);
   console.log(movieComments);
+  if (torrents && match.params.id) {
+    torrents.forEach((torrent) => {
+      torrent.magnet = `magnet:?xt=urn:btih:${torrent.hash}&dn=${encodeURI(
+        oneMovie.title
+      )}&tr=http://track.one:1234/announce&tr=udp://track.two:80`;
+      torrent.magnet2 = `magnet:?xt=urn:btih:${torrent.hash}&dn=${encodeURI(
+        oneMovie.title
+      )}&tr=http://track.one:1234/announce&tr=udp://tracker.openbittorrent.com:80`;
+    });
+  }
 
+  console.log(torrents);
   const onChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   console.log(formData);
-  console.log(moviePath);
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -113,15 +126,33 @@ const Movie = ({
               )}
             </div>
             {moviePath ? (
-              <video id="videoPlayer" controls muted="muted"> 
-                  <source src={moviePath} type="video/mp4" />
+              // <video id='videoPlayer' controls muted='muted'>
+              //   <source src={moviePath} type='video/mp4' />
+              // </video>
+              <video
+                className='video-player'
+                width='100%'
+                controls
+                preload='metadata'
+                controlsList='nodownload'
+              >
+                <source
+                  // src={`http://localhost:5000/api/player/stream/${torrents[0].magnet}`}
+                  src={
+                    movieMagnet
+                      ? `http://localhost:5000/api/player/stream/${encodeURIComponent(
+                          movieMagnet
+                        )}`
+                      : ''
+                  }
+                />
               </video>
             ) : (
               <div className='video-desc__details'>
                 <form
                   onSubmit={(e) => {
                     e.preventDefault();
-                    downloadMovie(match.params.id);
+                    downloadMovie(match.params.id, torrents[0].magnet);
                   }}
                 >
                   <button className='btn btn-sm btn-success' type='submit'>
@@ -184,6 +215,7 @@ Movie.propTypes = {
   getMovieComments: PropTypes.func.isRequired,
   downloadMovie: PropTypes.func.isRequired,
   getDownloadedMovie: PropTypes.func.isRequired,
+
   addComment: PropTypes.func.isRequired,
   movie: PropTypes.object.isRequired,
   auth: PropTypes.object.isRequired,

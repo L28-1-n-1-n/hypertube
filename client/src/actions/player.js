@@ -95,9 +95,12 @@ export const getMovieComments = (imdbId) => async (dispatch) => {
 };
 
 // Download movie
-export const downloadMovie = (imdbId) => async (dispatch) => {
+export const downloadMovie = (imdbId, magnet) => async (dispatch) => {
   try {
-    const res = await axios.post(`/api/player/download`, { movieId: imdbId });
+    const res = await axios.post(`/api/player/download`, {
+      movieId: imdbId,
+      movieMagnet: magnet,
+    });
     if (res.data.retStatus === 'Error') {
       if (res.data.authorized === false && res.data.msg) {
         dispatch(setAlert(res.data.msg, 'danger'));
@@ -128,10 +131,12 @@ export const getDownloadedMovie = (imdbId) => async (dispatch) => {
         dispatch(setAlert(res.data.msg, 'danger'));
       }
     } else {
-      console.log(res.data.moviePath);
       dispatch({
         type: DOWNLOADED_MOVIE,
-        payload: { moviePath: res.data.moviePath },
+        payload: {
+          moviePath: res.data.moviePath,
+          movieMagnet: res.data.movieMagnet,
+        },
       });
     }
   } catch (err) {
