@@ -18,6 +18,15 @@ router.post('/download', auth, async (req, res) => {
       movieId: req.body.movieId,
       movieMagnet: req.body.movieMagnet,
     });
+    let user = await User.findOne({ _id: req.user.id });
+    if(user)
+    {
+      await user.updateOne({
+        $push: {
+          movies: {movieId: req.body.movieId},
+        },
+      });
+    }
     await movieDownloaded.save();
     console.log('movieDownloaded: ', movieDownloaded);
     return res.json(movieDownloaded);

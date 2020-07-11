@@ -55,6 +55,13 @@ const UserSchema = new mongoose.Schema({
   imageUrl: {
     type: String,
   },
+  movies: [
+    {
+      movieId: {
+        type: String,
+      },
+    },
+  ],
 });
 
 module.exports = User = mongoose.model('user', UserSchema);

@@ -5,7 +5,11 @@ import PropTypes from 'prop-types';
 import { fetchYTS, fetchInfiniteYTS } from '../../actions/home';
 import playWhite from '../../img/play_white.png';
 
-const Homepage = ({ fetchYTS, fetchInfiniteYTS, movie: { movies } }) => {
+const Homepage = ({
+  fetchYTS,
+  fetchInfiniteYTS,
+  movie: { movies },
+  auth: { user } }) => {
   const [displayMovies, setDisplayMovies] = useState([]);
   const [isFetching, setIsFetching] = useState(false);
   const [lastFetch, setLastFetch] = useState('');
@@ -224,6 +228,9 @@ const Homepage = ({ fetchYTS, fetchInfiniteYTS, movie: { movies } }) => {
                 </div>
               </div>
             </form>
+            {user && user.movies.map((item, i) => (
+              <p key={i}>{item.movieId}</p>
+            ))}
           </div>
           <div className='col-12'>
             <div className='row justify-content-center'>
@@ -275,10 +282,12 @@ Homepage.propTypes = {
   fetchYTS: PropTypes.func.isRequired,
   fetchInfiniteYTS: PropTypes.func.isRequired,
   movie: PropTypes.object.isRequired,
+  auth: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   movie: state.movie,
+  auth: state.auth,
 });
 
 export default connect(mapStateToProps, {
