@@ -179,7 +179,7 @@ const Register = ({ setAlert, register, isAuthenticated, justRegistered }) => {
                   className='btn btn-outline-light icon-custom icon-custom__fortytwo'
                   type='button'
                 >
-                  Sign up 42
+                  Sign up
                 </button>
               </a>
             </div>
@@ -189,7 +189,7 @@ const Register = ({ setAlert, register, isAuthenticated, justRegistered }) => {
                   className='btn btn-outline-light icon-custom icon-custom__github'
                   type='button'
                 >
-                  Sign up Github
+                  Sign up
                 </button>
               </a>
             </div>

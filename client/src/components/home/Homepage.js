@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { fetchYTS, fetchInfiniteYTS } from '../../actions/home';
 import playWhite from '../../img/play_white.png';
+import viewed from '../../img/viewed.png';
 
 const Homepage = ({ fetchYTS, fetchInfiniteYTS, movie: { movies }, auth: { user } }) => {
   const [displayMovies, setDisplayMovies] = useState([]);
