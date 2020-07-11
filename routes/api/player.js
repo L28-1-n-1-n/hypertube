@@ -16,7 +16,6 @@ router.post('/download', auth, async (req, res) => {
     const imdbId = req.body;
     movieDownloaded = new Downloaded({
       movieId: req.body.movieId,
-      moviePath: '/uploads/video.mp4',
       movieMagnet: req.body.movieMagnet,
     });
     await movieDownloaded.save();
@@ -41,6 +40,7 @@ router.get('/downloaded/:imdbId', async (req, res) => {
       });
     }
     console.log('Movie is downloaded already');
+    console.log(down);
     res.json(down);
   } catch (err) {
     console.error(err.message);
@@ -53,7 +53,8 @@ router.get('/downloaded/:imdbId', async (req, res) => {
 });
 
 router.get('/stream/:magnet', (req, res) => {
-  console.log(req.params.magnet);
+  console.log('originalUrl is', req.originalUrl);
+  // console.log(req.params.magnet);
   const engine = torrentStream(req.params.magnet, { path: './torrents' });
   engine.on('ready', () => {
     engine.files.forEach((file) => {

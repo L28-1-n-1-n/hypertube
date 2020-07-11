@@ -11,7 +11,6 @@ const initialState = {
   movies: [],
   oneMovie: [],
   movieComments: [],
-  // filepath: [],
   loading: true,
   error: {},
 };

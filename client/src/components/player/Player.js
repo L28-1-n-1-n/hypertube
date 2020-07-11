@@ -21,7 +21,7 @@ const Movie = ({
     oneMovie: { cast },
     oneMovie: { torrents },
     oneMovie: { movieMagnet },
-    oneMovie: { moviePath },
+
     movieComments,
   },
   match,
@@ -47,10 +47,10 @@ const Movie = ({
   console.log(oneMovie);
   console.log(movieMagnet);
   console.log(match.params.id);
-  console.log(cast);
+
   console.log(torrents);
   console.log(movieComments);
-  if (torrents && match.params.id) {
+  if (torrents && match.params.id === oneMovie.imdb_code) {
     torrents.forEach((torrent) => {
       torrent.magnet = `magnet:?xt=urn:btih:${torrent.hash}&dn=${encodeURI(
         oneMovie.title
@@ -88,47 +88,53 @@ const Movie = ({
             />
           </div>
           <div className='video-desc d-flex flex-column p-2'>
-            <div className='video-desc__details'>
-              <p>
-                <b>Title: {oneMovie && oneMovie.title}</b>
-              </p>
-              <p>
-                <b>{oneMovie && oneMovie.description_intro}</b>
-              </p>
-              <p>
-                <b>
-                  Casting:{' '}
-                  {cast &&
-                    cast.map((item, i) => (
-                      <span key={i}>{' ' + item.name + ','}</span>
-                    ))}
-                </b>
-              </p>
-              <p>
-                <b>Year: {oneMovie && oneMovie.year}</b>
-              </p>
-              <p>
-                <b>Duration: {oneMovie && oneMovie.runtime}min</b>
-              </p>
-              <p>
-                <b>Rate: {oneMovie && oneMovie.rating}</b>
-              </p>
-            </div>
-            <div className='video-desc__details'>
-              {torrents && (
-                <p>
-                  <span>{torrents[0].quality} </span>
-                  <a href={torrents[0].url}>
-                    {oneMovie && oneMovie.title_long}
-                  </a>
-                  <span> {torrents[0].size}</span>
-                </p>
-              )}
-            </div>
-            {moviePath ? (
-              // <video id='videoPlayer' controls muted='muted'>
-              //   <source src={moviePath} type='video/mp4' />
-              // </video>
+            {oneMovie &&
+            oneMovie.title &&
+            oneMovie.imdb_code === match.params.id ? (
+              <Fragment>
+                <div className='video-desc__details'>
+                  <p>
+                    <b> Title: {oneMovie.title} </b>
+                  </p>
+                  <p>
+                    <b>{oneMovie && oneMovie.description_intro}</b>
+                  </p>
+                  <p>
+                    <b>
+                      Casting:{' '}
+                      {cast &&
+                        cast.map((item, i) => (
+                          <span key={i}>{' ' + item.name + ','}</span>
+                        ))}
+                    </b>
+                  </p>
+                  <p>
+                    <b>Year: {oneMovie && oneMovie.year}</b>
+                  </p>
+                  <p>
+                    <b>Duration: {oneMovie && oneMovie.runtime}min</b>
+                  </p>
+                  <p>
+                    <b>Rate: {oneMovie && oneMovie.rating}</b>
+                  </p>
+                </div>
+                <div className='video-desc__details'>
+                  {torrents && (
+                    <p>
+                      <span>{torrents[0].quality} </span>
+                      <a href={torrents[0].url}>
+                        {oneMovie && oneMovie.title_long}
+                      </a>
+                      <span> {torrents[0].size}</span>
+                    </p>
+                  )}
+                </div>
+              </Fragment>
+            ) : (
+              ''
+            )}
+
+            {oneMovie.downloadedId === match.params.id ? (
               <video
                 className='video-player'
                 width='100%'

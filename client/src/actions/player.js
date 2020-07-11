@@ -108,12 +108,17 @@ export const downloadMovie = (imdbId, magnet) => async (dispatch) => {
     } else if (res.data.retStatus && res.data.retStatus === 'Empty') {
       dispatch({
         type: DOWNLOAD_NEW_MOVIE,
-        payload: { moviePath: 'Empty' },
+        payload: {
+          downloadedId: 'Empty',
+        },
       });
     } else {
       dispatch({
         type: DOWNLOAD_NEW_MOVIE,
-        payload: res.data,
+        payload: {
+          downloadedId: res.data.movieId,
+          movieMagnet: res.data.movieMagnet,
+        },
       });
       dispatch(setAlert('Movie downloaded', 'success'));
     }
@@ -134,7 +139,7 @@ export const getDownloadedMovie = (imdbId) => async (dispatch) => {
       dispatch({
         type: DOWNLOADED_MOVIE,
         payload: {
-          moviePath: res.data.moviePath,
+          downloadedId: res.data.movieId,
           movieMagnet: res.data.movieMagnet,
         },
       });
