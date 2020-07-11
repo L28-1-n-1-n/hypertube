@@ -14,7 +14,7 @@ export const Navbar = ({
       <button className="nav-link dropdown-toggle btn btn-outline-secondary" id="header-account-menu-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Menu</button>
       <div className="dropdown-menu account-menu bg-dropdown" aria-labelledby="header-account-menu-link">
         <Link className="dropdown-item" to="/homepage">{user && (user.lang === "en" ? 'Home' : user.lang === "fr" ? 'Accueil' : 'Inicio')}</Link>
-        <Link className="dropdown-item" to="/dashboard">{user && (user.lang === "en" ? 'Dashboard' : user.lang === "fr" ? 'Panel' : 'Configuración')}</Link>
+        <Link className="dropdown-item" to="/dashboard">{user && (user.lang === "en" ? 'Dashboard' : user.lang === "fr" ? 'Panel' : 'Escritorio')}</Link>
         <button href="#" className="dropdown-item logout-button"
         onClick={() => {
             logout(user._id);
