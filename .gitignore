@@ -1,3 +1,5 @@
 node_modules
 client/public/uploads/
 .env
+torrents
+.DS_Store
