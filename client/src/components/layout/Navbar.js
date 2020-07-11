@@ -33,9 +33,7 @@ export const Navbar = ({
   return (
     <header id='page-header' className='header px-3'>
       <div className='header__logo'>
-        <Link to='/homepage'>
           <img alt='Logo Hypertube' src={logo} />
-        </Link>
       </div>
 
       {!loading && (

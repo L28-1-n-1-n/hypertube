@@ -3,26 +3,13 @@
 
 /* GLOBAL */
   
-#page-wrap {
+#root {
   height: 100%;
   /* lesshint-disable */height: auto !important;/* lesshint-enable */
   // ^^The above is to disable "importantRule" and "duplicateProperty" rules.
   min-height: 100%;
   position: relative;
   padding-bottom: $footer-height;
-
-  header {
-    .logo {
-      height: 20px;
-    }
-    a {
-      cursor: pointer;
-    }
-    .dropdown-menu.account-menu {
-      left: auto;
-      right: 0px;
-    }
-  }
 }
 
 .dropdown-item {
@@ -119,28 +106,26 @@ a {
 
 /* FOOTER */
 
-footer {
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
+.footer {
+    display: flex;
+    position: fixed;
+    bottom: 0;
     height: $footer-height;
-    width: 100%;
-    position: absolute;
-    left: 0px;
-    bottom: 0px;
+    right: 0;
+    left: 0;
     background-color: $main-dark;
-    .xs-only {
-      display: none;
-    }
-    .footer {
-        box-shadow: 0px 10px 10px 4px $white;
-        height: 100%;
-        &__logo {
-            margin: auto;
-            padding: 10px;
-            img {
-                width: 45px;
-            }
+    padding: 10px;
+    z-index: 999;
+    &_logo {
+        margin: auto;
+        img {
+            width: 45px;
         }
-    }
+    }    
+}
+
+.footer-shadow {
+    box-shadow: 0px 12px 10px 10px #000000;
 }
 
 /* FORM DYNAMIC STYLE */
