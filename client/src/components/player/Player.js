@@ -129,12 +129,45 @@ const Movie = ({
                     </p>
                   )}
                 </div>
+                {oneMovie.downloadedId === match.params.id ? (
+                  <video
+                    className='video-player'
+                    width='100%'
+                    controls
+                    preload='metadata'
+                    controlsList='nodownload'
+                  >
+                    <source
+                      // src={`http://localhost:5000/api/player/stream/${torrents[0].magnet}`}
+                      src={
+                        movieMagnet
+                          ? `http://localhost:5000/api/player/stream/${encodeURIComponent(
+                              movieMagnet
+                            )}`
+                          : ''
+                      }
+                    />
+                  </video>
+                ) : (
+                  <div className='video-desc__details'>
+                    <form
+                      onSubmit={(e) => {
+                        e.preventDefault();
+                        downloadMovie(match.params.id, torrents[0].magnet);
+                      }}
+                    >
+                      <button className='btn btn-sm btn-success' type='submit'>
+                        Download
+                      </button>
+                    </form>
+                  </div>
+                )}
               </Fragment>
             ) : (
               ''
             )}
 
-            {oneMovie.downloadedId === match.params.id ? (
+            {/* {oneMovie.downloadedId === match.params.id ? (
               <video
                 className='video-player'
                 width='100%'
@@ -166,7 +199,7 @@ const Movie = ({
                   </button>
                 </form>
               </div>
-            )}
+            )} */}
           </div>
           <div className='video-comment p-2 rounded-bottom'>
             <div className='video-comment__new'>
