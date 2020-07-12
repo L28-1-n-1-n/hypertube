@@ -94,14 +94,14 @@ const Movie = ({
               <Fragment>
                 <div className='video-desc__details'>
                   <p>
-                    <b> Title: {oneMovie.title} </b>
+                    <b> {user && (user.lang === "en" ? 'Title' : user.lang === "fr" ? 'Titre' : 'Título')}: {oneMovie.title} </b>
                   </p>
                   <p>
                     <b>{oneMovie && oneMovie.description_intro}</b>
                   </p>
                   <p>
                     <b>
-                      Casting:{' '}
+                    {user && (user.lang === "en" ? 'Casting' : user.lang === "fr" ? 'Acteurs' : 'Actores')}:{' '}
                       {cast &&
                         cast.map((item, i) => (
                           <span key={i}>{' ' + item.name + ','}</span>
@@ -109,25 +109,14 @@ const Movie = ({
                     </b>
                   </p>
                   <p>
-                    <b>Year: {oneMovie && oneMovie.year}</b>
+                    <b>{user && (user.lang === "en" ? 'Year' : user.lang === "fr" ? 'Année' : 'Año')}: {oneMovie && oneMovie.year}</b>
                   </p>
                   <p>
-                    <b>Duration: {oneMovie && oneMovie.runtime}min</b>
+                    <b>{user && (user.lang === "en" ? 'Duration' : user.lang === "fr" ? 'Durée' : 'Duración')}: {oneMovie && oneMovie.runtime}min</b>
                   </p>
                   <p>
-                    <b>Rate: {oneMovie && oneMovie.rating}</b>
+                    <b>{user && (user.lang === "en" ? 'Rate' : user.lang === "fr" ? 'Note' : 'Nota')}: {oneMovie && oneMovie.rating}</b>
                   </p>
-                </div>
-                <div className='video-desc__details'>
-                  {torrents && (
-                    <p>
-                      <span>{torrents[0].quality} </span>
-                      <a href={torrents[0].url}>
-                        {oneMovie && oneMovie.title_long}
-                      </a>
-                      <span> {torrents[0].size}</span>
-                    </p>
-                  )}
                 </div>
                 {oneMovie.downloadedId === match.params.id ? (
                   <video
@@ -149,15 +138,15 @@ const Movie = ({
                     />
                   </video>
                 ) : (
-                  <div className='video-desc__details'>
+                  <div className='video-desc__details mx-auto'>
                     <form
                       onSubmit={(e) => {
                         e.preventDefault();
                         downloadMovie(match.params.id, torrents[0].magnet);
                       }}
                     >
-                      <button className='btn btn-sm btn-success' type='submit'>
-                        Download
+                      <button className='btn btn-hpt icon-download' type='submit'>
+                      {user && (user.lang === "en" ? 'Download' : user.lang === "fr" ? 'Télécharger' : 'Descargar')}
                       </button>
                     </form>
                   </div>
@@ -217,13 +206,13 @@ const Movie = ({
                   />
                   <label className='formContent__label' htmlFor='comment'>
                     <span className='formContent__label__name'>
-                      Your comment...
+                    {user && (user.lang === "en" ? 'Your comment' : user.lang === "fr" ? 'Commentaire' : 'Tu comentario')}...
                     </span>
                   </label>
                 </div>
                 <div className='text-center mb-3'>
                   <button type='submit' className='btn btn-primary btn-sm'>
-                    Send
+                  {user && (user.lang === "en" ? 'Send' : user.lang === "fr" ? 'Envoyer' : 'Enviar')}
                   </button>
                 </div>
               </form>
