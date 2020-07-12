@@ -4,8 +4,13 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { fetchYTS, fetchInfiniteYTS } from '../../actions/home';
 import playWhite from '../../img/play_white.png';
+import viewed from '../../img/viewed.png';
 
-const Homepage = ({ fetchYTS, fetchInfiniteYTS, movie: { movies } }) => {
+const Homepage = ({
+  fetchYTS,
+  fetchInfiniteYTS,
+  movie: { movies },
+  auth: { user } }) => {
   const [displayMovies, setDisplayMovies] = useState([]);
   const [isFetching, setIsFetching] = useState(false);
   const [lastFetch, setLastFetch] = useState('');
@@ -139,7 +144,7 @@ const Homepage = ({ fetchYTS, fetchInfiniteYTS, movie: { movies } }) => {
                     />
                     <label className='formContent__label' htmlFor='search'>
                       <span className='formContent__label__name'>
-                        Search Term:
+                      {user && (user.lang === "en" ? 'Search:' : user.lang === "fr" ? 'Rechercher :' : 'Buscar:')}
                       </span>
                     </label>
                   </div>
@@ -149,37 +154,37 @@ const Homepage = ({ fetchYTS, fetchInfiniteYTS, movie: { movies } }) => {
                 <div className='col-6'>
                   <div className='row justify-content-between'>
                     <div>
-                      <p>Genre:</p>
+                      <p>{user && (user.lang === "en" ? 'Genre:' : user.lang === "fr" ? 'Genre :' : 'Tipo:')}</p>
                       <select name='genre'>
                         <option value='all' defaultValue>
-                          All
+                        {user && (user.lang === "en" ? 'All' : user.lang === "fr" ? 'Tout' : 'Todo')}
                         </option>
-                        <option value='action'>Action</option>
-                        <option value='adventure'>Adventure</option>
-                        <option value='animation'>Animation</option>
-                        <option value='biography'>Biography</option>
-                        <option value='comedy'>Comedy</option>
-                        <option value='crime'>Crime</option>
-                        <option value='documentary'>Documentary</option>
-                        <option value='drama'>Drama</option>
-                        <option value='family'>Family</option>
-                        <option value='fantasy'>Fantasy</option>
-                        <option value='film-noir'>Film-Noir</option>
-                        <option value='history'>History</option>
-                        <option value='horror'>Horror</option>
-                        <option value='music'>Music</option>
-                        <option value='musical'>Musical</option>
-                        <option value='mystery'>Mystery</option>
+                        <option value='action'>{user && (user.lang === "en" ? 'Action' : user.lang === "fr" ? 'Action' : 'Acción')}</option>
+                        <option value='adventure'>{user && (user.lang === "en" ? 'Adventure' : user.lang === "fr" ? 'Aventure' : 'Aventura')}</option>
+                        <option value='animation'>{user && (user.lang === "en" ? 'Animation' : user.lang === "fr" ? 'Animation' : 'Animación')}</option>
+                        <option value='biography'>{user && (user.lang === "en" ? 'Biography' : user.lang === "fr" ? 'Biographie' : 'Biografía')}</option>
+                        <option value='comedy'>{user && (user.lang === "en" ? 'Comedy' : user.lang === "fr" ? 'Comédie' : 'Comedia')}</option>
+                        <option value='crime'>{user && (user.lang === "en" ? 'Crime' : user.lang === "fr" ? 'Crime' : 'Crimen')}</option>
+                        <option value='documentary'>{user && (user.lang === "en" ? 'Documentary' : user.lang === "fr" ? 'Documentaire' : 'Documental')}</option>
+                        <option value='drama'>{user && (user.lang === "en" ? 'Drama' : user.lang === "fr" ? 'Drame' : 'Drama')}</option>
+                        <option value='family'>{user && (user.lang === "en" ? 'Family' : user.lang === "fr" ? 'Famille' : 'Familiar')}</option>
+                        <option value='fantasy'>{user && (user.lang === "en" ? 'Fantasy' : user.lang === "fr" ? 'Fantaisie' : 'Fantasia')}</option>
+                        <option value='film-noir'>{user && (user.lang === "en" ? 'Film-Noir' : user.lang === "fr" ? 'Film-Noir' : 'Película negra')}</option>
+                        <option value='history'>{user && (user.lang === "en" ? 'History' : user.lang === "fr" ? 'Histoire' : 'Historia')}</option>
+                        <option value='horror'>{user && (user.lang === "en" ? 'Horror' : user.lang === "fr" ? 'Horreur' : 'Horror')}</option>
+                        <option value='music'>{user && (user.lang === "en" ? 'Music' : user.lang === "fr" ? 'Musique' : 'Música')}</option>
+                        <option value='musical'>{user && (user.lang === "en" ? 'Musical' : user.lang === "fr" ? 'Musicale' : 'Musical')}</option>
+                        <option value='mystery'>{user && (user.lang === "en" ? 'Mystery' : user.lang === "fr" ? 'Mystère' : 'Misterio')}</option>
                         <option value='romance'>Romance</option>
-                        <option value='sci-fi'>Sci-Fi</option>
-                        <option value='sport'>Sport</option>
+                        <option value='sci-fi'>{user && (user.lang === "en" ? 'Sci-Fi' : user.lang === "fr" ? 'Science-Fiction' : 'Ciencia Ficción')}</option>
+                        <option value='sport'>{user && (user.lang === "en" ? 'Sport' : user.lang === "fr" ? 'Sport' : 'Deporte')}</option>
                         <option value='thriller'>Thriller</option>
-                        <option value='war'>War</option>
+                        <option value='war'>{user && (user.lang === "en" ? 'War' : user.lang === "fr" ? 'Guerre' : 'Guerra')}</option>
                         <option value='western'>Western</option>
                       </select>
                     </div>
                     <div>
-                      <p>Minimum rating:</p>
+                      <p>{user && (user.lang === "en" ? 'Minimum rating:' : user.lang === "fr" ? 'Note minimum :' : 'Calificación mínima:')}</p>
                       <select
                         className='d-flex m-auto'
                         name='rating'
@@ -198,9 +203,9 @@ const Homepage = ({ fetchYTS, fetchInfiniteYTS, movie: { movies } }) => {
                       </select>
                     </div>
                     <div>
-                      <p>Year:</p>
+                      <p>{user && (user.lang === "en" ? 'Year:' : user.lang === "fr" ? 'Année :' : 'Año:')}</p>
                       <select name='year'>
-                        <option value='0'>All</option>
+                        <option value='0'>{user && (user.lang === "en" ? 'All' : user.lang === "fr" ? 'Tout' : 'Todo')}</option>
                         <option value='2011_2020'>2011-2020</option>
                         <option value='1991_2010'>1991-2010</option>
                         <option value='1971_1990'>1971-1990</option>
@@ -209,21 +214,25 @@ const Homepage = ({ fetchYTS, fetchInfiniteYTS, movie: { movies } }) => {
                       </select>
                     </div>
                     <div>
-                      <p>Order By:</p>
+                      <p>{user && (user.lang === "en" ? 'Order By:' : user.lang === "fr" ? 'Trier par :' : 'Ordenar por:')}</p>
                       <select name='order'>
-                        <option value='asc'>Asc</option>
-                        <option value='desc'>Desc</option>
+                        <option value='asc'>{user && (user.lang === "en" ? 'Asc' : user.lang === "fr" ? 'Ascendant' : 'Creciente')}</option>
+                        <option value='desc'>{user && (user.lang === "en" ? 'Desc' : user.lang === "fr" ? 'Descendant' : 'Descendente')}</option>
                       </select>
                     </div>
                   </div>
                   <div className='text-center my-3'>
                     <button className='btn btn-primary' type='submit'>
-                      Search
+                      {user && (user.lang === "en" ? 'Search' : user.lang === "fr" ? 'Rechercher' : 'Buscar')}
                     </button>
                   </div>
                 </div>
               </div>
             </form>
+            {user && user.movies.map((item, i) => (
+              <p key={i}>{item.movieId}
+              </p>
+            ))}
           </div>
           <div className='col-12'>
             <div className='row justify-content-center'>
@@ -237,15 +246,27 @@ const Homepage = ({ fetchYTS, fetchInfiniteYTS, movie: { movies } }) => {
                     <div className='filmCard__top p-1 rounded-top'>
                       <h3>{item.title}</h3>
                     </div>
-                    <div className='video_player rounded'>
+                    {user && user.movies.some(m => m['movieId'] === item.imdb_code) ?
+                      (<div className='video_player video_player-viewed rounded'>
                       <Link to={'/player/' + item.imdb_code}>
+                        <img
+                          className='img-fluid'
+                          src={viewed}
+                          alt='illustration'
+                        />
+                      </Link>
+                      </div>)
+                      :
+                      (<div className='video_player rounded'>
+                        <Link to={'/player/' + item.imdb_code}>
                         <img
                           className='img-fluid'
                           src={playWhite}
                           alt='illustration'
                         />
                       </Link>
-                    </div>
+                      </div>)
+                       }
                     <div className='filmCard__img'>
                       <img
                         className='img-fluid'
@@ -275,10 +296,12 @@ Homepage.propTypes = {
   fetchYTS: PropTypes.func.isRequired,
   fetchInfiniteYTS: PropTypes.func.isRequired,
   movie: PropTypes.object.isRequired,
+  auth: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   movie: state.movie,
+  auth: state.auth,
 });
 
 export default connect(mapStateToProps, {

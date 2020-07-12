@@ -77,9 +77,6 @@ const FileUpload = ({ addPhoto, user }) => {
   console.log('user here is', user);
   return (
     <Fragment>
-      <p className='lead'>
-        <i className='far fa-images' /> Upload a photo
-      </p>
       {uamessage ? <UploadAlertMessage msg={uamessage} /> : null}
       <form onSubmit={onSubmit}>
         <div className='form-group'>

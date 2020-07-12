@@ -86,6 +86,14 @@ hr {
             border-color: #dc3545 !important;
         }
     }
+
+    &-hpt {
+        @include button($hypertube, $hypertube-border, $white);
+        &:hover {
+            background-color: #dc3545 !important;
+            border-color: #dc3545 !important;
+        }
+    }
     
     &-primary {
         @include button($primary, $primary-border, $white);
@@ -107,6 +115,20 @@ hr {
                 background-color: $whiter !important;
                 color: $dark !important;
             }
+        }
+    }
+}
+
+.icon {
+    &-download {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        &::before {
+            content: url("../img/download.svg");
+            width: 25px;
+            line-height: 0;
+            margin-right: 0.3em;
         }
     }
 }
