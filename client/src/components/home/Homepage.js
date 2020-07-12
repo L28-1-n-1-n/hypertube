@@ -229,7 +229,8 @@ const Homepage = ({
               </div>
             </form>
             {user && user.movies.map((item, i) => (
-              <p key={i}>{item.movieId}</p>
+              <p key={i}>{item.movieId}
+              </p>
             ))}
           </div>
           <div className='col-12'>
@@ -245,13 +246,23 @@ const Homepage = ({
                       <h3>{item.title}</h3>
                     </div>
                     <div className='video_player rounded'>
-                      <Link to={'/player/' + item.imdb_code}>
+                    {user && user.movies.some(m => m['movieId'] === item.imdb_code) ?
+                      (<Link to={'/player/' + item.imdb_code}>
                         <img
                           className='img-fluid'
                           src={playWhite}
                           alt='illustration'
                         />
-                      </Link>
+                      </Link>)
+                      :
+                      (<Link to={'/player/' + item.imdb_code}>
+                        <img
+                          className='img-fluid'
+                          src={playWhite}
+                          alt='illustration'
+                        />
+                      </Link>)
+                       }
                     </div>
                     <div className='filmCard__img'>
                       <img
