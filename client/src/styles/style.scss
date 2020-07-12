@@ -237,6 +237,9 @@ a {
                 transition: 0.2s;
             }
         }
+        &-viewed {
+            opacity: 1;
+        }
     }
     &:hover .video_player {
         opacity: 1;

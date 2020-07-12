@@ -246,25 +246,27 @@ const Homepage = ({
                     <div className='filmCard__top p-1 rounded-top'>
                       <h3>{item.title}</h3>
                     </div>
-                    <div className='video_player rounded'>
                     {user && user.movies.some(m => m['movieId'] === item.imdb_code) ?
-                      (<Link to={'/player/' + item.imdb_code}>
+                      (<div className='video_player video_player-viewed rounded'>
+                      <Link to={'/player/' + item.imdb_code}>
                         <img
                           className='img-fluid'
-                          src={playWhite}
+                          src={viewed}
                           alt='illustration'
                         />
-                      </Link>)
+                      </Link>
+                      </div>)
                       :
-                      (<Link to={'/player/' + item.imdb_code}>
+                      (<div className='video_player rounded'>
+                        <Link to={'/player/' + item.imdb_code}>
                         <img
                           className='img-fluid'
                           src={playWhite}
                           alt='illustration'
                         />
-                      </Link>)
+                      </Link>
+                      </div>)
                        }
-                    </div>
                     <div className='filmCard__img'>
                       <img
                         className='img-fluid'
