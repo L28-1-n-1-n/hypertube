@@ -5,7 +5,6 @@ import {
   GET_ONE_MOVIE,
   NEW_COMMENT,
   GET_COMMENTS,
-  DOWNLOAD_MOVIE,
   DOWNLOADED_MOVIE,
   DOWNLOAD_NEW_MOVIE,
 } from './types';
@@ -144,6 +143,16 @@ export const getDownloadedMovie = (imdbId) => async (dispatch) => {
         },
       });
     }
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+// Check if any movies has expired
+export const checkExpiration = () => async () => {
+  try {
+    // make request to backend api/profile
+    await axios.get('/api/player/checkexpiration');
   } catch (err) {
     console.log(err);
   }

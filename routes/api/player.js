@@ -20,11 +20,10 @@ router.post('/download', auth, async (req, res) => {
       lastWatched: Date.now(),
     });
     let user = await User.findOne({ _id: req.user.id });
-    if(user)
-    {
+    if (user) {
       await user.updateOne({
         $push: {
-          movies: {movieId: req.body.movieId},
+          movies: { movieId: req.body.movieId },
         },
       });
     }
@@ -63,17 +62,12 @@ router.get('/downloaded/:imdbId', async (req, res) => {
   }
 });
 
-router.get('/stream/:magnet', (req, res) => {
+router.get('/stream/:movieId/:magnet', (req, res) => {
   console.log('originalUrl is', req.originalUrl);
-  const writeFilePath = async (fPath, magnet) => {
-    const streamingMovie = await Downloaded.findOne({
-      movieMagnet: magnet,
-    });
-    await streamingMovie.updateOne({ filePath: fPath });
-    console.log(streamingMovie);
-  };
   // console.log(req.params.magnet);
-  const engine = torrentStream(req.params.magnet, { path: './torrents' });
+  const engine = torrentStream(req.params.magnet, {
+    path: `./torrents/${req.params.movieId}`,
+  });
   engine.on('ready', () => {
     engine.files.forEach((file) => {
       if (
@@ -82,9 +76,11 @@ router.get('/stream/:magnet', (req, res) => {
         path.extname(file.name) === '.avi'
       ) {
         console.log(file.path);
-        writeFilePath(file.path, req.params.magnet);
-        if (fs.existsSync(`./torrents/${file.path}`)) {
-          fs.stat(`./torrents/${file.path}`, function (err, stats) {
+        if (fs.existsSync(`./torrents/${req.params.movieId}/${file.path}`)) {
+          fs.stat(`./torrents/${req.params.movieId}/${file.path}`, function (
+            err,
+            stats
+          ) {
             if (err) {
               if (err.code === 'ENOENT') {
                 // 404 Error if file not found
@@ -110,7 +106,13 @@ router.get('/stream/:magnet', (req, res) => {
               'Content-Type': 'video/mp4',
             });
             var stream = fs
-              .createReadStream(`./torrents/${file.path}`, { start, end })
+              .createReadStream(
+                `./torrents/${req.params.movieId}/${file.path}`,
+                {
+                  start,
+                  end,
+                }
+              )
               .on('open', function () {
                 stream.pipe(res);
               })
@@ -128,52 +130,34 @@ router.get('/stream/:magnet', (req, res) => {
 });
 
 router.get('/checkexpiration', async (req, res) => {
-  console.log('back reached');
   let currentTime = new Date();
   let year = currentTime.getFullYear();
   let month = currentTime.getMonth(); // month starts with 0, ends with 11
+  // but on MongoDB, the correct month is stored @.@
+  // Therefore using month directly below already implies 1 month before
   let date = currentTime.getDate(); // but date starts with 1 LOL
-  console.log(typeof month);
-  console.log(year, month, date);
-  // const deleteExpiredMovies = async (filePath) => {
-  //   await fs.unlink(`./torrents/${filePath}`);
-  // };
+
+  const deleteExpiredMovies = async (id) => {
+    await Downloaded.findOneAndDelete({ movieId: id });
+  };
+
   try {
     const toBeRemoved = await Downloaded.find({
-      lastWatched: { $lt: new Date(year, month - 1, date) },
+      lastWatched: { $lt: new Date(year, month, date) },
     });
     console.log(toBeRemoved);
     if (toBeRemoved.length > 0) {
       toBeRemoved.forEach((item) => {
-        item.filePath = item.filePath.replace(/\s\[\]\(\)/g, '_');
-        console.log(item.filePath);
-        // deleteExpiredMovies(item.filePath);
-        fs.unlink(`./torrents/${item.filePath}`, (err) => {
-          if (err) {
-            console.log(err);
-            return;
-          }
-        });
-        // console.log(item.filePath.replace(/\s/g, '_'));
+        fs.rmdirSync(`./torrents/${item.movieId}`, { recursive: true });
+        deleteExpiredMovies(item.movieId);
       });
     }
-    // await fs.unlink(`./torrents/${file.path}`))
-    // if (!down) {
-    //   console.log('NOTHING DOWNLOADED');
-    //   return res.send({
-    //     retStatus: 'Empty',
-    //   });
-    // }
-    // console.log('Movie is downloaded already');
-    // await down.updateOne({ lastWatched: Date.now() });
-    // console.log(down);
+
     res.json(toBeRemoved);
   } catch (err) {
     console.error(err.message);
     console.error('Non ca fonctionne pas du tout la');
-    //   if (err.kind == 'ObjectId') {
-    //     return res.status(400).json({ msg: 'Profile not found' }); // display message for non-valid userid
-    //   }
+
     //   res.status(500).send('Server Error');
   }
 });

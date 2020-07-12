@@ -4,11 +4,11 @@ const DownloadedSchema = new mongoose.Schema({
   movieId: {
     type: String, //movie imdbid
   },
-  moviePath: {
-    type: String, //path to the movie
-  },
   movieMagnet: {
     type: String,
+  },
+  lastWatched: {
+    type: Date,
   },
 });
 

@@ -94,14 +94,29 @@ const Movie = ({
               <Fragment>
                 <div className='video-desc__details'>
                   <p>
-                    <b> {user && (user.lang === "en" ? 'Title' : user.lang === "fr" ? 'Titre' : 'Título')}: {oneMovie.title} </b>
+                    <b>
+                      {' '}
+                      {user &&
+                        (user.lang === 'en'
+                          ? 'Title'
+                          : user.lang === 'fr'
+                          ? 'Titre'
+                          : 'Título')}
+                      : {oneMovie.title}{' '}
+                    </b>
                   </p>
                   <p>
                     <b>{oneMovie && oneMovie.description_intro}</b>
                   </p>
                   <p>
                     <b>
-                    {user && (user.lang === "en" ? 'Casting' : user.lang === "fr" ? 'Acteurs' : 'Actores')}:{' '}
+                      {user &&
+                        (user.lang === 'en'
+                          ? 'Casting'
+                          : user.lang === 'fr'
+                          ? 'Acteurs'
+                          : 'Actores')}
+                      :{' '}
                       {cast &&
                         cast.map((item, i) => (
                           <span key={i}>{' ' + item.name + ','}</span>
@@ -109,13 +124,37 @@ const Movie = ({
                     </b>
                   </p>
                   <p>
-                    <b>{user && (user.lang === "en" ? 'Year' : user.lang === "fr" ? 'Année' : 'Año')}: {oneMovie && oneMovie.year}</b>
+                    <b>
+                      {user &&
+                        (user.lang === 'en'
+                          ? 'Year'
+                          : user.lang === 'fr'
+                          ? 'Année'
+                          : 'Año')}
+                      : {oneMovie && oneMovie.year}
+                    </b>
                   </p>
                   <p>
-                    <b>{user && (user.lang === "en" ? 'Duration' : user.lang === "fr" ? 'Durée' : 'Duración')}: {oneMovie && oneMovie.runtime}min</b>
+                    <b>
+                      {user &&
+                        (user.lang === 'en'
+                          ? 'Duration'
+                          : user.lang === 'fr'
+                          ? 'Durée'
+                          : 'Duración')}
+                      : {oneMovie && oneMovie.runtime}min
+                    </b>
                   </p>
                   <p>
-                    <b>{user && (user.lang === "en" ? 'Rate' : user.lang === "fr" ? 'Note' : 'Nota')}: {oneMovie && oneMovie.rating}</b>
+                    <b>
+                      {user &&
+                        (user.lang === 'en'
+                          ? 'Rate'
+                          : user.lang === 'fr'
+                          ? 'Note'
+                          : 'Nota')}
+                      : {oneMovie && oneMovie.rating}
+                    </b>
                   </p>
                 </div>
                 {oneMovie.downloadedId === match.params.id ? (
@@ -130,9 +169,9 @@ const Movie = ({
                       // src={`http://localhost:5000/api/player/stream/${torrents[0].magnet}`}
                       src={
                         movieMagnet
-                          ? `http://localhost:5000/api/player/stream/${encodeURIComponent(
-                              movieMagnet
-                            )}`
+                          ? `http://localhost:5000/api/player/stream/${
+                              match.params.id
+                            }/${encodeURIComponent(movieMagnet)}`
                           : ''
                       }
                     />
@@ -145,8 +184,16 @@ const Movie = ({
                         downloadMovie(match.params.id, torrents[0].magnet);
                       }}
                     >
-                      <button className='btn btn-hpt icon-download' type='submit'>
-                      {user && (user.lang === "en" ? 'Download' : user.lang === "fr" ? 'Télécharger' : 'Descargar')}
+                      <button
+                        className='btn btn-hpt icon-download'
+                        type='submit'
+                      >
+                        {user &&
+                          (user.lang === 'en'
+                            ? 'Download'
+                            : user.lang === 'fr'
+                            ? 'Télécharger'
+                            : 'Descargar')}
                       </button>
                     </form>
                   </div>
@@ -206,13 +253,24 @@ const Movie = ({
                   />
                   <label className='formContent__label' htmlFor='comment'>
                     <span className='formContent__label__name'>
-                    {user && (user.lang === "en" ? 'Your comment' : user.lang === "fr" ? 'Commentaire' : 'Tu comentario')}...
+                      {user &&
+                        (user.lang === 'en'
+                          ? 'Your comment'
+                          : user.lang === 'fr'
+                          ? 'Commentaire'
+                          : 'Tu comentario')}
+                      ...
                     </span>
                   </label>
                 </div>
                 <div className='text-center mb-3'>
                   <button type='submit' className='btn btn-primary btn-sm'>
-                  {user && (user.lang === "en" ? 'Send' : user.lang === "fr" ? 'Envoyer' : 'Enviar')}
+                    {user &&
+                      (user.lang === 'en'
+                        ? 'Send'
+                        : user.lang === 'fr'
+                        ? 'Envoyer'
+                        : 'Enviar')}
                   </button>
                 </div>
               </form>
