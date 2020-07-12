@@ -19,7 +19,7 @@ router.post(
         retStatus: retStatus,
         authorized: false,
         msg: 'Comment cannot be empty.',
-      })
+      });
     }
 
     try {
@@ -69,9 +69,13 @@ router.get('/:imdbId', async (req, res) => {
     const commentary = await Comments.findOne({
       imdbId: req.params.imdbId,
     });
-    if (!commentary)
-      return res;
-
+    // if (!commentary) return res.json([]);
+    if (!commentary) {
+      retStatus = 'Empty';
+      return res.send({
+        retStatus: 'Empty',
+      });
+    }
     commentary.comments.reverse(); // show the latest comment first
     res.json(commentary);
   } catch (err) {

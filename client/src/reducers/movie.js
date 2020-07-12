@@ -3,6 +3,8 @@ import {
   GET_ONE_MOVIE,
   GET_COMMENTS,
   NEW_COMMENT,
+  DOWNLOADED_MOVIE,
+  DOWNLOAD_NEW_MOVIE,
 } from '../actions/types';
 
 const initialState = {
@@ -20,15 +22,13 @@ export default function (state = initialState, action) {
     case GET_MOVIES:
       return {
         ...state,
-        // movies: payload,
-        // movies: [...state.movies, payload],
         movies: state.movies.concat(payload),
         loading: false,
       };
     case GET_ONE_MOVIE:
       return {
         ...state,
-        oneMovie: payload,
+        oneMovie: Object.assign(state.oneMovie, payload),
         loading: false,
       };
     case GET_COMMENTS:
@@ -42,6 +42,13 @@ export default function (state = initialState, action) {
         ...state,
         // copy existing movieComments array, add new comment to the top of the array
         movieComments: [payload, ...state.movieComments],
+        loading: false,
+      };
+    case DOWNLOADED_MOVIE:
+    case DOWNLOAD_NEW_MOVIE:
+      return {
+        ...state,
+        oneMovie: Object.assign(state.oneMovie, payload),
         loading: false,
       };
     default:

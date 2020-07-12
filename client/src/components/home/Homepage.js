@@ -6,7 +6,11 @@ import { fetchYTS, fetchInfiniteYTS } from '../../actions/home';
 import playWhite from '../../img/play_white.png';
 import viewed from '../../img/viewed.png';
 
-const Homepage = ({ fetchYTS, fetchInfiniteYTS, movie: { movies }, auth: { user } }) => {
+const Homepage = ({
+  fetchYTS,
+  fetchInfiniteYTS,
+  movie: { movies },
+  auth: { user } }) => {
   const [displayMovies, setDisplayMovies] = useState([]);
   const [isFetching, setIsFetching] = useState(false);
   const [lastFetch, setLastFetch] = useState('');
@@ -225,6 +229,10 @@ const Homepage = ({ fetchYTS, fetchInfiniteYTS, movie: { movies }, auth: { user 
                 </div>
               </div>
             </form>
+            {user && user.movies.map((item, i) => (
+              <p key={i}>{item.movieId}
+              </p>
+            ))}
           </div>
           <div className='col-12'>
             <div className='row justify-content-center'>
@@ -239,13 +247,23 @@ const Homepage = ({ fetchYTS, fetchInfiniteYTS, movie: { movies }, auth: { user 
                       <h3>{item.title}</h3>
                     </div>
                     <div className='video_player rounded'>
-                      <Link to={'/player/' + item.imdb_code}>
+                    {user && user.movies.some(m => m['movieId'] === item.imdb_code) ?
+                      (<Link to={'/player/' + item.imdb_code}>
                         <img
                           className='img-fluid'
                           src={playWhite}
                           alt='illustration'
                         />
-                      </Link>
+                      </Link>)
+                      :
+                      (<Link to={'/player/' + item.imdb_code}>
+                        <img
+                          className='img-fluid'
+                          src={playWhite}
+                          alt='illustration'
+                        />
+                      </Link>)
+                       }
                     </div>
                     <div className='filmCard__img'>
                       <img
@@ -276,6 +294,7 @@ Homepage.propTypes = {
   fetchYTS: PropTypes.func.isRequired,
   fetchInfiniteYTS: PropTypes.func.isRequired,
   movie: PropTypes.object.isRequired,
+  auth: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
