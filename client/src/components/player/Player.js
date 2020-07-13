@@ -67,12 +67,6 @@ const Movie = ({
     match.params.id,
     user,
   ]);
-  console.log(oneMovie);
-  console.log(movieMagnet);
-  console.log(match.params.id);
-
-  console.log(torrents);
-  console.log(movieComments);
   if (torrents && match.params.id === oneMovie.imdb_code) {
     torrents.forEach((torrent) => {
       torrent.magnet = `magnet:?xt=urn:btih:${torrent.hash}&dn=${encodeURI(
@@ -94,8 +88,6 @@ const Movie = ({
   const onChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-
-  console.log(formData);
 
   const onSubmit = (e) => {
     e.preventDefault();

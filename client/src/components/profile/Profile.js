@@ -12,7 +12,6 @@ const Profile = ({
     getProfileByUsername(match.params.username);
   }, [getProfileByUsername, match.params.username]);
 
-console.log(profile)
   // Runs immediately when profile mounts
   return (
     <Fragment>

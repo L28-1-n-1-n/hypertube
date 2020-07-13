@@ -226,7 +226,6 @@ export const updatePwd = (formDataTwo, history, id) => async (dispatch) => {
     if (errors) {
       errors.forEach((error) => dispatch(setAlert(error.msg, 'danger')));
     }
-    console.log(formDataTwo);
     dispatch({
       type: PWD_ERROR,
       payload: { msg: err.response.statusText, status: err.response.status },

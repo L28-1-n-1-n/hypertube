@@ -17,15 +17,11 @@ export const getMovieById = (imdbId) => async (dispatch) => {
     const resId = await axios.get(
       `https://cors-anywhere.herokuapp.com/https://yts.mx/api/v2/list_movies.json?query_term=${imdbId}`
     );
-    console.log(resId);
     const res = await axios.get(
       `https://cors-anywhere.herokuapp.com/https://yts.mx/api/v2/movie_details.json?movie_id=` +
         resId.data.data.movies[0].id +
         `&with_cast=true`
     );
-
-    console.log('res below from player.js');
-    console.log(res.data.data.movie);
 
     dispatch({
       type: GET_ONE_MOVIE,
@@ -63,7 +59,7 @@ export const addComment = (formData) => async (dispatch) => {
   }
 };
 
-// Get profile by ID
+// Get comments by movie id
 export const getMovieComments = (imdbId) => async (dispatch) => {
   const config = {
     headers: {
@@ -75,8 +71,6 @@ export const getMovieComments = (imdbId) => async (dispatch) => {
     // make request to backend api/profile/user/${imdbId}
 
     const res = await axios.get(`/api/comments/${imdbId}`, config);
-    console.log('res getMovieComments below');
-    console.log(res.data.comments);
     if (res.data.retStatus && res.data.retStatus === 'Empty') {
       dispatch({
         type: GET_COMMENTS,
@@ -89,7 +83,7 @@ export const getMovieComments = (imdbId) => async (dispatch) => {
       });
     }
   } catch (err) {
-    // console.log(err);
+    console.log(err);
   }
 };
 

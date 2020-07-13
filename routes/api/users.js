@@ -168,7 +168,6 @@ router.post(
     };
     try {
       let user = await User.findOne({ _id: req.user.id }).select('-password');
-      console.log(user);
       if (email !== user.email) {
         let newMail = await User.findOne({ email: email });
         if (newMail) {

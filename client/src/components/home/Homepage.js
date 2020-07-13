@@ -60,7 +60,6 @@ const Homepage = ({
         multiple: 1,
       };
     }
-    console.log(inputs);
     fetchYTS(inputs);
   }, [fetchYTS]);
 
@@ -89,7 +88,6 @@ const Homepage = ({
       displayMovies.length === movies.length &&
       lastFetch !== movies.length
     ) {
-      console.log('will make api call');
       let params = new URLSearchParams(window.location.search);
       let search = params.get('search');
       let genre = params.get('genre');
@@ -116,7 +114,6 @@ const Homepage = ({
           multiple: Math.floor(displayMovies.length / 150) + 1,
         };
       }
-      console.log(inputs);
       fetchInfiniteYTS(inputs);
       setLastFetch(movies.length);
     }
@@ -229,10 +226,6 @@ const Homepage = ({
                 </div>
               </div>
             </form>
-            {user && user.movies.map((item, i) => (
-              <p key={i}>{item.movieId}
-              </p>
-            ))}
           </div>
           <div className='col-12'>
             <div className='row justify-content-center'>

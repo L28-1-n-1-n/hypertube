@@ -37,7 +37,6 @@ router.post('/download', auth, async (req, res) => {
       });
     }
     await movieDownloaded.save();
-    console.log('movieDownloaded: ', movieDownloaded);
     return res.json(movieDownloaded);
   } catch (err) {
     console.error(err.message);
@@ -52,14 +51,11 @@ router.get('/downloaded/:imdbId', async (req, res) => {
     });
 
     if (!down) {
-      console.log('NOTHING DOWNLOADED');
       return res.send({
         retStatus: 'Empty',
       });
     }
-    console.log('Movie is downloaded already');
     await down.updateOne({ lastWatched: Date.now() });
-    console.log(down);
     res.json(down);
   } catch (err) {
     console.error(err.message);
@@ -72,8 +68,6 @@ router.get('/downloaded/:imdbId', async (req, res) => {
 });
 
 router.get('/stream/:movieId/:magnet', (req, res) => {
-  console.log('originalUrl is', req.originalUrl);
-  // console.log(req.params.magnet);
   const engine = torrentStream(req.params.magnet, {
     path: `./torrents/${req.params.movieId}`,
   });
@@ -84,7 +78,6 @@ router.get('/stream/:movieId/:magnet', (req, res) => {
         path.extname(file.name) === '.mkv' ||
         path.extname(file.name) === '.avi'
       ) {
-        console.log(file.path);
         if (fs.existsSync(`./torrents/${req.params.movieId}/${file.path}`)) {
           fs.stat(`./torrents/${req.params.movieId}/${file.path}`, function (
             err,
@@ -163,7 +156,6 @@ router.get('/checkexpiration', async (req, res) => {
     const toBeRemoved = await Downloaded.find({
       lastWatched: { $lt: new Date(year, month, date) },
     });
-    console.log(toBeRemoved);
     if (toBeRemoved.length > 0) {
       toBeRemoved.forEach((item) => {
         fs.rmdirSync(`./torrents/${item.movieId}`, { recursive: true });
