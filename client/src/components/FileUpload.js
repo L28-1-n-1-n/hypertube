@@ -27,15 +27,9 @@ const FileUpload = ({ addPhoto, user }) => {
     const formData = new FormData();
     formData.append('file', file);
 
-    // Get the form data from the event object
-    // for (var pair of formData.entries()) {
-    //   console.log(pair[0] + ', ' + pair[1]);
-    // }
-
     try {
       const res = await axios.post(
         'http://localhost:5000/api/photos',
-        // '/upload',
         formData,
         {
           headers: {
@@ -54,7 +48,6 @@ const FileUpload = ({ addPhoto, user }) => {
           },
         }
       );
-      console.log(res);
       const { fileName, filePath } = res.data;
       if(res.data.retStatus === 'Error') {
         if(res.data.authorized === false && res.data.msg) {
@@ -74,7 +67,6 @@ const FileUpload = ({ addPhoto, user }) => {
       }
     }
   };
-  console.log('user here is', user);
   return (
     <Fragment>
       {uamessage ? <UploadAlertMessage msg={uamessage} /> : null}

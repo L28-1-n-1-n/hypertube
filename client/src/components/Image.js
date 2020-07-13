@@ -2,7 +2,6 @@ import React, { Fragment, useState, useEffect } from 'react';
 
 const Image = (data) => {
   const [Img, setImg] = useState();
-  //   console.log(data.data.data);
   useEffect(() => {
     var binary = '';
     var bytes = [].slice.call(new Uint8Array(data.data.data));

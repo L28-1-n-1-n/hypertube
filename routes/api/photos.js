@@ -492,7 +492,6 @@ router.post('/', auth, upload.single('file'), async (req, res) => {
     'public',
     'uploads'
   );
-  // console.log(path.resolve(uploadsDir, file.name));
   try {
     file.mv(path.resolve(uploadsDir, file.name), async (err) => {
       if (err) {
@@ -508,7 +507,6 @@ router.post('/', auth, upload.single('file'), async (req, res) => {
       let user = await User.findOne({ _id: req.user.id }).select(
         '-username -password'
       );
-      console.log(user)
       if (user) {
         user = await User.findOneAndUpdate(
           { _id: req.user.id },

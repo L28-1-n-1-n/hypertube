@@ -6,7 +6,7 @@ const Footer = () => {
     <Fragment>
         <div className="footer footer-shadow">
             <div className="footer_logo">
-                <img src={logo} />
+                <img src={logo} alt='Logo Hypertube' />
             </div>
         </div>
     </Fragment>

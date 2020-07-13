@@ -6,7 +6,6 @@ import { GET_MOVIES } from './types';
 // Get filtered movies from api
 export const fetchYTS = (inputs) => async (dispatch) => {
   const filteredResults = (searchYTS) => {
-    // console.log(searchYTS.length);
     const dateinterval = inputs.year.split('_');
     const filtered = searchYTS.data.data.movies;
     const tmp = [];
@@ -38,7 +37,6 @@ export const fetchYTS = (inputs) => async (dispatch) => {
   };
 
   const filteredPop = (searchPop, title, yearmin, yearmax, genre, rate) => {
-    console.log(searchPop);
     let results = searchPop.filter(
       (item) =>
         item.title === title &&
@@ -47,12 +45,10 @@ export const fetchYTS = (inputs) => async (dispatch) => {
         item.genres.includes(genre) &&
         item.rating.percentage >= rate * 10
     );
-    console.log(results);
     return results;
   };
 
   const filteredPopTitle = (searchPop, yearmin, yearmax, genre, rate) => {
-    console.log(searchPop);
     let results = searchPop.filter(
       (item) =>
         item.year >= yearmin &&
@@ -117,8 +113,6 @@ export const fetchYTS = (inputs) => async (dispatch) => {
             inputs.rating
           );
         }
-        // let results = yolo[0].data.filter((item) => item.title === "Deadpool");
-        // console.log(results)
       } else if (inputs.search === '') {
         const dateinterval = inputs.year.split('_');
         searchYTS = await axios.get(
@@ -169,7 +163,6 @@ export const fetchYTS = (inputs) => async (dispatch) => {
         searchYTS.data.status === 'ok' &&
         searchYTS.data.data.movie_count >= 1
       ) {
-        console.log(result2);
         if (result2.length >= 1) {
           result2 = result2.map(function (el) {
             var p = Object.assign({}, el);
@@ -179,12 +172,9 @@ export const fetchYTS = (inputs) => async (dispatch) => {
             return p;
           });
         }
-        console.log(result2);
         result = filteredResults(searchYTS).concat(result2);
       }
-      // console.log(result);
     } else {
-      console.log(inputs.multiple);
       var multi = inputs.multiple;
       const yolo = await axios.all([
         await axios.get(
@@ -203,8 +193,6 @@ export const fetchYTS = (inputs) => async (dispatch) => {
           }`
         ),
       ]);
-      console.log(yolo);
-      // var bite = yolo.filter(yolo[0].data[0].title === "Deadpool")
       var one = await axios.get(
         `https://cors-anywhere.herokuapp.com/https://yts.mx/api/v2/list_movies.json?sort_by=rating&limit=${
           3 * multi - 2
@@ -237,7 +225,6 @@ export const fetchYTS = (inputs) => async (dispatch) => {
           return p;
         });
       }
-      console.log(result2);
 
       if (fetchYTS_Results.length >= 1) {
         result = fetchYTS_Results.map(function (el) {
@@ -248,8 +235,6 @@ export const fetchYTS = (inputs) => async (dispatch) => {
       }
       result = result.concat(result2);
     }
-    // result = result.concat(result2);
-    console.log(result);
     if (result && result.length >= 1) {
       dispatch({
         type: GET_MOVIES,
@@ -266,7 +251,6 @@ export const fetchYTS = (inputs) => async (dispatch) => {
 // Get filtered movies from api
 export const fetchInfiniteYTS = (inputs) => async (dispatch) => {
   const filteredResults = (searchYTS) => {
-    // console.log(searchYTS.length);
     const dateinterval = inputs.year.split('_');
     const filtered = searchYTS.data.data.movies;
     const tmp = [];
@@ -298,7 +282,6 @@ export const fetchInfiniteYTS = (inputs) => async (dispatch) => {
   };
 
   const filteredPop = (searchPop, title, yearmin, yearmax, genre, rate) => {
-    console.log(searchPop);
     let results = searchPop.filter(
       (item) =>
         item.title === title &&
@@ -307,12 +290,10 @@ export const fetchInfiniteYTS = (inputs) => async (dispatch) => {
         item.genres.includes(genre) &&
         item.rating.percentage >= rate * 10
     );
-    console.log(results);
     return results;
   };
 
   const filteredPopTitle = (searchPop, yearmin, yearmax, genre, rate) => {
-    console.log(searchPop);
     let results = searchPop.filter(
       (item) =>
         item.year >= yearmin &&
@@ -377,8 +358,6 @@ export const fetchInfiniteYTS = (inputs) => async (dispatch) => {
             inputs.rating
           );
         }
-        // let results = yolo[0].data.filter((item) => item.title === "Deadpool");
-        // console.log(results)
       } else if (inputs.search === '') {
         const dateinterval = inputs.year.split('_');
         searchYTS = await axios.get(
@@ -429,7 +408,6 @@ export const fetchInfiniteYTS = (inputs) => async (dispatch) => {
         searchYTS.data.status === 'ok' &&
         searchYTS.data.data.movie_count >= 1
       ) {
-        console.log(result2);
         if (result2.length >= 1) {
           result2 = result2.map(function (el) {
             var p = Object.assign({}, el);
@@ -439,12 +417,9 @@ export const fetchInfiniteYTS = (inputs) => async (dispatch) => {
             return p;
           });
         }
-        console.log(result2);
         result = filteredResults(searchYTS).concat(result2);
       }
-      // console.log(result);
     } else {
-      console.log(inputs.multiple);
       var multi = inputs.multiple;
       const yolo = await axios.all([
         await axios.get(
@@ -463,8 +438,6 @@ export const fetchInfiniteYTS = (inputs) => async (dispatch) => {
           }`
         ),
       ]);
-      console.log(yolo);
-      // var bite = yolo.filter(yolo[0].data[0].title === "Deadpool")
       var one = await axios.get(
         `https://cors-anywhere.herokuapp.com/https://yts.mx/api/v2/list_movies.json?sort_by=rating&limit=${
           3 * multi - 2
@@ -497,7 +470,6 @@ export const fetchInfiniteYTS = (inputs) => async (dispatch) => {
           return p;
         });
       }
-      console.log(result2);
 
       if (fetchYTS_Results.length >= 1) {
         result = fetchYTS_Results.map(function (el) {
@@ -509,8 +481,6 @@ export const fetchInfiniteYTS = (inputs) => async (dispatch) => {
       result = result.concat(result2);
     }
 
-    // result = result.concat(result2);
-    console.log(result);
     if (result && result.length >= 1) {
       dispatch({
         type: GET_MOVIES,

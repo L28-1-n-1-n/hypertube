@@ -35,7 +35,6 @@ passport.use(
       callbackURL: 'http://localhost:5000/api/auth/github/callback',
     },
     async (accessToken, refreshToken, profile, cb) => {
-      // console.log(chalk.yellow(JSON.stringify(profile)));
       const currentUser = await User.findOne({
         githubId: profile._json.id.toString(),
       });

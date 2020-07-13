@@ -50,7 +50,7 @@ export const getProfiles = () => async (dispatch) => {
   }
 };
 
-// Get profile by ID
+// Get profile by username
 export const getProfileByUsername = (username) => async (dispatch) => {
   const config = {
     headers: {
@@ -62,7 +62,6 @@ export const getProfileByUsername = (username) => async (dispatch) => {
     // make request to backend api/profile/user/${username}
 
     const res = await axios.get(`/api/profile/user/${username}`, config);
-    console.log(res)
     if(res.data.retStatus === 'Success') {
       if(res.data.redirectTo && res.data.msg === 'Redirecting') {
         window.location = res.data.redirectTo;
