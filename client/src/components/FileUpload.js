@@ -99,7 +99,7 @@ const FileUpload = ({ addPhoto, user }) => {
 
           <input
             type='submit'
-            value='Upload'
+            value={user && (user.lang === "en" ? 'Upload' : user.lang === "fr" ? 'Télécharger' : 'Cargar')}
             className='btn btn-primary btn-block mt-4'
           />
         </div>
