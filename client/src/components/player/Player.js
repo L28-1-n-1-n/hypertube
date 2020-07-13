@@ -1,5 +1,8 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import axios from 'axios';
+import languages from '../../languages';
+
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import {
@@ -32,11 +35,31 @@ const Movie = ({
     comment: '',
     imdbId: '',
   });
+
+  const [subtitles, updateSubtitles] = useState({});
+  const getSubtitles = async () => {
+    console.log('get sub called');
+    const resSubtitles = await axios.get(
+      `http://localhost:5000/api/player/subtitles/${match.params.id}`
+    );
+    console.log(resSubtitles);
+
+    // if (resSubtitles && resSubtitles.data.value) {
+    //   let buff = new Buffer(resSubtitles.data.value, 'base64');
+    //   let text = buff.toString('ascii');
+    //   // updateSubtitles(resSubtitles.data.value);
+    //   updateSubtitles(text);
+    // }
+    if (resSubtitles && resSubtitles.data.subtitles) {
+      updateSubtitles(resSubtitles.data.subtitles);
+    }
+  };
   useEffect(() => {
     getMovieById(match.params.id);
     getMovieComments(match.params.id);
     getDownloadedMovie(match.params.id);
     setFormData({ ...{ imdbId: match.params.id } });
+    getSubtitles();
   }, [
     getMovieById,
     getMovieComments,
@@ -62,6 +85,12 @@ const Movie = ({
   }
 
   console.log(torrents);
+  console.log(subtitles);
+  // if (subtitles) {
+  //   let buff = new Buffer(subtitles, 'base64');
+  //   let text = buff.toString('ascii');
+  //   console.log(text);
+  // }
   const onChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -175,6 +204,36 @@ const Movie = ({
                           : ''
                       }
                     />
+                    {/* {Object.entries(subtitles).map((entry) => (
+                    <track
+                      // label={translations[language].movie.subtitles[entry[0]]}
+                      // key={`language-${entry[0]}`}
+                      // kind='subtitles'
+                      // srcLang={entry[0]}
+                      // src={`data:text/vtt;base64, ${entry[1]}`}
+                      // default={entry[0] === language ? true : false}
+
+                      label='English'
+                      // key='language-English'
+                      kind='subtitles'
+                      srcLang='en'
+                      // src={`data:text/vtt;base64, ${entry[1]}`}
+                      // src={`data:text/vtt;base64, en`}
+                      // src={`http://localhost:5000/api/player/torrents/subtitles/${match.params.id}`}
+                      src={`http://localhost:5000/api/player/${match.params.id}`}
+                      default={true}
+                    />
+                   ))} */}
+                    {Object.entries(subtitles).map((entry) => (
+                      <track
+                        label={languages['en'].movie.subtitles[entry[0]]}
+                        key={`language-${entry[0]}`}
+                        kind='subtitles'
+                        srcLang={entry[0]}
+                        src={`data:text/vtt;base64, ${entry[1]}`}
+                        default={entry[0] === 'en' ? true : false}
+                      />
+                    ))}
                   </video>
                 ) : (
                   <div className='video-desc__details mx-auto'>
@@ -202,40 +261,6 @@ const Movie = ({
             ) : (
               ''
             )}
-
-            {/* {oneMovie.downloadedId === match.params.id ? (
-              <video
-                className='video-player'
-                width='100%'
-                controls
-                preload='metadata'
-                controlsList='nodownload'
-              >
-                <source
-                  // src={`http://localhost:5000/api/player/stream/${torrents[0].magnet}`}
-                  src={
-                    movieMagnet
-                      ? `http://localhost:5000/api/player/stream/${encodeURIComponent(
-                          movieMagnet
-                        )}`
-                      : ''
-                  }
-                />
-              </video>
-            ) : (
-              <div className='video-desc__details'>
-                <form
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                    downloadMovie(match.params.id, torrents[0].magnet);
-                  }}
-                >
-                  <button className='btn btn-sm btn-success' type='submit'>
-                    Download
-                  </button>
-                </form>
-              </div>
-            )} */}
           </div>
           <div className='video-comment p-2 rounded-bottom'>
             <div className='video-comment__new'>

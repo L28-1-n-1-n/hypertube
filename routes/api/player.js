@@ -2,11 +2,20 @@ const express = require('express');
 const router = express.Router();
 const fs = require('fs');
 const path = require('path');
-
+const http = require('http');
+const https = require('https');
 const torrentStream = require('torrent-stream');
 const auth = require('../../middleware/auth');
 const { validationResult } = require('express-validator');
 const Downloaded = require('../../models/Downloadedmovies');
+
+const OpenSubtitles = require('opensubtitles-api');
+const OS = new OpenSubtitles({
+  useragent: 'TemporaryUserAgent',
+  username: 'kneth',
+  password: 'HYPERTUBE123',
+  ssl: false,
+});
 
 // @route   POST api/player/download
 // @desc    Download new movie
@@ -129,6 +138,15 @@ router.get('/stream/:movieId/:magnet', (req, res) => {
   });
 });
 
+OS.login()
+  .then((res) => {
+    console.log('\x1b[36m%s\x1b[0m', '-> OpenSubtitles connection established');
+  })
+  .catch((error) => {
+    console.log(error);
+    console.log('\x1b[31m%s\x1b[0m', '-> OpenSubtitles connection error');
+  });
+
 router.get('/checkexpiration', async (req, res) => {
   let currentTime = new Date();
   let year = currentTime.getFullYear();
@@ -162,4 +180,70 @@ router.get('/checkexpiration', async (req, res) => {
   }
 });
 
+const getSubtitles = async (imdbid, langs) => {
+  try {
+    const response = await OS.search({
+      imdbid,
+      sublanguageid: langs.join(),
+      limit: 'best',
+    });
+    return Promise.all(
+      Object.entries(response).map(async (entry) => {
+        const langCode = entry[0];
+        return new Promise((resolve, reject) => {
+          let req = http.get(entry[1].vtt);
+          req.on('response', (res) => {
+            const file = fs.createWriteStream(
+              `./subtitles/${imdbid}_${langCode}`
+            );
+            const stream = res.pipe(file);
+            stream.on('finish', () => {
+              fs.readFile(
+                `./subtitles/${imdbid}_${langCode}`,
+                'utf8',
+                (err, content) => {
+                  if (!err) {
+                    const buffer = Buffer.from(content);
+                    resolve({
+                      key: langCode,
+                      value: buffer.toString('base64'),
+                    });
+                  }
+                }
+              );
+            });
+          });
+          req.on('error', (error) => {
+            reject(error);
+          });
+        });
+      })
+    );
+  } catch (error) {
+    //console.log(error)
+  }
+};
+
+router.get('/subtitles/:imdbid', async (req, res) => {
+  console.log('back reached');
+  const { imdbid } = req.params;
+  const langs = ['fre', 'eng'];
+  try {
+    const response = await getSubtitles(imdbid, langs);
+    let subtitles = {};
+    // console.log(response);
+    if (response) {
+      response.forEach((subtitle) => {
+        subtitles = {
+          ...subtitles,
+          [subtitle.key]: subtitle.value,
+        };
+      });
+    }
+    console.log(subtitles);
+    res.json({ subtitles });
+  } catch (error) {
+    res.json({ error });
+  }
+});
 module.exports = router;
