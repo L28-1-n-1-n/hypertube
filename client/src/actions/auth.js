@@ -94,7 +94,7 @@ export const register = ({
 
       dispatch(
         setAlert(
-          'Please check your email and click on verification link.',
+          'Successfully registered.',
           'success'
         )
       );
