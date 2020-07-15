@@ -1,7 +1,6 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
-import languages from '../../languages';
 
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -24,7 +23,6 @@ const Movie = ({
     oneMovie: { cast },
     oneMovie: { torrents },
     oneMovie: { movieMagnet },
-
     movieComments,
   },
   match,
@@ -37,19 +35,12 @@ const Movie = ({
   });
 
   const [subtitles, updateSubtitles] = useState({});
+
   const getSubtitles = async () => {
-    console.log('get sub called');
     const resSubtitles = await axios.get(
       `http://localhost:5000/api/player/subtitles/${match.params.id}`
     );
-    console.log(resSubtitles);
 
-    // if (resSubtitles && resSubtitles.data.value) {
-    //   let buff = new Buffer(resSubtitles.data.value, 'base64');
-    //   let text = buff.toString('ascii');
-    //   // updateSubtitles(resSubtitles.data.value);
-    //   updateSubtitles(text);
-    // }
     if (resSubtitles && resSubtitles.data.subtitles) {
       updateSubtitles(resSubtitles.data.subtitles);
     }
@@ -78,13 +69,6 @@ const Movie = ({
     });
   }
 
-  console.log(torrents);
-  console.log(subtitles);
-  // if (subtitles) {
-  //   let buff = new Buffer(subtitles, 'base64');
-  //   let text = buff.toString('ascii');
-  //   console.log(text);
-  // }
   const onChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -178,6 +162,7 @@ const Movie = ({
                     </b>
                   </p>
                 </div>
+
                 {oneMovie.downloadedId === match.params.id ? (
                   <video
                     className='video-player'
@@ -187,7 +172,6 @@ const Movie = ({
                     controlsList='nodownload'
                   >
                     <source
-                      // src={`http://localhost:5000/api/player/stream/${torrents[0].magnet}`}
                       src={
                         movieMagnet
                           ? `http://localhost:5000/api/player/stream/${
@@ -196,29 +180,10 @@ const Movie = ({
                           : ''
                       }
                     />
-                    {/* {Object.entries(subtitles).map((entry) => (
-                    <track
-                      // label={translations[language].movie.subtitles[entry[0]]}
-                      // key={`language-${entry[0]}`}
-                      // kind='subtitles'
-                      // srcLang={entry[0]}
-                      // src={`data:text/vtt;base64, ${entry[1]}`}
-                      // default={entry[0] === language ? true : false}
 
-                      label='English'
-                      // key='language-English'
-                      kind='subtitles'
-                      srcLang='en'
-                      // src={`data:text/vtt;base64, ${entry[1]}`}
-                      // src={`data:text/vtt;base64, en`}
-                      // src={`http://localhost:5000/api/player/torrents/subtitles/${match.params.id}`}
-                      src={`http://localhost:5000/api/player/${match.params.id}`}
-                      default={true}
-                    />
-                   ))} */}
                     {Object.entries(subtitles).map((entry) => (
                       <track
-                        label={languages['en'].movie.subtitles[entry[0]]}
+                        label={entry[0]}
                         key={`language-${entry[0]}`}
                         kind='subtitles'
                         srcLang={entry[0]}

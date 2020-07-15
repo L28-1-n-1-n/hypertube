@@ -8,12 +8,14 @@ const torrentStream = require('torrent-stream');
 const auth = require('../../middleware/auth');
 const { validationResult } = require('express-validator');
 const Downloaded = require('../../models/Downloadedmovies');
-
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config();
+}
 const OpenSubtitles = require('opensubtitles-api');
 const OS = new OpenSubtitles({
   useragent: 'TemporaryUserAgent',
-  username: 'kneth',
-  password: 'HYPERTUBE123',
+  username: process.env.openSubtitlesUsername,
+  password: process.env.openSubtitlesPassword,
   ssl: false,
 });
 
@@ -133,11 +135,10 @@ router.get('/stream/:movieId/:magnet', (req, res) => {
 
 OS.login()
   .then((res) => {
-    console.log('\x1b[36m%s\x1b[0m', '-> OpenSubtitles connection established');
+    console.log('\u001b[34;1m', '-> Successfully connected to OpenSubtitles');
   })
   .catch((error) => {
-    console.log(error);
-    console.log('\x1b[31m%s\x1b[0m', '-> OpenSubtitles connection error');
+    console.log('\u001b[35;1m', '-> OpenSubtitles connection failed');
   });
 
 router.get('/checkexpiration', async (req, res) => {
@@ -182,6 +183,7 @@ const getSubtitles = async (imdbid, langs) => {
     return Promise.all(
       Object.entries(response).map(async (entry) => {
         const langCode = entry[0];
+
         return new Promise((resolve, reject) => {
           let req = http.get(entry[1].vtt);
           req.on('response', (res) => {
@@ -217,13 +219,12 @@ const getSubtitles = async (imdbid, langs) => {
 };
 
 router.get('/subtitles/:imdbid', async (req, res) => {
-  console.log('back reached');
   const { imdbid } = req.params;
-  const langs = ['fre', 'eng'];
+  const langs = ['fre', 'eng', 'spn'];
   try {
     const response = await getSubtitles(imdbid, langs);
     let subtitles = {};
-    // console.log(response);
+
     if (response) {
       response.forEach((subtitle) => {
         subtitles = {
@@ -232,7 +233,7 @@ router.get('/subtitles/:imdbid', async (req, res) => {
         };
       });
     }
-    console.log(subtitles);
+
     res.json({ subtitles });
   } catch (error) {
     res.json({ error });
