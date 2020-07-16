@@ -161,6 +161,10 @@ const Movie = ({
                       : {oneMovie && oneMovie.rating}
                     </b>
                   </p>
+                  <p>
+                  <b>Seeds: </b>
+                  <span>{torrents && torrents[0].seeds}</span>
+                  </p>
                 </div>
 
                 {oneMovie.downloadedId === match.params.id ? (
@@ -209,7 +213,8 @@ const Movie = ({
                             ? 'Download'
                             : user.lang === 'fr'
                             ? 'Télécharger'
-                            : 'Descargar')}
+                            : 'Descargar')} ({torrents &&
+                              torrents[0].size})
                       </button>
                     </form>
                   </div>
