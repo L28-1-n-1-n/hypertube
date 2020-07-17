@@ -51,6 +51,7 @@ const Movie = ({
     getDownloadedMovie(match.params.id);
     setFormData({ ...{ imdbId: match.params.id } });
     getSubtitles();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     getMovieById,
     getMovieComments,
