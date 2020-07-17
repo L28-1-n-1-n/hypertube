@@ -60,7 +60,16 @@ const Homepage = ({
         multiple: 1,
       };
     }
-    fetchYTS(inputs);
+    if(search !== null && !(search.match(/^[a-zA-Z0-9\-_\.\?\!\, ]{1,499}$/)))
+    {
+      console.log(search)
+      inputs.search = ''
+      console.log("Salut ici")
+      console.log(inputs)
+      fetchYTS(inputs);
+    }
+    else
+      fetchYTS(inputs);
   }, [fetchYTS]);
 
   useEffect(() => {

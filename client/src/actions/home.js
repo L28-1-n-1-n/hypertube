@@ -66,7 +66,8 @@ export const fetchYTS = (inputs) => async (dispatch) => {
 
     if (inputs && inputsLength === 6) {
       const dateinterval = inputs.year.split('_');
-      if (inputs.search !== '') {
+      if (inputs.search !== '' && (inputs.search.match(/^[a-zA-Z0-9\-_\.\?\!\, ]{1,499}$/))) {
+        console.log("here i am guys")
         var searchYTS = await axios.get(
           'https://cors-anywhere.herokuapp.com/https://yts.mx/api/v2/list_movies.json?query_term=' +
             inputs.search +
@@ -113,7 +114,8 @@ export const fetchYTS = (inputs) => async (dispatch) => {
             inputs.rating
           );
         }
-      } else if (inputs.search === '') {
+      } else if (inputs.search === '' || !(inputs.search.match(/^[a-zA-Z0-9\-_\.\?\!\, ]{1,499}$/))) {
+        console.log(inputs.search)
         const dateinterval = inputs.year.split('_');
         searchYTS = await axios.get(
           'https://cors-anywhere.herokuapp.com/https://yts.mx/api/v2/list_movies.json?genre=' +
