@@ -28,7 +28,7 @@ export const getMovieById = (imdbId) => async (dispatch) => {
       payload: res.data.data.movie,
     });
   } catch (err) {
-    console.log(err);
+    window.location = 'http://localhost:3000';
   }
 };
 
@@ -83,7 +83,7 @@ export const getMovieComments = (imdbId) => async (dispatch) => {
       });
     }
   } catch (err) {
-    console.log(err);
+    dispatch(setAlert('No comment for this movie', 'danger'));
   }
 };
 
@@ -138,7 +138,7 @@ export const getDownloadedMovie = (imdbId) => async (dispatch) => {
       });
     }
   } catch (err) {
-    console.log(err);
+    dispatch(setAlert('Not a downloaded movie', 'danger'));
   }
 };
 

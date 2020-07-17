@@ -52,7 +52,7 @@ const Homepage = ({
       )
     ) {
       inputs = {
-        search: search,
+        search: null,
         genre: genre,
         rating: rating,
         year: year,
