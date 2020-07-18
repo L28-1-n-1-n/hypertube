@@ -138,12 +138,13 @@ router.post(
     auth,
     [
       check('lang', 'Lang is required').isIn(['fr', 'en', 'es']),
-      check('username', 'Please fill in username 1').not().isEmpty(),
+      check('username', 'Please fill in username').not().isEmpty(),
       check('firstname', 'Please fill in first name').not().isEmpty(),
       check('lastname', 'Please fill in last name').not().isEmpty(),
       check('email', 'Please ensure email is in correct format').isEmail(),
       check('firstname', 'First name is too long').isLength({ max: 15 }),
       check('lastname', 'Last name is too long').isLength({ max: 15 }),
+      check('username','Username is too long').isLength({ max: 15 }),
     ],
   ],
   async (req, res) => {
