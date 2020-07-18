@@ -89,11 +89,7 @@ const FileUpload = ({ addPhoto, user }) => {
 
           <Progress percentage={uploadPercentage} />
 
-          <input
-            type='submit'
-            value={user && (user.lang === "en" ? 'Upload' : user.lang === "fr" ? 'Télécharger' : 'Cargar')}
-            className='btn btn-primary btn-block mt-4'
-          />
+          <button type='submit' className='btn btn-primary btn-block mt-4'>{user && (user.lang === "en" ? 'Upload' : user.lang === "fr" ? 'Télécharger' : 'Cargar')}</button>
         </div>
       </form>
       {uploadedFile ? (

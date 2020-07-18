@@ -28,6 +28,7 @@ export const getMovieById = (imdbId) => async (dispatch) => {
       payload: res.data.data.movie,
     });
   } catch (err) {
+    
     window.location = 'http://localhost:3000';
   }
 };
@@ -143,11 +144,11 @@ export const getDownloadedMovie = (imdbId) => async (dispatch) => {
 };
 
 // Check if any movies has expired
-export const checkExpiration = () => async () => {
+export const checkExpiration = () => async (dispatch) => {
   try {
     // make request to backend api/profile
     await axios.get('/api/player/checkexpiration');
   } catch (err) {
-    console.log(err);
+    dispatch(setAlert('Not a downloaded movie', 'danger'));
   }
 };

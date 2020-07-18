@@ -35,16 +35,18 @@ const Movie = ({
   });
 
   const [subtitles, updateSubtitles] = useState({});
+  try {
+    var getSubtitles = async () => {
+      const resSubtitles = await axios.get(
+        `http://localhost:5000/api/player/subtitles/${match.params.id}`
+      );
+      if (resSubtitles && resSubtitles.data.subtitles) {
+        updateSubtitles(resSubtitles.data.subtitles);
+      }
+    };
+  } catch (err) {
 
-  const getSubtitles = async () => {
-    const resSubtitles = await axios.get(
-      `http://localhost:5000/api/player/subtitles/${match.params.id}`
-    );
-
-    if (resSubtitles && resSubtitles.data.subtitles) {
-      updateSubtitles(resSubtitles.data.subtitles);
-    }
-  };
+  }
   useEffect(() => {
     getMovieById(match.params.id);
     getMovieComments(match.params.id);
