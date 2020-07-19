@@ -211,25 +211,12 @@ export const fetchYTS = (inputs) => async (dispatch) => {
         ),
       ]);
       var one = await axios.get(
-        `https://cors-anywhere.herokuapp.com/https://yts.mx/api/v2/list_movies.json?sort_by=rating&limit=${
-          3 * multi - 2
-        }`
-      );
-      var two = await axios.get(
-        `https://cors-anywhere.herokuapp.com/https://yts.mx/api/v2/list_movies.json?sort_by=rating&limit=5&page=${
-          3 * multi - 1
-        }`
-      );
-      var three = await axios.get(
-        `https://cors-anywhere.herokuapp.com/https://yts.mx/api/v2/list_movies.json?sort_by=rating&limit=5&page=${
-          3 * multi
+        `https://cors-anywhere.herokuapp.com/https://yts.mx/api/v2/list_movies.json?sort_by=rating&limit=50&page=${
+          multi
         }`
       );
 
-      var fetchYTS_Results = one.data.data.movies.concat(
-        two.data.data.movies,
-        three.data.data.movies
-      );
+      var fetchYTS_Results = one.data.data.movies;
 
       fetchPOP_Results = yolo[0].data.concat(yolo[1].data, yolo[2].data);
 
