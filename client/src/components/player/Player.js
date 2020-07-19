@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import {
   getMovieById,
+  getLangDescription,
   addComment,
   getMovieComments,
   downloadMovie,
@@ -14,12 +15,14 @@ import {
 
 const Movie = ({
   getMovieById,
+  getLangDescription,
   getMovieComments,
   downloadMovie,
   getDownloadedMovie,
 
   movie: {
     oneMovie,
+    langDescription,
     oneMovie: { cast },
     oneMovie: { torrents },
     oneMovie: { movieMagnet },
@@ -47,8 +50,10 @@ const Movie = ({
   } catch (err) {
 
   }
+
   useEffect(() => {
     getMovieById(match.params.id);
+    getLangDescription(match.params.id);
     getMovieComments(match.params.id);
     getDownloadedMovie(match.params.id);
     setFormData({ ...{ imdbId: match.params.id } });
@@ -56,6 +61,7 @@ const Movie = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     getMovieById,
+    getLangDescription,
     getMovieComments,
     getDownloadedMovie,
     match.params.id,
@@ -80,6 +86,7 @@ const Movie = ({
     e.preventDefault();
     addComment(formData);
   };
+
 
   return (
     <Fragment>
@@ -114,7 +121,7 @@ const Movie = ({
                     </b>
                   </p>
                   <p>
-                    <b>{oneMovie && oneMovie.description_intro}</b>
+                    <b>{langDescription && langDescription.overview}</b>
                   </p>
                   <p>
                     <b>
@@ -288,10 +295,10 @@ const Movie = ({
 
 Movie.propTypes = {
   getMovieById: PropTypes.func.isRequired,
+  getLangDescription: PropTypes.func.isRequired,
   getMovieComments: PropTypes.func.isRequired,
   downloadMovie: PropTypes.func.isRequired,
   getDownloadedMovie: PropTypes.func.isRequired,
-
   addComment: PropTypes.func.isRequired,
   movie: PropTypes.object.isRequired,
   auth: PropTypes.object.isRequired,
@@ -304,6 +311,7 @@ const mapStateToProps = (state) => ({
 
 export default connect(mapStateToProps, {
   getMovieById,
+  getLangDescription,
   getMovieComments,
   addComment,
   downloadMovie,
