@@ -51,11 +51,6 @@ const Movie = ({
     } catch (err) {}
   };
 
-<<<<<<< HEAD
-  }
-
-=======
->>>>>>> 839f694273883c93642583e9dd91c3ab860f129d
   useEffect(() => {
     getMovieById(match.params.id);
     getLangDescription(match.params.id,user.lang);
