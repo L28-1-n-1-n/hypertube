@@ -249,7 +249,7 @@ export const fetchYTS = (inputs) => async (dispatch) => {
       dispatch(setAlert('No Results Found', 'danger'));
     }
   } catch (err) {
-    console.log(err);
+    dispatch(setAlert('The API sent an error. Please try again later.', 'danger'));
   }
 };
 
@@ -495,6 +495,6 @@ export const fetchInfiniteYTS = (inputs) => async (dispatch) => {
       dispatch(setAlert('No Results Found', 'danger'));
     }
   } catch (err) {
-    console.log(err);
+    dispatch(setAlert('The API sent an error. Please try again later.', 'danger'));
   }
 };
