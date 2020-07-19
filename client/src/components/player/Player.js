@@ -205,7 +205,7 @@ const Movie = ({
                     <form
                       onSubmit={(e) => {
                         e.preventDefault();
-                        downloadMovie(match.params.id, torrents[0].magnet);
+                        downloadMovie(match.params.id, torrents[0].magnet, torrents[0].url);
                       }}
                     >
                       <button

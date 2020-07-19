@@ -28,7 +28,7 @@ export const getMovieById = (imdbId) => async (dispatch) => {
       payload: res.data.data.movie,
     });
   } catch (err) {
-    
+
     window.location = 'http://localhost:3000';
   }
 };
@@ -89,11 +89,12 @@ export const getMovieComments = (imdbId) => async (dispatch) => {
 };
 
 // Download movie
-export const downloadMovie = (imdbId, magnet) => async (dispatch) => {
+export const downloadMovie = (imdbId, magnet, torrent = null) => async (dispatch) => {
   try {
     const res = await axios.post(`/api/player/download`, {
       movieId: imdbId,
       movieMagnet: magnet,
+      movieTorrent: torrent
     });
     if (res.data.retStatus === 'Error') {
       if (res.data.authorized === false && res.data.msg) {

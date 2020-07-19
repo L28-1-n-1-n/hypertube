@@ -7,6 +7,9 @@ const DownloadedSchema = new mongoose.Schema({
   movieMagnet: {
     type: String,
   },
+  movieTorrent: {
+    type: String,
+  },
   lastWatched: {
     type: Date,
   },

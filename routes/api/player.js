@@ -4,14 +4,18 @@ const fs = require('fs');
 const path = require('path');
 const http = require('http');
 const https = require('https');
+const { Buffer } = require('buffer');
 const torrentStream = require('torrent-stream');
 const auth = require('../../middleware/auth');
 const { validationResult } = require('express-validator');
 const Downloaded = require('../../models/Downloadedmovies');
+const Torrent = require('../../torrent/Torrent');
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config();
 }
 const OpenSubtitles = require('opensubtitles-api');
+const { resolve } = require('path');
+const { set } = require('mongoose');
 const OS = new OpenSubtitles({
   useragent: 'TemporaryUserAgent',
   username: process.env.openSubtitlesUsername,
@@ -19,15 +23,41 @@ const OS = new OpenSubtitles({
   ssl: false,
 });
 
+function getTorrent(url) {
+  return new Promise((resolve, reject) => {
+    let module = http;
+    if (url.indexOf('https:') === 0) {
+      module = https;
+    }
+    module.get(url, (res) => {
+      let data = Buffer.alloc(0);
+      res.on('data', (chunk) => {
+        data = Buffer.concat([data, chunk]);
+      });
+      res.on('end', () => {
+        resolve(data);
+      });
+    });
+  });
+}
+
+
 // @route   POST api/player/download
 // @desc    Download new movie
 // @access  Private
 router.post('/download', auth, async (req, res) => {
   try {
     const imdbId = req.body;
+    console.log(req.body.movieTorrent);
+    /*const fileReq = https.get(req.body.movieTorrent);
+    fileReq.on('response', (fileRes) => {
+      //console.log(typeof data, data);
+    });*/
+    //throw new Error('OK');
     movieDownloaded = new Downloaded({
       movieId: req.body.movieId,
       movieMagnet: req.body.movieMagnet,
+      movieTorrent: req.body.movieTorrent,
       lastWatched: Date.now(),
     });
     let user = await User.findOne({ _id: req.user.id });
@@ -69,12 +99,41 @@ router.get('/downloaded/:imdbId', async (req, res) => {
   }
 });
 
-router.get('/stream/:movieId/:magnet', (req, res) => {
-  const engine = torrentStream(req.params.magnet, {
-    path: `./torrents/${req.params.movieId}`,
+const torrentManager = {
+  store: {},
+
+  get(magnet) {
+    if (magnet in this.store) {
+      return this.store[magnet];
+    }
+    return null;
+  },
+
+  set(magnet, torrent) {
+    this.store[magnet] = torrent;
+  }
+}
+
+router.get('/stream/:movieId/:magnet', async (req, res) => {
+  const movie = await Downloaded.findOne({
+    movieId: req.params.movieId
   });
-  engine.on('ready', () => {
-    engine.files.forEach((file) => {
+  let torrent = torrentManager.get(req.params.magnet);
+  if (!torrent) {
+    const data = await getTorrent(movie.movieTorrent);
+    console.log(data);
+    torrent = new Torrent(data, 6889, `./torrents/${req.params.movieId}/`);
+    torrent.start();
+    torrentManager.set(req.params.magnet, torrent);
+  }
+  const files = await torrent.completed;
+  console.log(files);
+  //throw new Error('OK');
+  /*const engine = torrentStream(req.params.magnet, {
+    path: `./torrents/${req.params.movieId}`,
+  });*/
+  //engine.on('ready', () => {
+    /*engine.*/files.forEach((file) => {
       if (
         path.extname(file.name) === '.mp4' ||
         path.extname(file.name) === '.mkv' ||
@@ -130,7 +189,7 @@ router.get('/stream/:movieId/:magnet', (req, res) => {
         }
       }
     });
-  });
+  //});
 });
 
 OS.login()
