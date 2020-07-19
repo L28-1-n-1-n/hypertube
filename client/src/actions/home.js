@@ -5,20 +5,6 @@ import { GET_MOVIES } from './types';
 
 // Get filtered movies from api
 export const fetchYTS = (inputs) => async (dispatch) => {
-  function jsEscape(str) {
-    return String(str).replace(/[^\w. ]/gi, function (c) {
-      return '\\u' + ('0000' + c.charCodeAt(0).toString(16)).slice(-4);
-    });
-  }
-  inputs.search = jsEscape(inputs.search);
-  if (
-    inputs.search.toLowerCase().includes('script') ||
-    inputs.search.toLowerCase().includes('onload')
-  ) {
-    inputs.search = '';
-    window.location.replace('http://localhost:3000/homepage');
-  }
-
   const filteredResults = (searchYTS) => {
     const dateinterval = inputs.year.split('_');
     const filtered = searchYTS.data.data.movies;
@@ -59,7 +45,6 @@ export const fetchYTS = (inputs) => async (dispatch) => {
         item.genres.includes(genre) &&
         item.rating.percentage >= rate * 10
     );
-
     return results;
   };
 
@@ -71,7 +56,6 @@ export const fetchYTS = (inputs) => async (dispatch) => {
         item.genres.includes(genre) &&
         item.rating.percentage >= rate * 10
     );
-
     return results;
   };
 
@@ -188,7 +172,6 @@ export const fetchYTS = (inputs) => async (dispatch) => {
             return p;
           });
         }
-
         result = filteredResults(searchYTS).concat(result2);
       }
     } else {
@@ -252,7 +235,6 @@ export const fetchYTS = (inputs) => async (dispatch) => {
       }
       result = result.concat(result2);
     }
-
     if (result && result.length >= 1) {
       dispatch({
         type: GET_MOVIES,
