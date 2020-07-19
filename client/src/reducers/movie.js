@@ -1,7 +1,6 @@
 import {
   GET_MOVIES,
   GET_ONE_MOVIE,
-  GET_DESCRIPTION,
   GET_COMMENTS,
   NEW_COMMENT,
   DOWNLOADED_MOVIE,
@@ -11,7 +10,6 @@ import {
 const initialState = {
   movies: [],
   oneMovie: [],
-  langDescription: [],
   movieComments: [],
   loading: true,
   error: {},
@@ -31,12 +29,6 @@ export default function (state = initialState, action) {
       return {
         ...state,
         oneMovie: Object.assign(state.oneMovie, payload),
-        loading: false,
-      };
-    case GET_DESCRIPTION:
-      return {
-        ...state,
-        langDescription: Object.assign(state.langDescription, payload),
         loading: false,
       };
     case GET_COMMENTS:

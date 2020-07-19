@@ -3,7 +3,6 @@ import { setAlert } from './alert';
 
 import {
   GET_ONE_MOVIE,
-  GET_DESCRIPTION,
   NEW_COMMENT,
   GET_COMMENTS,
   DOWNLOADED_MOVIE,
@@ -31,20 +30,6 @@ export const getMovieById = (imdbId) => async (dispatch) => {
   } catch (err) {
     
     window.location = 'http://localhost:3000';
-  }
-};
-
-export const getLangDescription = (imdbId) => async (dispatch) => {
-  try {
-    const res = await axios.get(
-      `https://api.themoviedb.org/3/find/${imdbId}?api_key=308c0f7ff2e468335aaa1d1a1b2c0097&language=fr&external_source=imdb_id`
-    );
-    dispatch({
-      type: GET_DESCRIPTION,
-      payload: res.data.movie_results[0],
-    });
-  } catch (err) {
-
   }
 };
 
