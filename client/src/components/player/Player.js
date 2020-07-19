@@ -38,19 +38,24 @@ const Movie = ({
   });
 
   const [subtitles, updateSubtitles] = useState({});
-  try {
-    var getSubtitles = async () => {
+
+  var getSubtitles = async () => {
+    try {
       const resSubtitles = await axios.get(
         `http://localhost:5000/api/player/subtitles/${match.params.id}`
       );
+
       if (resSubtitles && resSubtitles.data.subtitles) {
         updateSubtitles(resSubtitles.data.subtitles);
       }
-    };
-  } catch (err) {
+    } catch (err) {}
+  };
 
+<<<<<<< HEAD
   }
 
+=======
+>>>>>>> 839f694273883c93642583e9dd91c3ab860f129d
   useEffect(() => {
     getMovieById(match.params.id);
     getLangDescription(match.params.id,user.lang);
@@ -179,8 +184,8 @@ const Movie = ({
                     </b>
                   </p>
                   <p>
-                  <b>Seeds: </b>
-                  <span>{torrents && torrents[0].seeds}</span>
+                    <b>Seeds: </b>
+                    <span>{torrents && torrents[0].seeds}</span>
                   </p>
                 </div>
 
@@ -230,8 +235,8 @@ const Movie = ({
                             ? 'Download'
                             : user.lang === 'fr'
                             ? 'Télécharger'
-                            : 'Descargar')} ({torrents &&
-                              torrents[0].size})
+                            : 'Descargar')}{' '}
+                        ({torrents && torrents[0].size})
                       </button>
                     </form>
                   </div>
