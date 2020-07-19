@@ -33,7 +33,7 @@ export const getMovieById = (imdbId) => async (dispatch) => {
   }
 };
 
-// Add comment
+// Add comments
 export const addComment = (formData) => async (dispatch) => {
   try {
     const config = {
