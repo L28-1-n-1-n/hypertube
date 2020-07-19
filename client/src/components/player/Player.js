@@ -53,7 +53,7 @@ const Movie = ({
 
   useEffect(() => {
     getMovieById(match.params.id);
-    getLangDescription(match.params.id,user.lang);
+    getLangDescription(match.params.id);
     getMovieComments(match.params.id);
     getDownloadedMovie(match.params.id);
     setFormData({ ...{ imdbId: match.params.id } });
@@ -121,14 +121,7 @@ const Movie = ({
                     </b>
                   </p>
                   <p>
-                    <b>
-                      {(langDescription && 
-                      langDescription.overview) ? 
-                      langDescription.overview : 
-                      (oneMovie && oneMovie.description_intro) ?
-                      oneMovie.description_intro :
-                      ' '}
-                    </b>
+                    <b>{langDescription && langDescription.overview}</b>
                   </p>
                   <p>
                     <b>
