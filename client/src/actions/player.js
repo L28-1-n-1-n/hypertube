@@ -34,10 +34,10 @@ export const getMovieById = (imdbId) => async (dispatch) => {
   }
 };
 
-export const getLangDescription = (imdbId) => async (dispatch) => {
+export const getLangDescription = (imdbId, lang) => async (dispatch) => {
   try {
     const res = await axios.get(
-      `https://api.themoviedb.org/3/find/${imdbId}?api_key=308c0f7ff2e468335aaa1d1a1b2c0097&language=fr&external_source=imdb_id`
+      `https://cors-anywhere.herokuapp.com/https://api.themoviedb.org/3/find/${imdbId}?api_key=308c0f7ff2e468335aaa1d1a1b2c0097&language=${lang}&external_source=imdb_id`
     );
     dispatch({
       type: GET_DESCRIPTION,
