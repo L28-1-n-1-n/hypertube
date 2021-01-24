@@ -30,6 +30,6 @@ This webapp is built for demonstration purposes only. It is not in production.
 
 ## Some screenshots
 
-[![LoginPage](https://i.imgur.com/KT1w5Vo.png)]
-[![HomePage](https://i.imgur.com/jZMHka0.png)]
-[![SettingsPage](https://i.imgur.com/SPvqf1a.png)]
+![LoginPage](https://i.imgur.com/KT1w5Vo.png)
+![HomePage](https://i.imgur.com/jZMHka0.png)
+![SettingsPage](https://i.imgur.com/SPvqf1a.png)
